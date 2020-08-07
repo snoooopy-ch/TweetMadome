@@ -1,0 +1,170 @@
+<div class="width-100">
+  <div class="sure-specific">
+    <button class="sure-specific-btn btn-left-round" (click)="setDefaultPathHandler(0)">dat1</button>
+    <button class="sure-specific-btn" (click)="setDefaultPathHandler(1)">dat2</button>
+    <button class="sure-specific-btn btn-right-round" (click)="setDefaultPathHandler(2)">dat3</button>
+  </div>
+  <input type="text" [(ngModel)]="txtDataFilePath">
+  <button class="border-round load-path" (click)="btnLoadSingleFile(txtDataFilePath)">上バスのdat読み入み</button>
+  <button class="border-round load-multi-path" (click)="btnLoadMultiFiles()">dat直接読み込み</button>
+</div>
+<div class="res-order">
+
+  <div class="reading-mode">
+    <div>
+       <label><input type="checkbox" [(ngModel)]="isResSort" (change)="chkResSortHandler()" >レスの順番を入れ替え</label>
+    </div>
+    <div>
+       <label><input type="checkbox" [(ngModel)]="isMultiAnchor" [disabled]="!isResSort"(change)="chkMultiAnchorHandler()">複数アンカーを分割</label>
+    </div>
+    <div>
+       <label><input type="checkbox" [(ngModel)]="isContinuousAnchor" [disabled]="!isMultiAnchor || !isResSort">連続アンカー分割</label>
+    </div>
+    <div>
+       <label><input type="checkbox" [(ngModel)]="notMoveFutureAnchor">未来アンカー移動せず</label>
+    </div>
+    <div>
+       <label><input type="checkbox" [(ngModel)]="isReplaceRes">>>1へのレスを入れ替え</label>
+    </div>
+  </div>
+</div>
+<div class="move-res">
+  <div>
+    <button id="btn-top-res-list" style="border-top-left-radius: 5px;" (click)="moveResViewHandler('top')">▲</button>
+    <button id="btn-bottom-res-list" style="border-top-right-radius: 5px;" (click)="moveResViewHandler('bottom')">▼</button>
+  </div>
+  <div>
+    <button id="btn-prev-selected-list" (click)="moveResViewHandler('selected-prev')">↑<br>選択</button>
+    <button id="btn-next-selected-list" (click)="moveResViewHandler('selected-next')">↓<br>選択</button>
+  </div>
+  <div>
+    <button id="btn-top-selected-list"  style="border-bottom-left-radius: 5px;" (click)="moveResViewHandler('selected-top')">△<br>選択 TOP</button>
+    <button id="btn-bottom-selected-list" style="border-bottom-right-radius: 5px;"  (click)="moveResViewHandler('selected-bottom')">▽<br>選択END</button>
+  </div>
+  <div class="res-total">
+    <h3 id="lbl-main-of-total">{{selectCount}}/{{totalCount}}</h3>
+  </div>
+  <div class="res-count">
+    <h3>{{candi1Count}}</h3>
+    <h3>{{candi2Count}}</h3>
+    <h3>{{candi3Count}}</h3>
+    <h3>{{candi4Count}}</h3>
+  </div>
+</div>
+<div class="width-100">
+  <button id="btn-print-all-tag" class="border-round" (click)="printAllHtmlTagHandler()">全タブのタグ出力</button>
+  <button id="btn-print-html-tag" class="border-round" (click)="printHtmlTagHandler()">タグ出力</button>
+  <button id="btn-copy-tag" class="border-round" [cdkCopyToClipboard]="htmlTag">コピー</button>
+  <textarea id="txt-html-tag" [(ngModel)]="htmlTag"></textarea>
+</div>
+<div class="save-container">
+  <button id="btn-save" class="btn-left-round" (click)="saveCurrentRes()">保存</button>
+  <button id="btn-load" class="btn-right-round" (click)="loadCurrentRes()">復元</button>
+</div>
+<div class="setting-panel">
+  <button class="btn-left-round btn-right-round" style="width: 100%;" (click)="btnSelectResHandler()">実行</button>
+  <table>
+    <tr>
+      <td>
+        <label><input type="radio" name="opt-select" [(ngModel)]="selectCommand" value="select">選択</label>
+      </td>
+      <td>
+        <label class="canel-radio"><input type="radio" name="opt-select" [(ngModel)]="selectCommand" value="cancel-select">選択解除</label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label><input type="radio" name="opt-select" [(ngModel)]="selectCommand" value="candi1">予備1</label>
+      </td>
+      <td>
+        <label class="canel-radio"><input type="radio" name="opt-select" [(ngModel)]="selectCommand" value="cancel-candi1">予備1 解除</label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label><input type="radio" name="opt-select" [(ngModel)]="selectCommand" value="candi2">予備2</label>
+      </td>
+      <td>
+        <label class="canel-radio"><input type="radio" name="opt-select" [(ngModel)]="selectCommand" value="cancel-candi2">予備2 解除</label>
+
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label><input type="radio" name="opt-select" [(ngModel)]="selectCommand" value="candi3">予備3</label>
+      </td>
+      <td>
+        <label class="canel-radio"><input type="radio" name="opt-select" [(ngModel)]="selectCommand" value="cancel-candi3">予備3 解除</label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label><input type="radio" name="opt-select" [(ngModel)]="selectCommand" value="candi4">予備4</label>
+      </td>
+      <td>
+        <label class="canel-radio"><input type="radio" name="opt-select" [(ngModel)]="selectCommand" value="cancel-candi4">予備4 解除</label>
+
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label><input type="radio" name="opt-select" [(ngModel)]="selectCommand" value="select-image">画像選択</label>
+      </td>
+      <td>
+
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label><input type="radio" name="opt-select" [(ngModel)]="selectCommand" value="candi1-image">画像予備1</label>
+      </td>
+      <td>
+
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label><input type="radio" name="opt-select" [(ngModel)]="selectCommand" value="candi2-image">画像予備2</label>
+      </td>
+      <td>
+
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label><input type="radio" name="opt-select" [(ngModel)]="selectCommand" value="candi3-image">画像予備3</label>
+      </td>
+      <td>
+
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label><input type="radio" name="opt-select" [(ngModel)]="selectCommand" value="candi4-image">画像予備4</label>
+      </td>
+      <td>
+
+      </td>
+    </tr>
+  </table>
+  <button class="btn-left-round btn-right-round" style="width: 100%;" (click)="btnSelectResHandler()">実行</button>
+</div>
+<div class="sort-group">
+  <label><input type="radio" name="opt-sort" [(ngModel)]="sortCommand" value="num-sort">レスNo順にソート</label>
+  <button class="btn-left-round btn-right-round" style="width: 100%;" (click)="btnSortResHandler()">実行</button>
+</div>
+<div class="menu-group">
+  <button class="btn-left-round" (click)="btnSetResMenuHandler(1)">メニュー１</button>
+  <button class="" (click)="btnSetResMenuHandler(2)">メニュー2</button>
+  <button class="btn-right-round" (click)="btnSetResMenuHandler(3)">メニュー3</button>
+</div>
+<div class="width-100">
+  <label>注意レス</label>
+  <input type="text" [(ngModel)]="txtRemarkRes">
+  <label>非表示レス</label>
+  <input type="text" [(ngModel)]="txtHideRes">
+  <label>非表示のID</label>
+  <div class="hidden-ids-container">
+    <button class="btn-show-id" *ngFor="let id of hiddenIds;" (click)="ShowIdHandler(id)">[X]{{id}}</button>
+  </div>
+</div>

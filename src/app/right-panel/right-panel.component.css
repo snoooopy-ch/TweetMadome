@@ -1,0 +1,10 @@
+.hidden-ids-container{
+  display: block;
+  width: 100%;
+}
+.hidden-ids-container button.btn-show-id{
+  height: 20px;
+  width: fit-content;
+  padding: 0 4px;
+  margin: 0 2px 0 0;
+}
