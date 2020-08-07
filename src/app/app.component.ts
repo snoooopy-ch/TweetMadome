@@ -12,6 +12,5 @@ export class AppComponent {
   settings: any;
   constructor(private resService: ResService) {
     setTheme('bs4');
-    this.resService.loadSettings();
   }
 }
