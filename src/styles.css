@@ -424,7 +424,7 @@ app-res .row-4 a {
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
-  overflow-y: scroll;
+  /*overflow-y: scroll;*/
   height: calc(100vh - 15px);
 }
 
@@ -443,23 +443,23 @@ app-res .row-4 a {
   height: 18px;
 }
 
-.main-container app-right-panel .width-100 input {
+.main-container app-right-panel .row-container input {
   width: 100%;
 }
 
-.main-container app-right-panel .width-100 button {
+.main-container app-right-panel .row-container button {
   width: 100%;
   height: 30px;
   margin: 2px 0 0;
 }
 
-.main-container app-right-panel .width-100 button:hover {
+.main-container app-right-panel .row-container button:hover {
   background-color: #0366d6;
   border-color: #0366d6;
   color: white;
 }
 
-.main-container app-right-panel .width-100 textarea {
+.main-container app-right-panel .row-container textarea {
   width: 100%;
   padding: 3px;
 }
@@ -468,7 +468,7 @@ app-res .row-4 a {
   height: 80px;
 }
 
-.main-container app-right-panel .width-100 button.add-url {
+.main-container app-right-panel .row-container button.add-url {
   margin: 0;
 }
 
@@ -483,28 +483,16 @@ app-res .row-4 a {
   align-items: center;
 }
 
-.main-container app-right-panel .res-order {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: block;
-  padding: 2px 0 0px;
+.main-container app-right-panel .image-group {
+  margin: 2px 0;
+  padding: 10px 23px 10px;
+  border: 1px solid lightgrey;
 }
 
-.main-container app-right-panel .res-order .reading-mode div {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
+/*.main-container app-right-panel .image-group .image-type label span{*/
+/*  display: block;*/
+/*}*/
 
-.main-container app-right-panel .res-order .reading-mode div label {
-  margin: 0;
-  line-height: 2em;
-  display: flex;
-  align-items: center;
-}
 
 .main-container app-right-panel .move-res div {
   display: -webkit-box;
@@ -642,24 +630,24 @@ app-res .row-4 a {
   /*margin-left: -1px;*/
 }
 
-.main-container app-right-panel .width-100 button.load-path{
+.main-container app-right-panel .row-container button.load-path{
   background-color: #26c9ff;
   border: solid 1px #26c9ff;
 }
 
-.main-container app-right-panel .width-100 button.load-path:hover{
+.main-container app-right-panel .row-container button.load-path:hover{
   background-color: #fff;
   color: #26c9ff;
   border: solid 1px #26c9ff;
 }
 
-.main-container app-right-panel .width-100 button.load-multi-path{
+.main-container app-right-panel .row-container button.load-multi-path{
   height: 60px;
   background-color: #bfffff;
   border: solid 1px #bfffff;
 }
 
-.main-container app-right-panel .width-100 button.load-multi-path:hover{
+.main-container app-right-panel .row-container button.load-multi-path:hover{
   background-color: #fff;
   color: #26c9ff;
   border: solid 1px #bfffff;
