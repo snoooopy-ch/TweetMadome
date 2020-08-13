@@ -1,12 +1,29 @@
 <div class="width-100">
-  <div class="sure-specific">
-    <button class="sure-specific-btn btn-left-round" (click)="setDefaultPathHandler(0)">dat1</button>
-    <button class="sure-specific-btn" (click)="setDefaultPathHandler(1)">dat2</button>
-    <button class="sure-specific-btn btn-right-round" (click)="setDefaultPathHandler(2)">dat3</button>
+  <textarea class="twitter-url" [(ngModel)]="twitterUrl"></textarea>
+  <button class="border-round add-url">追加</button>
+</div>
+<div class="container-group">
+  <div class="row">
+    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="0">各ツイートの状態を優先</label>
   </div>
-  <input type="text" [(ngModel)]="txtDataFilePath">
-  <button class="border-round load-path" (click)="btnLoadSingleFile(txtDataFilePath)">上バスのdat読み入み</button>
-  <button class="border-round load-multi-path" (click)="btnLoadMultiFiles()">dat直接読み込み</button>
+  <div class="row">
+    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="1">container1(通常)</label>
+  </div>
+  <div class="row">
+    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="2">container1(引用)</label>
+  </div>
+  <div class="row">
+    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="3">container3</label>
+  </div>
+  <div class="row">
+    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="4">container4</label>
+  </div>
+  <div class="row">
+    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="5">container5</label>
+  </div>
+  <div class="row">
+    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="6">container6</label>
+  </div>
 </div>
 <div class="res-order">
 
@@ -54,8 +71,8 @@
 <div class="width-100">
   <button id="btn-print-all-tag" class="border-round" (click)="printAllHtmlTagHandler()">全タブのタグ出力</button>
   <button id="btn-print-html-tag" class="border-round" (click)="printHtmlTagHandler()">タグ出力</button>
-  <button id="btn-copy-tag" class="border-round" [cdkCopyToClipboard]="htmlTag">コピー</button>
-  <textarea id="txt-html-tag" [(ngModel)]="htmlTag"></textarea>
+  <button id="btn-copy-tag" class="border-round" [cdkCopyToClipboard]="twitterUrl">コピー</button>
+  <textarea id="txt-html-tag" [(ngModel)]="twitterUrl"></textarea>
 </div>
 <div class="save-container">
   <button id="btn-save" class="btn-left-round" (click)="saveCurrentRes()">保存</button>
@@ -149,10 +166,7 @@
   </table>
   <button class="btn-left-round btn-right-round" style="width: 100%;" (click)="btnSelectResHandler()">実行</button>
 </div>
-<div class="sort-group">
-  <label><input type="radio" name="opt-sort" [(ngModel)]="sortCommand" value="num-sort">レスNo順にソート</label>
-  <button class="btn-left-round btn-right-round" style="width: 100%;" (click)="btnSortResHandler()">実行</button>
-</div>
+
 <div class="menu-group">
   <button class="btn-left-round" (click)="btnSetResMenuHandler(1)">メニュー１</button>
   <button class="" (click)="btnSetResMenuHandler(2)">メニュー2</button>

@@ -24,7 +24,6 @@
               "src/assets"
             ],
             "styles": [
-              "src/custom-theme.scss",
               "src/styles.css"
             ],
             "scripts": ["node_modules/freezeframe/dist/freezeframe.min.js", "node_modules/gasparesganga-jquery-loading-overlay/dist/loadingoverlay.min.js"]

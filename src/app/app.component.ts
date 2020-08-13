@@ -8,10 +8,9 @@ import { setTheme } from 'ngx-bootstrap/utils';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'スレ編集';
+  title = 'ツイート取得';
   settings: any;
   constructor(private resService: ResService) {
     setTheme('bs4');
-    this.resService.loadSettings();
   }
 }

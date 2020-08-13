@@ -1,7 +1,6 @@
 const {app, BrowserWindow, ipcMain, dialog, Menu, MenuItem} = require('electron');
 const fs = require('fs');
 const encoding = require('encoding-japanese');
-const {v4: uuidv4} = require('uuid');
 
 let win;
 let num = 0;
