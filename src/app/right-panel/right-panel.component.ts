@@ -24,7 +24,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   totalCount = 0;
   selectCommand = '';
   settings;
-  htmlTag: string;
+  twitterUrl: string;
   private timer;
   public subscribers: any = {};
   private title: any;
@@ -32,7 +32,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   txtHideRes: string;
   isContinuousAnchor: any;
   notMoveFutureAnchor: any;
-  sortCommand: any;
+  twitterContainer: any;
 
 
   constructor(private resService: ResService, private cdRef: ChangeDetectorRef, private clipboard: Clipboard) {
