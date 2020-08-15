@@ -30,6 +30,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     this.imageKind = "twitter";
     this.subscribers.settings = this.resService.settings.subscribe((value) => {
       this.settings = value;
+      this.cdRef.detectChanges();
     });
   }
 
