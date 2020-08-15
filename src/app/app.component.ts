@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {ResService} from './res.service';
+import {MainService} from './main.service';
 import { setTheme } from 'ngx-bootstrap/utils';
 
 @Component({
@@ -10,7 +10,8 @@ import { setTheme } from 'ngx-bootstrap/utils';
 export class AppComponent {
   title = 'ツイート取得';
   settings: any;
-  constructor(private resService: ResService) {
+  constructor(private mainService: MainService) {
     setTheme('bs4');
+    this.mainService.loadSettings();
   }
 }

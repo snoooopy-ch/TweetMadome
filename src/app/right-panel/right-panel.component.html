@@ -7,22 +7,22 @@
     <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="0">各ツイートの状態を優先</label>
   </div>
   <div class="row">
-    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="1">container1(通常)</label>
+    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="1">{{settings.container1}}</label>
   </div>
   <div class="row">
-    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="2">container1(引用)</label>
+    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="2">{{settings.container2}}</label>
   </div>
   <div class="row">
-    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="3">container3</label>
+    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="3">{{settings.container3}}</label>
   </div>
   <div class="row">
-    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="4">container4</label>
+    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="4">{{settings.container4}}</label>
   </div>
   <div class="row">
-    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="5">container5</label>
+    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="5">{{settings.container5}}</label>
   </div>
   <div class="row">
-    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="6">container6</label>
+    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="6">{{settings.container6}}</label>
   </div>
 </div>
 <div class="w-100 image-group">
@@ -34,22 +34,22 @@
   </div>
   <div class="px-2 image-type">
     <div class="row">
-      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="0">通常出力<br>(画像横幅）</label>
+      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="1">{{settings.pict1}}<br>(画像横幅）</label>
     </div>
     <div class="row px-2">
       <input type="number" name="txt-image-width" [(ngModel)]="imageWidth" min="0">
     </div>
     <div class="row">
-      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="1">タイル出力</label>
+      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="2">{{settings.pict2}}</label>
     </div>
     <div class="row">
-      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="2">画像3</label>
+      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="3">{{settings.pict3}}</label>
     </div>
     <div class="row">
-      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="3">画像4</label>
+      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="4">{{settings.pict4}}</label>
     </div>
     <div class="row">
-      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="4">画像5</label>
+      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="5">{{settings.pict5}}</label>
     </div>
   </div>
 </div>
