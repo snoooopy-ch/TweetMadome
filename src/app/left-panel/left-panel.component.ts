@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, HostListener, Input, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ResService} from '../res.service';
+import {MainService} from '../main.service';
 import { Title } from '@angular/platform-browser';
 
 const electron = (window as any).require('electron');
@@ -11,7 +11,7 @@ const electron = (window as any).require('electron');
 })
 export class LeftPanelComponent implements OnInit, OnDestroy {
 
-  constructor(private resService: ResService, private cdr: ChangeDetectorRef, private titleService: Title,
+  constructor(private resService: MainService, private cdr: ChangeDetectorRef, private titleService: Title,
               private zone: NgZone) {
 
   }

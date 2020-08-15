@@ -5,16 +5,13 @@ const encoding = require('encoding-japanese');
 let win;
 let num = 0;
 let ids = [];
-let resList = [];
 let sreTitle = '';
 let settingPath = 'Setting.ini';
-let searchListPath = 'SearchList.txt';
 
 let stateComments = ['#datパス', '#指定したdatパス', '#チェックボックス', '#文字色', '#注意レス', '#非表示レス', '#名前欄の置換',
   '#投稿日・IDの置換', '#注目レスの閾値', '#ボタンの色'];
 let curComment = '';
-let yesNoKeys = ['shuturyoku', 'sentaku_idou1', 'sentaku_idou2', 'Left_highlight', 'res_mouse_click', 'youtube'
-  , 'twitter', 'AutoSave', 'gif_stop', 'all_tab_save'];
+let yesNoKeys = ['youtube'];
 let selectKeys = ['res_menu'];
 const onOffKeys = ['jogai'];
 let settings;
@@ -26,7 +23,7 @@ function createWindow() {
     width: 1223,
     height: 948,
     minWidth: 1223,
-    title: 'スレ編集',
+    title: 'ツイート取得',
     backgroundColor: '#ffffff',
     icon: `file://${__dirname}/dist/assets/logo.png`,
     webPreferences: {
@@ -170,4 +167,68 @@ app.on('activate', function () {
   }
 });
 
+ipcMain.on("loadSettings", (event) => {
+  getSettings();
+});
 
+function getSettings() {
+
+  if(!fs.existsSync(settingPath)) {
+    dialog.showErrorBox('設定', '設定ファイルを読めません。');
+    return;
+  }
+
+  let input = fs.createReadStream(settingPath);
+  let remaining = '';
+  settings = { };
+  num = 0;
+  input.on('data', function (data) {
+    remaining += data;
+    remaining = remaining.replace(/(\r)/gm, '');
+    var index = remaining.indexOf('\n');
+    var last = 0;
+    while (index > -1) {
+      let line = remaining.substring(last, index);
+
+      last = index + 1;
+      index = remaining.indexOf('\n', last);
+      if (line.startsWith('#')) {
+        // if(stateComments.indexOf(line) !== -1) {
+        curComment = line;
+        // }
+        continue;
+      }
+      if (line.length === 0) {
+        continue;
+      }
+      // if (line.match(/pass:/gi)) {
+      //   settings['autoSavePath'] = line.replace(/pass:/gi, '').trim();
+      //   continue;
+      // }
+      let chunks = line.split(':');
+      let lineArgs = [chunks.shift(), chunks.join(':')];
+
+      if (curComment === '#datパス') {
+        settings['dataPath'] = line;
+      } else {
+        if (yesNoKeys.indexOf(lineArgs[0]) !== -1) {
+          settings[lineArgs[0]] = (lineArgs[1] === 'yes' || lineArgs[1] === 'yes;');
+        } else if (selectKeys.indexOf(lineArgs[0]) !== -1) {
+          settings[lineArgs[0]] = lineArgs[1];
+        } else {
+          if (lineArgs.length > 1) {
+            settings[lineArgs[0]] = lineArgs[1].replace(/;/g, '');
+          } else {
+            settings[lineArgs[0]] = '';
+          }
+        }
+      }
+    }
+    remaining = remaining.substring(last);
+  });
+
+  input.on('end', function () {
+    win.webContents.send("getSettings", settings);
+  });
+
+}

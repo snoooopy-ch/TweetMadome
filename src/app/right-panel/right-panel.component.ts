@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
-import {ResService} from '../res.service';
+import {MainService} from '../main.service';
 import { Observable, timer } from 'rxjs';
 const electron = (window as any).require('electron');
 
@@ -19,20 +19,26 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   imageType: any;
   imageWidth: any;
   outputHtml: any;
+  settings: any;
 
-  constructor(private resService: ResService, private cdRef: ChangeDetectorRef, private clipboard: Clipboard) {
+  constructor(private resService: MainService, private cdRef: ChangeDetectorRef, private clipboard: Clipboard) {
 
   }
 
   ngOnInit(): void {
-
+    this.twitterContainer ="0";
+    this.imageKind = "twitter";
+    this.subscribers.settings = this.resService.settings.subscribe((value) => {
+      this.settings = value;
+      this.cdRef.detectChanges();
+    });
   }
 
   /**
    * Unsubscribe the completed service subscribers
    */
   ngOnDestroy(){
-
+    this.subscribers.settings.unsubscribe();
   }
 
   @HostListener('window:beforeunload', [ '$event' ])
