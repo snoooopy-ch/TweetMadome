@@ -208,19 +208,15 @@ function getSettings() {
       let chunks = line.split(':');
       let lineArgs = [chunks.shift(), chunks.join(':')];
 
-      if (curComment === '#datパス') {
-        settings['dataPath'] = line;
+      if (yesNoKeys.indexOf(lineArgs[0]) !== -1) {
+        settings[lineArgs[0]] = (lineArgs[1] === 'yes' || lineArgs[1] === 'yes;');
+      } else if (selectKeys.indexOf(lineArgs[0]) !== -1) {
+        settings[lineArgs[0]] = lineArgs[1];
       } else {
-        if (yesNoKeys.indexOf(lineArgs[0]) !== -1) {
-          settings[lineArgs[0]] = (lineArgs[1] === 'yes' || lineArgs[1] === 'yes;');
-        } else if (selectKeys.indexOf(lineArgs[0]) !== -1) {
-          settings[lineArgs[0]] = lineArgs[1];
+        if (lineArgs.length > 1) {
+          settings[lineArgs[0]] = lineArgs[1].replace(/;/g, '');
         } else {
-          if (lineArgs.length > 1) {
-            settings[lineArgs[0]] = lineArgs[1].replace(/;/g, '');
-          } else {
-            settings[lineArgs[0]] = '';
-          }
+          settings[lineArgs[0]] = '';
         }
       }
     }
