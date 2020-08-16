@@ -11,20 +11,25 @@ const electron = (window as any).require('electron');
 })
 export class LeftPanelComponent implements OnInit, OnDestroy {
 
-  constructor(private resService: MainService, private cdr: ChangeDetectorRef, private titleService: Title,
+  public subscribers: any = {};
+  settings: any;
+  constructor(private resService: MainService, private cdRef: ChangeDetectorRef, private titleService: Title,
               private zone: NgZone) {
 
   }
 
   ngOnInit(): void {
-
+    this.subscribers.settings = this.resService.settings.subscribe((value) => {
+      this.settings = value;
+      this.cdRef.detectChanges();
+    });
   }
 
   /**
    * Unsubscribe the completed service subscribers
    */
   ngOnDestroy(){
-
+    this.subscribers.settings.unsubscribe();
   }
 
 }
