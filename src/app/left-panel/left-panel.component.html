@@ -1,0 +1,17 @@
+<div class="sort-group d-flex justify-content-around">
+  <button type="button" class="btn-sort">上下逆順</button>
+  <button type="button" class="btn-sort">日付が新しい順</button>
+  <button type="button" class="btn-sort">日付が古い順</button>
+</div>
+<virtual-scroller class="res-content" #listContainer [items]="twitList" (vsUpdate)="vsTwitUpdateHandler($event)"
+                  cdkDropList (cdkDropListDropped)="vsTwitDropHandler($event)" [scrollAnimationTime] = 0 [enableUnequalChildrenSizes]="true"
+                  [ngStyle]="{'height': 'calc(100vh - 150px)'}">
+
+  <app-twit-detail [item]="twitItem" [twitIndex]="twitList.indexOf((twitItem))"
+           (setDraggableEmitter)="setDraggable(twitList.indexOf(twitItem), $event)"
+           *ngFor="let twitItem of listContainer.viewPortItems; let index = index ;"
+           (cdkDragStarted)="vsTwitDragStartedHandler($event, twitItem)"
+           [cdkDragDisabled]="getDraggable(twitList.indexOf(twitItem))"
+           cdkDragLockAxis="y" cdkDrag>
+  </app-twit-detail>
+</virtual-scroller>
