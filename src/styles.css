@@ -128,10 +128,11 @@ label {
   height: 26px;
 }
 
-.main-container app-left-panel app-content .res-content {
+.main-container app-left-panel .twitter-container {
+  margin: 10px 0 0;
   border-top: 1px solid #adadad;
   width: 100%;
-  /*height: calc(100vh - 209px);*/
+  height: calc(100vh - 50px);
 }
 
 .main-container app-left-panel app-content .extract {
@@ -405,8 +406,8 @@ app-res .row-4 a {
 .main-container app-right-panel {
   min-width: 240px;
   max-width: 240px;
-  padding: 0px 10px 9px 0px;
-  margin: 5px 5px 0;
+  /*padding: 0px 10px 9px 0px;*/
+  margin: 5px 3px 0;
   user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;

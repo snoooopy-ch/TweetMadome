@@ -1,5 +1,14 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, Pipe, PipeTransform} from '@angular/core';
 import {TwitItem} from "../../models/twit-item";
+import {DomSanitizer} from "@angular/platform-browser";
+
+@Pipe({ name: 'safeHtml'})
+export class SafeHtmlPipe implements PipeTransform  {
+  constructor(private sanitized: DomSanitizer) {}
+  transform(value) {
+    return this.sanitized.bypassSecurityTrustHtml(value);
+  }
+}
 
 @Component({
   selector: 'app-twit-detail',
@@ -16,6 +25,8 @@ export class TwitDetailComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    // @ts-ignore
+    twttr.widgets.load();
   }
 
 }

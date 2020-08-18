@@ -11,7 +11,7 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import {ButtonsModule} from 'ngx-bootstrap/buttons';
-import { TwitDetailComponent } from './left-panel/twit-detail/twit-detail.component';
+import { TwitDetailComponent, SafeHtmlPipe } from './left-panel/twit-detail/twit-detail.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +19,7 @@ import { TwitDetailComponent } from './left-panel/twit-detail/twit-detail.compon
     LeftPanelComponent,
     RightPanelComponent,
     TwitDetailComponent,
+    SafeHtmlPipe
   ],
   imports: [
     BrowserModule,
