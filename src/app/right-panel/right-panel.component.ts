@@ -56,11 +56,11 @@ export class RightPanelComponent implements OnInit, OnDestroy {
 
   btnAddUrlClickHandler() {
     if(this.twitterUrl.length > 0){
-      const twitters = this.twitterUrl.match(/"(https?:\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+))"/ig);
-      console.log(twitters);
+      const twitters = this.twitterUrl.match(/(https?:\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+))/ig);
       if (Array.isArray(twitters) && twitters.length) {
         this.mainService.setAddedUrls(twitters);
       }
+      this.twitterUrl = '';
     }
   }
 }

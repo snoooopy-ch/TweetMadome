@@ -1,4 +1,13 @@
-import {ChangeDetectorRef, Component, HostListener, Input, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  Input,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import {MainService} from '../main.service';
 import { Title } from '@angular/platform-browser';
 import {TwitItem} from "../models/twit-item";
@@ -24,7 +33,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
+    this.twitList = [];
     // load the setting parameters from the setting.ini file
     this.subscribers.settings = this.mainService.settings.subscribe((value) => {
       this.settings = value;
@@ -52,14 +61,16 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
   async addTwitUrls(pTwitUrls: string[]) {
     for (const twitter of pTwitUrls) {
       const item = new TwitItem();
-      const twitURL = twitter.slice(1, -1);
-      const response = await fetch('https://publish.twitter.com/oembed?url=' + twitURL);
+      const response = await fetch(`https://publish.twitter.com/oembed?hide_thread=true&align=center&omit_script=true&url=${twitter}`);
       if (response.ok) {
         const data = await response.json();
+        // item.content = data.html.replace(/<script async src="https:\/\/platform\.twitter\.com\/widgets\.js" charset="utf-8"><\/script>\n+/gi, '');
         item.content = data.html;
-        // content = content.replace(/<script async src="https:\/\/platform\.twitter\.com\/widgets\.js" charset="utf-8"><\/script>\n+/gi, '');
+        this.twitList.push(item);
       }
     }
+    this.cdRef.detectChanges();
+
   }
 
   vsTwitUpdateHandler($event: any[]) {
