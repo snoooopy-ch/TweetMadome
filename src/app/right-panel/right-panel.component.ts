@@ -21,14 +21,15 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   outputHtml: any;
   settings: any;
 
-  constructor(private resService: MainService, private cdRef: ChangeDetectorRef, private clipboard: Clipboard) {
+  constructor(private mainService: MainService, private cdRef: ChangeDetectorRef, private clipboard: Clipboard) {
 
   }
 
   ngOnInit(): void {
-    this.twitterContainer ="0";
-    this.imageKind = "twitter";
-    this.subscribers.settings = this.resService.settings.subscribe((value) => {
+    this.twitterContainer = '0';
+    this.imageKind = 'twitter';
+    this.twitterUrl = '';
+    this.subscribers.settings = this.mainService.settings.subscribe((value) => {
       this.settings = value;
       this.cdRef.detectChanges();
     });
@@ -53,4 +54,13 @@ export class RightPanelComponent implements OnInit, OnDestroy {
 
   }
 
+  btnAddUrlClickHandler() {
+    if(this.twitterUrl.length > 0){
+      const twitters = this.twitterUrl.match(/"(https?:\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+))"/ig);
+      console.log(twitters);
+      if (Array.isArray(twitters) && twitters.length) {
+        this.mainService.setAddedUrls(twitters);
+      }
+    }
+  }
 }
