@@ -8,6 +8,8 @@ const electron = (window as any).require('electron');
 })
 export class MainService {
   settings = new BehaviorSubject<any>({});
+  urlsSource = new BehaviorSubject<string[]>([]);
+  addedUrls = this.urlsSource.asObservable();
 
   constructor() {
     electron.ipcRenderer.on('getSettings', (event, value) => {
@@ -18,4 +20,9 @@ export class MainService {
   loadSettings(){
     electron.ipcRenderer.send('loadSettings');
   }
+
+  setAddedUrls(value: string[]) {
+    this.urlsSource.next(value);
+  }
+
 }

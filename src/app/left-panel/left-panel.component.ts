@@ -18,15 +18,22 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
   twitList: TwitItem[];
   draggable: number;
 
-  constructor(private resService: MainService, private cdRef: ChangeDetectorRef,
+  constructor(private mainService: MainService, private cdRef: ChangeDetectorRef,
               private zone: NgZone) {
 
   }
 
   ngOnInit(): void {
-    this.subscribers.settings = this.resService.settings.subscribe((value) => {
+
+    // load the setting parameters from the setting.ini file
+    this.subscribers.settings = this.mainService.settings.subscribe((value) => {
       this.settings = value;
       this.cdRef.detectChanges();
+    });
+
+    // get the Twit Url array from the right panel
+    this.subscribers.twitUrls = this.mainService.addedUrls.subscribe((value) =>{
+      this.addTwitUrls(value);
     });
   }
 
@@ -35,6 +42,24 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy(){
     this.subscribers.settings.unsubscribe();
+    this.subscribers.twitUrls.unsubscribe();
+  }
+
+  /**
+   * add Twit items from the string array of Twit Url to Twit list
+   * @param pTwitUrls: Twit Url array
+   */
+  async addTwitUrls(pTwitUrls: string[]) {
+    for (const twitter of pTwitUrls) {
+      const item = new TwitItem();
+      const twitURL = twitter.slice(1, -1);
+      const response = await fetch('https://publish.twitter.com/oembed?url=' + twitURL);
+      if (response.ok) {
+        const data = await response.json();
+        item.content = data.html;
+        // content = content.replace(/<script async src="https:\/\/platform\.twitter\.com\/widgets\.js" charset="utf-8"><\/script>\n+/gi, '');
+      }
+    }
   }
 
   vsTwitUpdateHandler($event: any[]) {
