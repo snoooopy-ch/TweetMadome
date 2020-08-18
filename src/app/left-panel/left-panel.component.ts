@@ -60,13 +60,23 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
    */
   async addTwitUrls(pTwitUrls: string[]) {
     for (const twitter of pTwitUrls) {
-      const item = new TwitItem();
+      let isExists = false;
+      for (const item of this.twitList){
+        if(item.url === twitter){
+          isExists = true;
+        }
+      }
+      if (isExists){
+        continue;
+      }
+      const newItem = new TwitItem();
       const response = await fetch(`https://publish.twitter.com/oembed?hide_thread=true&align=center&omit_script=true&url=${twitter}`);
       if (response.ok) {
         const data = await response.json();
         // item.content = data.html.replace(/<script async src="https:\/\/platform\.twitter\.com\/widgets\.js" charset="utf-8"><\/script>\n+/gi, '');
-        item.content = data.html;
-        this.twitList.push(item);
+        newItem.content = data.html;
+        newItem.url = twitter;
+        this.twitList.push(newItem);
       }
     }
     this.cdRef.detectChanges();

@@ -74,31 +74,15 @@ label {
   max-width: 1197px;
 }
 
-.main-container app-left-panel {
+app-left-panel {
   width: calc(100% - 230px);
   padding: 5px 0 5px 5px;
 }
 
-.main-container app-left-panel .sort-group .btn-sort {
+app-left-panel .sort-group .btn-sort {
   font-size: 16px;
   padding: .25em;
   border-radius: .25em;
-}
-
-.main-container app-left-panel app-content #btn-all {
-  height: 29px;
-  width: 29px;
-}
-
-.main-container app-left-panel app-content #btn-context {
-  height: 29px;
-  width: 29px;
-}
-
-.main-container app-left-panel app-content {
-  display: block;
-  width: 100%;
-  padding: 18px 5px 5px 0;
 }
 
 .main-container app-left-panel app-content h3 {
@@ -128,7 +112,7 @@ label {
   height: 26px;
 }
 
-.main-container app-left-panel .twitter-container {
+app-left-panel .twitter-container {
   margin: 10px 0 0;
   border-top: 1px solid #adadad;
   width: 100%;
@@ -190,28 +174,21 @@ label {
   color: #fff;
 }
 
-app-res {
+app-twit-detail {
   display: block;
 }
 
-app-res:hover {
+app-twit-detail:hover {
   background-color: #cecece;
 }
 
-app-res div {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  padding: 2px 0;
-}
-
-app-res div.row-1 {
+app-twit-detail div.row-1 {
   display: flex;
   align-content: center;
   align-items: center;
 }
 
-app-res div.row-1 .btn-cancel-all{
+app-twit-detail div.row-1 .btn-cancel-all{
   margin: 0 3px 0 auto;
   width: 55px;
   height: 20px;
@@ -219,17 +196,17 @@ app-res div.row-1 .btn-cancel-all{
   border: 1px solid #447fb5;
 }
 
-app-res div .label-res-id-num {
+app-twit-detail div .label-res-id-num {
   width: 35px;
   text-align: left;
 }
 
-app-res div .label-res-cal1 {
+app-twit-detail div .label-res-cal1 {
   width: 60px;
   color: red;
 }
 
-app-res div .radio-container {
+app-twit-detail div .radio-container {
   margin: 0;
   padding: 0 5px;
   display: -webkit-inline-box;
@@ -240,34 +217,71 @@ app-res div .radio-container {
   align-items: center;
 }
 
+app-twit-detail .row-2 {
+  display: flex;
+  justify-content: center;
+}
 
-app-res div .btn-move {
+app-twit-detail .row-2 button {
+  border: 1px solid #929292;
+}
+
+app-twit-detail .row-2 .btn-move {
   width: 32px;
   height: 32px;
-}
-
-app-res div label span {
-  margin: 0 6px;
-  width: 19px;
-  height: 13px;
-}
-
-app-res div button {
   padding: 6px 10px;
-  margin: 0 0 0 -1px;
-  word-break: keep-all;
-  line-height: 14px;
 }
 
-app-res div button:hover {
+app-twit-detail div button:hover {
   background-color: #0366d6 !important;
   border-color: #0366d6;
   color: #fff;
 }
 
-app-res div.row-3 button:first-child{
+app-twit-detail div.row-3 button:first-child{
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
+}
+
+app-twit-detail div.row-3 button:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+app-twit-detail div .btn-cancel-tree {
+  width: 55px;
+}
+
+app-twit-detail div .btn-cancel-selected-id {
+  width: 77px;
+}
+
+app-twit-detail div .btn-cancel-only-catch-id {
+  width: 80px;
+}
+
+app-twit-detail div .btn-cancel-select-and-catch-id {
+  width: 143px;
+}
+
+app-twit-detail div .btn-hide-res {
+  width: 76px;
+}
+
+app-twit-detail div .btn-copy-res {
+  width: 49px;
+}
+
+app-twit-detail .row-4 {
+  display: block;
+  /*color: red;*/
+  line-height: 1.2em;
+  overflow-wrap: break-word;
+}
+
+app-twit-detail .row-4 a {
+  text-decoration: underline;
+  color: #3981e6;
 }
 
 .btn-left-round {
@@ -283,73 +297,9 @@ app-res div.row-3 button:first-child{
 
 }
 
-
-
-app-res div.row-3 button:last-child {
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-}
-
 .btn-right-round {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
-}
-
-app-res div .btn-cancel-tree {
-  width: 55px;
-}
-
-/*app-res div .btn-catch-id1 {*/
-/*  width: 61px;*/
-/*}*/
-
-/*app-res div .btn-catch-id2 {*/
-/*  width: 68px;*/
-/*}*/
-
-/*app-res div .btn-catch-id3 {*/
-/*  width: 68px;*/
-/*}*/
-
-app-res div .btn-cancel-selected-id {
-  width: 77px;
-}
-
-app-res div .btn-cancel-only-catch-id {
-  width: 80px;
-}
-
-app-res div .btn-cancel-select-and-catch-id {
-  width: 143px;
-}
-
-app-res div .btn-hide-res {
-  width: 76px;
-}
-
-app-res div .btn-copy-res {
-  width: 49px;
-}
-
-app-res .row-2 button {
-  border: 1px solid #929292;
-}
-
-app-res .row-4 {
-  display: block;
-  /*color: red;*/
-  line-height: 1.2em;
-  overflow-wrap: break-word;
-}
-
-/*app-res .row-4 img {*/
-/*  width: 148px;*/
-/*  height: 108px;*/
-/*}*/
-
-app-res .row-4 a {
-  text-decoration: underline;
-  color: #3981e6;
 }
 
 .main-container app-left-panel app-status {
@@ -769,8 +719,4 @@ input[type='radio']:checked:before {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-}
-
-.main-container app-right-panel .move-res div button:last-child {
-  margin-left: -2px;
 }
