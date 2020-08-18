@@ -42,7 +42,6 @@ h3 {
 
 button {
   margin: 0 1px;
-  height: 30px;
   background: #e1e1e1;
   border: 1px solid #adadad;
   font-size: 12px;
@@ -50,8 +49,9 @@ button {
 }
 
 button:hover {
-  background-color: #e5f1fb;
-  border: 1px solid #0078d7;
+  background-color: #0366d6;
+  border-color: #0366d6;
+  color: #fff;
 }
 
 input {
@@ -79,23 +79,10 @@ label {
   padding: 5px 0 5px 5px;
 }
 
-.main-container app-left-panel #btn-plus {
-  height: 29px;
-  width: 29px;
-  background: #fff;
-  position: fixed;
-}
-
-.main-container app-left-panel #btn-plus:hover {
-  background: #e3e3e3;
-}
-
-.main-container app-left-panel #btn-plus:active {
-  border: 2px solid #000;
-}
-
-.main-container app-left-panel #btn-plus:focus-within {
-  border: 2px solid #000;
+.main-container app-left-panel .sort-group .btn-sort {
+  font-size: 16px;
+  padding: .25em;
+  border-radius: .25em;
 }
 
 .main-container app-left-panel app-content #btn-all {

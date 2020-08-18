@@ -1,6 +1,8 @@
 import {ChangeDetectorRef, Component, HostListener, Input, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MainService} from '../main.service';
 import { Title } from '@angular/platform-browser';
+import {TwitItem} from "../models/twit-item";
+import {CdkDragDrop, CdkDragStart} from "@angular/cdk/drag-drop";
 
 const electron = (window as any).require('electron');
 
@@ -13,7 +15,10 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
 
   public subscribers: any = {};
   settings: any;
-  constructor(private resService: MainService, private cdRef: ChangeDetectorRef, private titleService: Title,
+  twitList: TwitItem[];
+  draggable: number;
+
+  constructor(private resService: MainService, private cdRef: ChangeDetectorRef,
               private zone: NgZone) {
 
   }
@@ -32,4 +37,27 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     this.subscribers.settings.unsubscribe();
   }
 
+  vsTwitUpdateHandler($event: any[]) {
+
+  }
+
+  vsTwitDragStartedHandler($event: CdkDragStart, twitItem: any) {
+
+  }
+
+  getDraggable(index: number) {
+    return this.draggable !== index;
+  }
+
+  setDraggable(index: number, $event: any) {
+    if ($event){
+      this.draggable = index;
+    }else{
+      this.draggable = -1;
+    }
+  }
+
+  vsTwitDropHandler($event: CdkDragDrop<any[]>) {
+
+  }
 }
