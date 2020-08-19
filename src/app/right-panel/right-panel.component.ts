@@ -31,6 +31,17 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     this.twitterUrl = '';
     this.subscribers.settings = this.mainService.settings.subscribe((value) => {
       this.settings = value;
+      if (value.hasOwnProperty('con')) {
+        this.twitterContainer = this.settings.con;
+      }
+      if (value.hasOwnProperty('pict')) {
+        this.imageType = this.settings.pict;
+        if (this.imageType > 0){
+          this.imageKind = 'custom';
+        }else{
+          this.imageKind = 'twitter';
+        }
+      }
       this.cdRef.detectChanges();
     });
   }
@@ -51,7 +62,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   }
 
   btnDeleteAllHandler() {
-
+    this.mainService.setDeleteAll({});
   }
 
   btnAddUrlClickHandler() {

@@ -5,4 +5,6 @@ export class TwitItem{
   content: string;
   url: string;
   parent: number;
+  container: string;
+  picture: string;
 }

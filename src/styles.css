@@ -220,6 +220,7 @@ app-twit-detail div .radio-container {
 app-twit-detail .row-2 {
   display: flex;
   justify-content: center;
+  padding: 0 0 5px 0;
 }
 
 app-twit-detail .row-2 button {
@@ -230,6 +231,20 @@ app-twit-detail .row-2 .btn-move {
   width: 32px;
   height: 32px;
   padding: 6px 10px;
+}
+
+app-twit-detail .row-2 .btn-delete {
+  background-color: #dc3545;
+  color: white;
+  width: 60px;
+  height: 32px;
+  padding: 6px 10px;
+}
+
+app-twit-detail .row-2 .btn-delete:hover {
+  background-color: #0366d6 !important;
+  border-color: #0366d6;
+  color: #fff;
 }
 
 app-twit-detail div button:hover {

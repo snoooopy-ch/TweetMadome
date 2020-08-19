@@ -7,10 +7,15 @@
                   cdkDropList (cdkDropListDropped)="vsTwitDropHandler($event)" [scrollAnimationTime] = 0 [enableUnequalChildrenSizes]="true">
 
   <app-twit-detail [item]="twitItem" [twitIndex]="twitList.indexOf((twitItem))"
-           (setDraggableEmitter)="setDraggable(twitList.indexOf(twitItem), $event)"
-           *ngFor="let twitItem of listContainer.viewPortItems; let index = index ;"
-           (cdkDragStarted)="vsTwitDragStartedHandler($event, twitItem)"
-           [cdkDragDisabled]="getDraggable(twitList.indexOf(twitItem))"
-           cdkDragLockAxis="y" cdkDrag>
+                   *ngFor="let twitItem of listContainer.viewPortItems; let index = index;"
+                   (cdkDragStarted)="vsTwitDragStartedHandler($event, twitItem)"
+                   [cdkDragDisabled]="getDraggable(twitList.indexOf(twitItem))"
+                   cdkDragLockAxis="y" cdkDrag
+                   (setDraggableEmitter)="setDraggable(twitList.indexOf(twitItem), $event)"
+                   (moveTopEmitter)="moveToTop(twitItem)"
+                   (moveBottomEmitter)="moveToBottom(twitItem)"
+                   (deleteEmitter)="deleteOne(twitItem)"
+                   [conList]="conList"
+                   [picList]="picList">
   </app-twit-detail>
 </virtual-scroller>

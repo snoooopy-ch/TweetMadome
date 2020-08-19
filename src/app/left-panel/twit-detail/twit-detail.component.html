@@ -2,6 +2,21 @@
 
 </div>
 <div class="row-2">
-  <button class="btn-move btn-left-round">↑</button>
-  <button class="btn-move btn-right-round">↓</button>
+  <button class="btn-move btn-left-round" (click)="btnMoveTopClickHandler()">▲</button>
+  <button class="btn-move btn-right-round" (click)="btnMoveBottomClickHandler()">▼</button>
+  <div>
+    <div>
+      <label class="radio-container" *ngFor="let conItem of conList">
+        <input type="radio" name="twit-container-{{twitIndex}}" [(ngModel)]="item.container"
+               value="{{conItem.value}}">{{conItem.label}}
+      </label>
+    </div>
+    <div>
+      <label class="radio-container" *ngFor="let picItem of picList">
+        <input type="radio" name="twit-pic-{{twitIndex}}" [(ngModel)]="item.picture"
+               value="{{picItem.value}}">{{picItem.label}}
+      </label>
+    </div>
+  </div>
+  <button class="btn-left-round btn-right-round btn-delete" (click)="btnDeleteClickHandler()">削除</button>
 </div>
