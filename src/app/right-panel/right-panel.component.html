@@ -1,6 +1,6 @@
 <div class="row-container">
   <textarea class="twitter-url" [(ngModel)]="twitterUrl"></textarea>
-  <button class="border-round add-url" (click)="btnAddUrlClickHandler()">追加</button>
+  <button class="add-url" (click)="btnAddUrlClickHandler()">追加</button>
 </div>
 <div class="container-group">
   <div class="row">
@@ -55,9 +55,9 @@
 </div>
 <div class="row-container">
   <button id="btn-print-html-tag" class="border-round" (click)="printHtmlTagHandler()">出力</button>
-  <button id="btn-copy-tag" class="border-round" [cdkCopyToClipboard]="outputHtml">コピー</button>
+  <button id="btn-copy-tag" class="" [cdkCopyToClipboard]="outputHtml">コピー</button>
   <textarea id="txt-html-tag" [(ngModel)]="outputHtml"></textarea>
 </div>
 <div class="row-container">
-  <button class="btn-left-round" (click)="btnDeleteAllHandler()">全て削除</button>
+  <button class="border-round sakusyo-btn" (click)="btnDeleteAllHandler()">全て削除</button>
 </div>

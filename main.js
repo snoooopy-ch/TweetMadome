@@ -20,9 +20,9 @@ let loadedTitles = [];
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 1223,
+    width: 880,
     height: 948,
-    minWidth: 1223,
+    minWidth: 880,
     title: 'ツイート取得',
     backgroundColor: '#ffffff',
     icon: `file://${__dirname}/dist/assets/logo.png`,

@@ -71,7 +71,7 @@ label {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  max-width: 1197px;
+  max-width: 854px;
 }
 
 app-left-panel {
@@ -80,8 +80,8 @@ app-left-panel {
 }
 
 app-left-panel .sort-group .btn-sort {
-  font-size: 16px;
-  padding: .25em;
+  font-size: 13px;
+  padding: .35em 0.8em;
   border-radius: .25em;
 }
 
@@ -215,6 +215,15 @@ app-twit-detail div .radio-container {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  width: 50px;
+}
+
+app-twit-detail div .line1 .radio-container {
+  width: 50px;
+}
+
+app-twit-detail div .line2 .radio-container {
+  width: 56px;
 }
 
 app-twit-detail .row-2 {
@@ -224,13 +233,16 @@ app-twit-detail .row-2 {
 }
 
 app-twit-detail .row-2 button {
-  border: 1px solid #929292;
+  border: 1px solid #dc3545;
+  margin: 0 5px;
 }
 
 app-twit-detail .row-2 .btn-move {
   width: 32px;
   height: 32px;
   padding: 6px 10px;
+  background-color: #77cc6d;
+  border-color: #77cc6d;
 }
 
 app-twit-detail .row-2 .btn-delete {
@@ -371,13 +383,11 @@ app-twit-detail .row-4 a {
 .main-container app-right-panel {
   min-width: 240px;
   max-width: 240px;
-  /*padding: 0px 10px 9px 0px;*/
-  margin: 5px 3px 0;
+  margin: 5px 5px 0;
   user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
-  /*overflow-y: scroll;*/
   height: calc(100vh - 15px);
 }
 
@@ -418,15 +428,19 @@ app-twit-detail .row-4 a {
 }
 
 .main-container app-right-panel textarea.twitter-url{
-  height: 80px;
+  height: 145px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
 .main-container app-right-panel .row-container button.add-url {
-  margin: 0;
+  margin-top: -5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .main-container app-right-panel .container-group {
-  margin: 2px 0;
+  margin: 10px 0;
   padding: 10px 23px 10px;
   border: 1px solid lightgrey;
 }
@@ -434,6 +448,7 @@ app-twit-detail .row-4 a {
 .main-container app-right-panel .container-group label{
   display: flex;
   align-items: center;
+  padding: 1px 0;
 }
 
 .main-container app-right-panel .image-group {
@@ -559,12 +574,6 @@ app-twit-detail .row-4 a {
   color: dodgerblue;
 }
 
-.main-container app-right-panel .container-group {
-  margin: 2px 0;
-  padding: 10px 23px 10px;
-  border: 1px solid lightgrey;
-}
-
 
 
 .main-container app-right-panel .menu-group {
@@ -608,16 +617,22 @@ app-twit-detail .row-4 a {
 
 .main-container app-right-panel #txt-html-tag {
   height: 80px;
+  margin-top: -5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .main-container app-right-panel #btn-copy-tag {
-  height: 22px;
+  height: 32px;
   margin: 2px 0;
   padding: 0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
 .main-container app-right-panel #btn-print-html-tag {
-  height: 100px;
+  height: 145px;
+  margin: 10px 0;
   background-color: lightsalmon;
   border:solid 1px lightsalmon;
 }
@@ -734,4 +749,27 @@ input[type='radio']:checked:before {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.radio-line {
+  height: 32px;
+  display: flex;
+  width: 340px;
+  justify-content: space-evenly;
+  border: 1px solid #93d6ff;
+  border-radius: 5px;
+  background-color: #93d6ff;
+  margin: 0 5px;
+}
+
+.radio-line:last-child {
+  margin-top: 8px;
+}
+
+.sakusyo-btn {
+  height: 60px;
+}
+
+.w-100.image-group label {
+  padding: 1px 0;
 }
