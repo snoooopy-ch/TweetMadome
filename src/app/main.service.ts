@@ -10,6 +10,8 @@ export class MainService {
   settings = new BehaviorSubject<any>({});
   urlsSource = new BehaviorSubject<string[]>([]);
   addedUrls = this.urlsSource.asObservable();
+  deleteAllSource = new BehaviorSubject<any>({});
+  deleteAll = this.deleteAllSource.asObservable();
 
   constructor() {
     electron.ipcRenderer.on('getSettings', (event, value) => {
@@ -23,6 +25,10 @@ export class MainService {
 
   setAddedUrls(value: string[]) {
     this.urlsSource.next(value);
+  }
+
+  setDeleteAll(value){
+    this.deleteAllSource.next(value);
   }
 
 }
