@@ -74,6 +74,10 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       this.deleteAll();
     })
 
+    // print html from Twit list
+    this.subscribers.printHtml = this.mainService.printHtmlCommand.subscribe(value => {
+      this.printHtml(value);
+    });
   }
 
   /**
@@ -83,6 +87,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     this.subscribers.settings.unsubscribe();
     this.subscribers.twitUrls.unsubscribe();
     this.subscribers.deleteAll.unsubscribe();
+    this.subscribers.printHtml.unsubscribe();
   }
 
   /**
@@ -90,6 +95,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
    * @param pTwitUrls: Twit Url array
    */
   async addTwitUrls(pTwitUrls: string[]) {
+
     for (const twitter of pTwitUrls) {
       let isExists = false;
       for (const item of this.twitList){
@@ -100,15 +106,51 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       if (isExists){
         continue;
       }
+
       const newItem = new TwitItem();
-      const response = await fetch(`https://publish.twitter.com/oembed?hide_thread=true&align=center&omit_script=true&url=${twitter}`);
-      if (response.ok) {
-        const data = await response.json();
+      const embedResponse = await fetch(`https://publish.twitter.com/oembed?hide_thread=true&align=center&omit_script=true&url=${twitter}`);
+      if (embedResponse.ok) {
+        const data = await embedResponse.json();
         newItem.content = data.html;
         newItem.url = twitter;
-        this.twitList.push(newItem);
+        const id = twitter.replace(/(https?:\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+))/gi, `$3`);
+        newItem.id = id;
+        let apiUrl = `https://api.twitter.com/2/tweets/${id}?`;
+        apiUrl += `tweet.fields=attachments,author_id,context_annotations,conversation_id,created_at,entities` +
+          `&expansions=author_id,referenced_tweets.id,referenced_tweets.id.author_id,entities.mentions.username,attachments.poll_ids,attachments.media_keys,in_reply_to_user_id,geo.place_id` +
+          `&media.fields=duration_ms,height,media_key,non_public_metrics,organic_metrics,preview_image_url,promoted_metrics,public_metrics,type,url,width` +
+          `&place.fields=contained_within,country,country_code,full_name,geo,id,name,place_type` +
+          `&user.fields=id,location,name,pinned_tweet_id,profile_image_url,url,username`;
+        const apiResponse = await fetch(apiUrl, {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAADM%2BGwEAAAAA1zXPkODFT0l6gK3VrRtnDgqUk20%3DFf2YdxsJ6l1LQsSdsL0IzXKRJLi5DYynLKudEZ0tk8E62h2h5F',
+            'Content-Type': 'application/json'
+          }
+        });
+        if (apiResponse.ok){
+          const apiData = await apiResponse.json();
+          newItem.createdAt = apiData.data.created_at;
+          newItem.text = apiData.data.text;
+          newItem.username = apiData.includes.users[0].username;
+          newItem.profileImageUrl = apiData.includes.users[0].profile_image_url;
+          newItem.name = apiData.includes.users[0].name;
+          newItem.photos = [];
+          if(apiData.includes.media !== undefined) {
+            for (const media of apiData.includes.media) {
+              if (media.type === 'photo') {
+                newItem.photos.push({
+                  url: media.url
+                });
+              }
+            }
+          }
+          console.log(apiData);
+          this.twitList.push(newItem);
+        }
       }
     }
+
     this.cdRef.detectChanges();
 
   }
@@ -173,5 +215,64 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     this.listContainer.scrollToIndex(startIndex);
   }
 
+  btnSortReverseClickHandler() {
+    this.twitList.reverse();
+    this.cdRef.detectChanges();
+  }
 
+  btnSortAscDateClickHandler() {
+    this.twitList.sort((a, b) => {
+      return Date.parse(b.createdAt) - Date.parse(a.createdAt);
+    });
+    this.cdRef.detectChanges();
+  }
+
+  btnSortDescDateClickHandler() {
+    this.twitList.sort((a, b) => {
+      return Date.parse(a.createdAt) - Date.parse(b.createdAt);
+    });
+    this.cdRef.detectChanges();
+  }
+
+  private printHtml(value: any) {
+    let output = '';
+    for (const twit of this.twitList){
+      let line = '\n\n\n\n\n\n';
+      if (twit.container !== '0'){
+        line += `<div class="t_container${twit.container}">`
+      } else if (value.container !== '0'){
+        line += `<div class="t_container${value.container}">`
+      } else{
+        line += `<div class="t_container">`
+      }
+      line += `<div class="t_header"><div class="t_user_icon">\n`;
+      line += `<a href="https://twitter.com/${twit.username}" target="_blank"><img src="${twit.profileImageUrl}" class="no_image_profile"></a></div>\n`;
+      line += `<div class="t_user_wrap">\n`;
+      line += `<span class="t_user_name"><a href="https://twitter.com/${twit.username}" target="_blank">${twit.name}</a></span>\n`;
+      line += `<span class="t_user_id"><a href="https://twitter.com/${twit.username}" target="_blank">@${twit.username}</a></span></div>\n`;
+      line += `<span class="t_bird_icon"><a href="${twit.url}" target="_blank"><img src="${this.settings.url}tw_bird.png"></a></span></div><!-- e-t_header -->`
+      line += `<div class="t_honbun">\n`;
+      line += twit.text + '\n';
+      line += `<div class="t_media"><!-- s-img -->`
+      for (const photo of twit.photos){
+        line += `<a href="${photo.url}" class="swipe" rel="${twit.id}" title="${this.settings.title_fukusuu}" target="_blank"><img src="${photo.url}" class="no_image" width="${value.imageWidth}"></a>\n`;
+      }
+      line += `<!-- e-img --></div><!-- e_t_media -->\n`;
+      line += `</div><!-- e-t_honbun -->\n`;
+      line += `<div class="t_footer"><div class="t_buttons">\n`;
+      line += `<a class="t_reply_button" href="https://twitter.com/intent/tweet?in_reply_to=${twit.id}"><img src="${this.settings.url}tw_icon1.png"></a>\n`;
+      line += `<a class="t_retweet_button" href="https://twitter.com/intent/retweet?tweet_id=${twit.id}"><img src="${this.settings.url}tw_icon2.png"></a> \n`;
+      line += `<a class="t_fav_button" href="https://twitter.com/intent/favorite?tweet_id=${twit.id}"><img src="${this.settings.url}tw_icon3.png"></a>\n`;
+      line += `</div><!-- e-t_buttons -->\n`;
+      let createdDate = new Date(twit.createdAt);
+      let formattedDate = `${createdDate.getFullYear()}-${(createdDate.getMonth() + 1)}-${createdDate.getDate()} ${createdDate.getHours()}:${createdDate.getMinutes()}`;
+      line += `<div class="t_date"><a href="${twit.url}" target="_blank">${formattedDate}</a></div>\n`;
+      line += `</div><!-- e-t_footer --></div><!-- e-t_container -->`;
+      output += line;
+    }
+
+    this.mainService.setPrintHtml({
+      html: output
+    });
+  }
 }

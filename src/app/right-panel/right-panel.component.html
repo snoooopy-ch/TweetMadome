@@ -54,10 +54,10 @@
   </div>
 </div>
 <div class="row-container">
-  <button id="btn-print-html-tag" class="border-round" (click)="printHtmlTagHandler()">出力</button>
+  <button id="btn-print-html-tag" class="border-round" (click)="btnPrintHtmlClickHandler()">出力</button>
   <button id="btn-copy-tag" class="" [cdkCopyToClipboard]="outputHtml">コピー</button>
   <textarea id="txt-html-tag" [(ngModel)]="outputHtml"></textarea>
 </div>
 <div class="row-container">
-  <button class="border-round sakusyo-btn" (click)="btnDeleteAllHandler()">全て削除</button>
+  <button class="border-round sakusyo-btn" (click)="btnDeleteAllClickHandler()">全て削除</button>
 </div>

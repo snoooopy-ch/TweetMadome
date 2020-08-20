@@ -44,6 +44,11 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       }
       this.cdRef.detectChanges();
     });
+
+    this.subscribers.printHtml = this.mainService.printHtml.subscribe(value => {
+      this.outputHtml = value.html;
+      this.clipboard.copy(this.outputHtml);
+    });
   }
 
   /**
@@ -55,14 +60,30 @@ export class RightPanelComponent implements OnInit, OnDestroy {
 
   @HostListener('window:beforeunload', [ '$event' ])
   beforeUnloadHandler(event) {
-
+    let pict = '0';
+    if (this.imageKind === 'custom'){
+      pict = this.imageType;
+    }
+    this.mainService.saveSettings({
+      container: this.twitterContainer,
+      picture: pict
+    })
   }
 
-  printHtmlTagHandler() {
+  btnPrintHtmlClickHandler() {
+    let pict = '0';
+    if (this.imageKind === 'custom'){
+      pict = this.imageType;
+    }
+    this.mainService.doPrintHtml({
+      container: this.twitterContainer,
+      imageType: pict,
+      imageWidth: this.imageWidth
+    });
   }
 
-  btnDeleteAllHandler() {
-    this.mainService.setDeleteAll({});
+  btnDeleteAllClickHandler() {
+    this.mainService.doDeleteAll({});
   }
 
   btnAddUrlClickHandler() {

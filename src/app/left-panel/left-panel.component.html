@@ -1,7 +1,7 @@
 <div class="sort-group d-flex justify-content-around">
-  <button type="button" class="btn-sort">上下逆順</button>
-  <button type="button" class="btn-sort">日付が新しい順</button>
-  <button type="button" class="btn-sort">日付が古い順</button>
+  <button type="button" class="btn-sort" (click)="btnSortReverseClickHandler()">上下逆順</button>
+  <button type="button" class="btn-sort" (click)="btnSortAscDateClickHandler()">日付が新しい順</button>
+  <button type="button" class="btn-sort" (click)="btnSortDescDateClickHandler()">日付が古い順</button>
 </div>
 <virtual-scroller class="twitter-container" #listContainer [items]="twitList" (vsUpdate)="vsTwitUpdateHandler($event)"
                   cdkDropList (cdkDropListDropped)="vsTwitDropHandler($event)" [scrollAnimationTime] = 0 [enableUnequalChildrenSizes]="true">

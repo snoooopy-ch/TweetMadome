@@ -1,10 +1,13 @@
 export class TwitItem{
   name: string;
-  date: string;
+  createdAt: string;
   id: string;
   content: string;
   url: string;
-  parent: number;
   container: string;
   picture: string;
+  text: string;
+  username: string;
+  profileImageUrl: string;
+  photos: any[];
 }
