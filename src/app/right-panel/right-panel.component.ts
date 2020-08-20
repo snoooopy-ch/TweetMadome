@@ -75,10 +75,11 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     if (this.imageKind === 'custom'){
       pict = this.imageType;
     }
+
     this.mainService.doPrintHtml({
-      container: this.twitterContainer,
-      imageType: pict,
-      imageWidth: this.imageWidth
+      container: Number(this.twitterContainer),
+      imageType: Number(pict),
+      imageWidth: this.imageWidth === undefined ? '' : `${this.imageWidth}px`
     });
   }
 
