@@ -53,6 +53,10 @@
     </div>
   </div>
 </div>
+<div class="video-group">
+  <div>videoの横幅</div>
+  <div><input type="number" name="txt-video-width" [(ngModel)]="videoWidth" min="0" class="w-100"></div>
+</div>
 <div class="row-container">
   <button id="btn-print-html-tag" class="border-round" (click)="btnPrintHtmlClickHandler()">出力</button>
   <button id="btn-copy-tag" class="" [cdkCopyToClipboard]="outputHtml">コピー</button>

@@ -31,6 +31,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
   conList: SimpleItem[];
   picList: SimpleItem[];
   draggable: number;
+  private selectedTwitIndex: number;
 
   constructor(private mainService: MainService, private cdRef: ChangeDetectorRef,
               private zone: NgZone) {
@@ -148,8 +149,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
                 const response = await fetch(`http://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${youtubeId}`);
                 if (response.ok) {
                   const data = await response.json();
-                  // replacedUrl += `\n<div class="t_youtube">\n${data.html}\n</div><!-- e-t_youtube -->\n`;
-                  replacedUrl += `\n<div class="t_youtube">\n<iframe width="560" height="315" src="https://www.youtube.com/embed/${youtubeId}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>\n</div><!-- e-t_youtube -->\n`;
+                  replacedUrl += `\n<div class="t_youtube">\n${data.html}\n</div><!-- e-t_youtube -->\n`;
                 }else{
                   if (response.status === 401){
                     replacedUrl += `\n<div class="t_youtube">\n<iframe width="560" height="315" src="https://www.youtube.com/embed/${youtubeId}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>\n</div><!-- e-t_youtube -->\n`;
@@ -165,12 +165,35 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
           newItem.profileImageUrl = apiData.includes.users[0].profile_image_url;
           newItem.name = apiData.includes.users[0].name;
           newItem.photos = [];
+          newItem.videos = [];
           if(apiData.includes.media !== undefined) {
             for (const media of apiData.includes.media) {
               if (media.type === 'photo') {
                 newItem.photos.push({
                   url: media.url
                 });
+              } else if (media.type === 'video' || media.type === 'animated_gif' ){
+                newItem.previewImageUrl = media.preview_image_url;
+                const response = await fetch(`https://api.twitter.com/1.1/statuses/lookup.json?id=${id}`, {
+                  method: 'GET',
+                  headers: {
+                    'Authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAADM%2BGwEAAAAA1zXPkODFT0l6gK3VrRtnDgqUk20%3DFf2YdxsJ6l1LQsSdsL0IzXKRJLi5DYynLKudEZ0tk8E62h2h5F',
+                    'Content-Type': 'application/json'
+                  }
+                });
+                if (response.ok){
+                  const videoData = await response.json();
+                  if (videoData.length){
+                    if (videoData[0].extended_entities.media[0].video_info.variants !== undefined){
+                      for (const videoItem of videoData[0].extended_entities.media[0].video_info.variants){
+                       newItem.videos.push({
+                         url: videoItem.url,
+                         contentType: videoItem.content_type
+                       })
+                      }
+                    }
+                  }
+                }
               }
             }
           }
@@ -202,7 +225,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
   }
 
   vsTwitDragStartedHandler($event: CdkDragStart, twitItem: any) {
-
+    this.selectedTwitIndex = this.twitList.indexOf(twitItem);
   }
 
   getDraggable(index: number) {
@@ -219,6 +242,8 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
 
   vsTwitDropHandler($event: CdkDragDrop<any[]>) {
 
+    moveItemInArray(this.twitList, this.selectedTwitIndex,
+      this.selectedTwitIndex + ($event.currentIndex - $event.previousIndex));
   }
 
   /**
@@ -315,6 +340,16 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
           line += '\n';
         }
         line += `<!-- e-img --></div><!-- e_t_media -->\n`;
+      }
+
+      if(twit.videos.length > 0){
+        line += `<div class="t_media_video">\n`;
+        line += `<video width="${value.videoWidth}" class="twitter_video" controls="controls" poster="${twit.previewImageUrl}" class="mtpro-media-video">`;
+        for (const videoItem of twit.videos){
+          line += `<source src="${videoItem.url}" type="${videoItem.contentType}">`;
+        }
+        line += `<p>動画を再生するには、videoタグをサポートしたブラウザが必要です。</p></video>\n`;
+        line += `</div><!-- e-t_media_video -->\n`;
       }
       line += `</div><!-- e-t_honbun -->\n`;
       line += `<div class="t_footer"><div class="t_buttons">\n`;

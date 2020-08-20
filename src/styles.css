@@ -631,7 +631,7 @@ app-twit-detail .row-4 a {
 }
 
 .main-container app-right-panel #btn-print-html-tag {
-  height: 145px;
+  height: 120px;
   margin: 10px 0;
   background-color: lightsalmon;
   border:solid 1px lightsalmon;

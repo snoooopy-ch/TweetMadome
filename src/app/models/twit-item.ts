@@ -10,4 +10,6 @@ export class TwitItem{
   username: string;
   profileImageUrl: string;
   photos: any[];
+  videos: any[];
+  previewImageUrl: string;
 }
