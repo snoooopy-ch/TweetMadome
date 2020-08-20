@@ -252,32 +252,33 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       line += `<div class="t_user_wrap">\n`;
       line += `<span class="t_user_name"><a href="https://twitter.com/${twit.username}" target="_blank">${twit.name}</a></span>\n`;
       line += `<span class="t_user_id"><a href="https://twitter.com/${twit.username}" target="_blank">@${twit.username}</a></span></div>\n`;
-      line += `<span class="t_bird_icon"><a href="${twit.url}" target="_blank"><img src="${this.settings.url}tw_bird.png"></a></span></div><!-- e-t_header -->`
+      line += `<span class="t_bird_icon"><a href="${twit.url}" target="_blank"><img src="${this.settings.url}tw_bird.png"></a></span></div><!-- e-t_header -->\n`
       line += `<div class="t_honbun">\n`;
       line += twit.text + '\n';
       if(twit.photos.length > 0) {
         if (Number(twit.picture) > 1){
-          line += `<div class="t_media${twit.picture}"><!-- s-img -->`
+          line += `<div class="t_media${twit.picture}"><!-- s-img -->\n`
         } else{
           if (twit.picture !== '1' && value.imageType > 1){
-            line += `<div class="t_media${value.imageType}"><!-- s-img -->`
+            line += `<div class="t_media${value.imageType}"><!-- s-img -->\n`
           }else{
-            line += `<div class="t_media"><!-- s-img -->`
+            line += `<div class="t_media"><!-- s-img -->\n`
           }
         }
 
         for (const photo of twit.photos) {
-          if (twit.picture === '2' || (twit.picture === '0' && value.imageType === 2)){
+          if (Number(twit.picture) > 1 || (twit.picture === '0' && value.imageType > 1)){
             line += '<div>'
           }
           line += `<a href="${photo.url}" class="swipe" rel="${twit.id}" title="${this.settings.title_fukusuu}" target="_blank"><img src="${photo.url}" class="no_image"`;
           if (twit.picture === '1' || (twit.picture === '0' && value.imageType === 1)){
             line += ` width="${value.imageWidth}"`
           }
-          line += `></a>\n`;
-          if (twit.picture === '2' || (twit.picture === '0' && value.imageType === 2)){
+          line += `></a>`;
+          if (Number(twit.picture) > 1 || (twit.picture === '0' && value.imageType > 1)){
             line += '</div>'
           }
+          line += '\n';
         }
         line += `<!-- e-img --></div><!-- e_t_media -->\n`;
       }
@@ -288,7 +289,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       line += `<a class="t_fav_button" href="https://twitter.com/intent/favorite?tweet_id=${twit.id}"><img src="${this.settings.url}tw_icon3.png"></a>\n`;
       line += `</div><!-- e-t_buttons -->\n`;
       let createdDate = new Date(twit.createdAt);
-      let formattedDate = `${createdDate.getFullYear()}-${("0" + (createdDate.getMonth() +　1)).slice(-2)}-${("0" + (createdDate.getDay())).slice(-2)} ${("0" + (createdDate.getHours())).slice(-2)}:${("0" + (createdDate.getMinutes())).slice(-2)}`;
+      let formattedDate = `${createdDate.getFullYear()}-${("0" + (createdDate.getMonth() +　1)).slice(-2)}-${("0" + (createdDate.getDate())).slice(-2)} ${("0" + (createdDate.getHours())).slice(-2)}:${("0" + (createdDate.getMinutes())).slice(-2)}`;
       line += `<div class="t_date"><a href="${twit.url}" target="_blank">${formattedDate}</a></div>\n`;
       line += `</div><!-- e-t_footer --></div><!-- e-t_container -->`;
       output += line;
