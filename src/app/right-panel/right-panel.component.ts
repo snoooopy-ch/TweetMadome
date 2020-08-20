@@ -28,7 +28,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.twitterContainer = '0';
     this.imageKind = 'twitter';
-    this.twitterUrl = '';
+    this.twitterUrl = 'https://twitter.com/88TcvQhanLysNCd/status/1238277721752350720';
     this.subscribers.settings = this.mainService.settings.subscribe((value) => {
       this.settings = value;
       if (value.hasOwnProperty('con')) {
