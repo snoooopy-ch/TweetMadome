@@ -1,21 +1,13 @@
 const {app, BrowserWindow, ipcMain, dialog, Menu, MenuItem} = require('electron');
 const fs = require('fs');
-const encoding = require('encoding-japanese');
 
 let win;
-let num = 0;
-let ids = [];
-let sreTitle = '';
 let settingPath = 'Setting.ini';
 
-let stateComments = ['#datパス', '#指定したdatパス', '#チェックボックス', '#文字色', '#注意レス', '#非表示レス', '#名前欄の置換',
-  '#投稿日・IDの置換', '#注目レスの閾値', '#ボタンの色'];
 let curComment = '';
 let yesNoKeys = ['youtube'];
 let selectKeys = ['res_menu'];
-const onOffKeys = ['jogai'];
 let settings;
-let loadedTitles = [];
 
 function createWindow() {
   // Create the browser window.
@@ -201,10 +193,7 @@ function getSettings() {
       if (line.length === 0) {
         continue;
       }
-      // if (line.match(/pass:/gi)) {
-      //   settings['autoSavePath'] = line.replace(/pass:/gi, '').trim();
-      //   continue;
-      // }
+
       let chunks = line.split(':');
       let lineArgs = [chunks.shift(), chunks.join(':')];
 
@@ -227,4 +216,30 @@ function getSettings() {
     win.webContents.send("getSettings", settings);
   });
 
+}
+
+ipcMain.on("saveSettings", (event, params) => {
+  saveSettings(params);
+});
+
+function saveSettings(params) {
+  fs.readFile('Setting.ini', 'utf8', function (err, data) {
+
+    if (data.match(/(con:)[^\r^\n]+(\r\n)/g) === null) {
+      data = data.replace(/(con:)+(\r\n)/g, `$1${params.container}$2`);
+    } else {
+      data = data.replace(/(con:)[^\r^\n]+(\r\n)/g, `$1${params.container}$2`);
+    }
+
+    if (data.match(/(pict:)[^\r^\n]+(\r\n)/g) === null) {
+      data = data.replace(/(pict:)+(\r\n)/g, `$1${params.picture}$2`);
+    } else {
+      data = data.replace(/(pict:)[^\r\n]+(\r\n)/g, `$1${params.picture}$2`);
+    }
+
+    fs.writeFile('Setting.ini', data, (err) => {
+      if (err) throw err;
+      console.log('The settings file has been saved!');
+    });
+  });
 }
