@@ -122,7 +122,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
         let apiUrl = `https://api.twitter.com/2/tweets/${id}?`;
         apiUrl += `tweet.fields=attachments,author_id,context_annotations,conversation_id,created_at,entities` +
           `&expansions=author_id,referenced_tweets.id,referenced_tweets.id.author_id,entities.mentions.username,attachments.poll_ids,attachments.media_keys,in_reply_to_user_id,geo.place_id` +
-          `&media.fields=duration_ms,height,media_key,non_public_metrics,organic_metrics,preview_image_url,promoted_metrics,public_metrics,type,url,width` +
+          `&media.fields=duration_ms,height,media_key,preview_image_url,public_metrics,type,url,width` +
           `&place.fields=contained_within,country,country_code,full_name,geo,id,name,place_type` +
           `&user.fields=id,location,name,pinned_tweet_id,profile_image_url,url,username`;
         const apiResponse = await fetch(apiUrl, {
