@@ -12,9 +12,9 @@ let settings;
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 880,
+    width: 956,
     height: 948,
-    minWidth: 880,
+    minWidth: 956,
     title: 'ツイート取得',
     backgroundColor: '#ffffff',
     icon: `file://${__dirname}/dist/assets/logo.png`,

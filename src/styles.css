@@ -63,7 +63,7 @@ input[type="text"] {
 }
 
 label {
-  font-size: 12px;
+  font-size: 13px;
   margin: 0 5px;
 }
 
@@ -71,7 +71,7 @@ label {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  max-width: 854px;
+  max-width: 930px;
 }
 
 app-left-panel {
@@ -428,7 +428,7 @@ app-twit-detail .row-4 a {
 }
 
 .main-container app-right-panel textarea.twitter-url{
-  height: 145px;
+  height: 130px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
@@ -631,7 +631,7 @@ app-twit-detail .row-4 a {
 }
 
 .main-container app-right-panel #btn-print-html-tag {
-  height: 120px;
+  height: 100px;
   margin: 10px 0;
   background-color: lightsalmon;
   border:solid 1px lightsalmon;
