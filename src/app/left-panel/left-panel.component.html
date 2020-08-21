@@ -15,6 +15,8 @@
                    (moveTopEmitter)="moveToTop(twitItem)"
                    (moveBottomEmitter)="moveToBottom(twitItem)"
                    (deleteEmitter)="deleteOne(twitItem)"
+                   [selectedCon]="this.settings.con"
+                   [selectedPict]="this.settings.pict"
                    [conList]="conList"
                    [picList]="picList">
   </app-twit-detail>

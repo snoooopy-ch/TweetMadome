@@ -22,6 +22,8 @@ export class TwitDetailComponent implements OnInit {
   @Input() twitIndex: number;
   @Input() conList: SimpleItem[];
   @Input() picList: SimpleItem[];
+  @Input() selectedCon;
+  @Input() selectedPict;
 
   @Output() setDraggableEmitter = new EventEmitter();
   @Output() moveTopEmitter = new EventEmitter();
@@ -33,6 +35,8 @@ export class TwitDetailComponent implements OnInit {
   ngOnInit(): void {
     // @ts-ignore
     twttr.widgets.load();
+    this.item.container = this.conList[this.selectedCon-1].value;
+    this.item.picture = this.picList[this.selectedPict-1].value;
   }
 
   btnMoveTopClickHandler() {

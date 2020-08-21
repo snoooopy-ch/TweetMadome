@@ -32,17 +32,10 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     this.twitterUrl = 'https://twitter.com/88TcvQhanLysNCd/status/1238277721752350720';
     this.subscribers.settings = this.mainService.settings.subscribe((value) => {
       this.settings = value;
-      if (value.hasOwnProperty('con')) {
-        this.twitterContainer = this.settings.con;
+      if (value.hasOwnProperty('image_width')) {
+        this.imageWidth = this.settings.image_width;
       }
-      if (value.hasOwnProperty('pict')) {
-        this.imageType = this.settings.pict;
-        if (this.imageType > 0){
-          this.imageKind = 'custom';
-        }else{
-          this.imageKind = 'twitter';
-        }
-      }
+
       this.cdRef.detectChanges();
     });
 
@@ -61,13 +54,12 @@ export class RightPanelComponent implements OnInit, OnDestroy {
 
   @HostListener('window:beforeunload', [ '$event' ])
   beforeUnloadHandler(event) {
-    let pict = '0';
-    if (this.imageKind === 'custom'){
-      pict = this.imageType;
-    }
+    // let pict = '0';
+    // if (this.imageKind === 'custom'){
+    //   pict = this.imageType;
+    // }
     this.mainService.saveSettings({
-      container: this.twitterContainer,
-      picture: pict
+      imageWidth: this.imageWidth
     })
   }
 
@@ -97,5 +89,13 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       }
       this.twitterUrl = '';
     }
+  }
+
+  optImageTypeClickHandler() {
+    this.imageKind = 'custom';
+  }
+
+  optImageKindClickHandler() {
+    this.imageType = '0';
   }
 }

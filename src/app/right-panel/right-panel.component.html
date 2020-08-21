@@ -27,29 +27,29 @@
 </div>
 <div class="w-100 image-group">
   <div class="row">
-    <label><input type="radio" name="opt-image-kind" [(ngModel)]="imageKind" value="twitter">各ツイートの状態を優先</label>
+    <label><input type="radio" name="opt-image-kind" [(ngModel)]="imageKind" value="twitter" (click)="optImageKindClickHandler()">各ツイートの状態を優先</label>
   </div>
   <div class="row">
     <label><input type="radio" name="opt-image-kind" [(ngModel)]="imageKind" value="custom">画像形式</label>
   </div>
   <div class="px-2 image-type">
     <div class="row">
-      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="1">{{settings.pict1}}<br>(画像横幅）</label>
+      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="1" (click)="optImageTypeClickHandler()">{{settings.pict1}}<br>(画像横幅）</label>
     </div>
     <div class="row px-2">
       <input type="number" name="txt-image-width" [(ngModel)]="imageWidth" min="0">
     </div>
     <div class="row">
-      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="2">{{settings.pict2}}</label>
+      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="2" (click)="optImageTypeClickHandler()">{{settings.pict2}}</label>
     </div>
     <div class="row">
-      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="3">{{settings.pict3}}</label>
+      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="3" (click)="optImageTypeClickHandler()">{{settings.pict3}}</label>
     </div>
     <div class="row">
-      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="4">{{settings.pict4}}</label>
+      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="4" (click)="optImageTypeClickHandler()">{{settings.pict4}}</label>
     </div>
     <div class="row">
-      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="5">{{settings.pict5}}</label>
+      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="5" (click)="optImageTypeClickHandler()">{{settings.pict5}}</label>
     </div>
   </div>
 </div>
