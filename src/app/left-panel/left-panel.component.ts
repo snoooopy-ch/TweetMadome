@@ -297,12 +297,12 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     let output = '';
     for (const twit of this.twitList){
       let line = '\n\n\n\n\n\n';
-      if (value.container !== '0' ){
+      if (value.container > 0 ){
         line += `<div class="t_container${value.container}">`
-      } else if (value.container === '0' && twit.container !== '0'){
+      } else if (value.container === 0 && twit.container !== '0'){
         line += `<div class="t_container${twit.container}">`
       } else{
-        line += `<div class="t_container">`
+        line += `<div class="t_container1">`
       }
       line += `<div class="t_header"><div class="t_user_icon">\n`;
       line += `<a href="https://twitter.com/${twit.username}" target="_blank"><img src="${twit.profileImageUrl}" class="no_image_profile"></a></div>\n`;
@@ -321,22 +321,29 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       }
 
       if(twit.photos.length > 0) {
-        if (value.imageType > 1){
+        if (value.imageType > 0){
           line += `<div class="t_media${value.imageType}"><!-- s-img -->\n`;
         } else{
-          if (Number(twit.picture) > 1){
+          if (Number(twit.picture) > 0){
             line += `<div class="t_media${twit.picture}"><!-- s-img -->\n`;
           }else{
-            line += `<div class="t_media"><!-- s-img -->\n`;
+            line += `<div class="t_media1"><!-- s-img -->\n`;
           }
         }
 
         for (const photo of twit.photos) {
-          line += `<div><a href="${photo.url}" class="swipe" rel="${twit.id}" title="${imageTitle}" target="_blank"><img src="${photo.url}" class="no_image"`;
+          // if(value.imageType > 1 || (value.imageType === 0 && Number(twit.picture) > 1)){
+            line += '<div>';
+          // }
+          line += `<a href="${photo.url}" class="swipe" rel="${twit.id}" title="${imageTitle}" target="_blank"><img src="${photo.url}" class="no_image"`;
           if (value.imageType === 1 || (twit.picture === '1' && value.imageType === 0)){
             line += ` width="${value.imageWidth}"`
           }
-          line += `></a></div>\n`;
+          line += `></a>`;
+          // if(value.imageType > 1 || (value.imageType === 0 && Number(twit.picture) > 1)){
+            line += '</div>';
+          // }
+          line += '\n';
         }
         line += `<!-- e-img --></div><!-- e_t_media -->\n`;
       }
@@ -369,21 +376,22 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
   }
 
   getEmojiCode (emoji) {
-    var comp;
+    let comp;
     if (emoji.length === 1) {
       comp = emoji.charCodeAt(0);
+    } else {
+      comp = (
+        (emoji.charCodeAt(0) - 0xD800) * 0x400
+        + (emoji.charCodeAt(1) - 0xDC00) + 0x10000
+      );
     }
-    comp = (
-      (emoji.charCodeAt(0) - 0xD800) * 0x400
-      + (emoji.charCodeAt(1) - 0xDC00) + 0x10000
-    );
     if (comp < 0) {
       comp = emoji.charCodeAt(0);
     }
     if(Number.isNaN(comp)){
       return emoji;
     }else{
-      return `&#${comp.toString()}`;
+      return `&#${comp.toString()};`;
     }
   };
 }
