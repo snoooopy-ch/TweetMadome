@@ -20,6 +20,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   imageWidth: any;
   outputHtml: any;
   settings: any;
+  videoWidth: any;
 
   constructor(private mainService: MainService, private cdRef: ChangeDetectorRef, private clipboard: Clipboard) {
 
@@ -79,7 +80,8 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     this.mainService.doPrintHtml({
       container: Number(this.twitterContainer),
       imageType: Number(pict),
-      imageWidth: this.imageWidth === undefined ? '' : `${this.imageWidth}px`
+      imageWidth: this.imageWidth === undefined ? '' : `${this.imageWidth}px`,
+      videoWidth: this.videoWidth === undefined ? '' : this.videoWidth
     });
   }
 

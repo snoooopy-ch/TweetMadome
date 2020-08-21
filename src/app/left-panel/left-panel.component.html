@@ -3,15 +3,15 @@
   <button type="button" class="btn-sort" (click)="btnSortAscDateClickHandler()">日付が新しい順</button>
   <button type="button" class="btn-sort" (click)="btnSortDescDateClickHandler()">日付が古い順</button>
 </div>
-<virtual-scroller class="twitter-container" #listContainer [items]="twitList" (vsUpdate)="vsTwitUpdateHandler($event)"
+<virtual-scroller class="twitter-container" #listContainer [items]="twitList"
                   cdkDropList (cdkDropListDropped)="vsTwitDropHandler($event)" [scrollAnimationTime] = 0 [enableUnequalChildrenSizes]="true">
 
+<!--  [cdkDragDisabled]="getDraggable(twitList.indexOf(twitItem))"-->
+<!--  (setDraggableEmitter)="setDraggable(twitList.indexOf(twitItem), $event)"-->
   <app-twit-detail [item]="twitItem" [twitIndex]="twitList.indexOf((twitItem))"
                    *ngFor="let twitItem of listContainer.viewPortItems; let index = index;"
                    (cdkDragStarted)="vsTwitDragStartedHandler($event, twitItem)"
-                   [cdkDragDisabled]="getDraggable(twitList.indexOf(twitItem))"
                    cdkDragLockAxis="y" cdkDrag
-                   (setDraggableEmitter)="setDraggable(twitList.indexOf(twitItem), $event)"
                    (moveTopEmitter)="moveToTop(twitItem)"
                    (moveBottomEmitter)="moveToBottom(twitItem)"
                    (deleteEmitter)="deleteOne(twitItem)"
