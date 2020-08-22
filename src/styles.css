@@ -218,6 +218,7 @@ app-twit-detail div .radio-container {
   width: 50px;
 }
 
+
 app-twit-detail div .line1 .radio-container {
   width: 50px;
 }
@@ -243,6 +244,17 @@ app-twit-detail .row-2 .btn-move {
   padding: 6px 10px;
   background-color: #77cc6d;
   border-color: #77cc6d;
+}
+
+app-twit-detail .row-2 .select-url {
+  height: 32px;
+  margin: 8px 5px 0;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  background-color: lightgrey;
+  border: 1px solid grey;
+  border-radius: 5px;
 }
 
 app-twit-detail .row-2 .btn-delete {
@@ -428,7 +440,7 @@ app-twit-detail .row-4 a {
 }
 
 .main-container app-right-panel textarea.twitter-url{
-  height: 145px;
+  height: 100px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
@@ -456,6 +468,17 @@ app-twit-detail .row-4 a {
   padding: 10px 23px 10px;
   border: 1px solid lightgrey;
 }
+
+.main-container app-right-panel .video-group {
+  margin: 2px 0;
+}
+
+.main-container app-right-panel .video-group .txt-replace-url {
+  width: 220px;
+  float: right;
+}
+
+
 
 /*.main-container app-right-panel .image-group .image-type label span{*/
 /*  display: block;*/
@@ -574,17 +597,6 @@ app-twit-detail .row-4 a {
   color: dodgerblue;
 }
 
-
-
-.main-container app-right-panel .menu-group {
-  padding: 2px 0;
-}
-
-.main-container app-right-panel .menu-group button{
-  margin: 0;
-  width: 33%;
-}
-
 .main-container app-right-panel .sure-specific button{
   width: 33.33%;
   height: 55px;
@@ -631,8 +643,8 @@ app-twit-detail .row-4 a {
 }
 
 .main-container app-right-panel #btn-print-html-tag {
-  height: 120px;
-  margin: 10px 0;
+  height: 100px;
+  margin: 0 0 5px;
   background-color: lightsalmon;
   border:solid 1px lightsalmon;
 }

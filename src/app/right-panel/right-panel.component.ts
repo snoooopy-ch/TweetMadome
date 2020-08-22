@@ -21,6 +21,10 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   outputHtml: any;
   settings: any;
   videoWidth: any;
+  isReplaceUrl: boolean;
+  replaceUrlKind: any;
+  replacedUrl1: any;
+  replacedUrl2: any;
 
   constructor(private mainService: MainService, private cdRef: ChangeDetectorRef, private clipboard: Clipboard) {
 
@@ -30,6 +34,10 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     this.twitterContainer = '0';
     this.imageKind = 'twitter';
     this.twitterUrl = '';
+    this.isReplaceUrl = false;
+    this.replaceUrlKind = '0';
+    this.replacedUrl1 = '';
+    this.replacedUrl2 = '';
     this.subscribers.settings = this.mainService.settings.subscribe((value) => {
       this.settings = value;
       if (value.hasOwnProperty('image_width')) {
@@ -69,11 +77,21 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       pict = this.imageType;
     }
 
+    let replaceText = '';
+
+    if(this.replaceUrlKind === '1'){
+      replaceText = this.replacedUrl1;
+    }else if (this.replaceUrlKind === '2'){
+      replaceText = this.replacedUrl2;
+    }
+
     this.mainService.doPrintHtml({
       container: Number(this.twitterContainer),
       imageType: Number(pict),
       imageWidth: this.imageWidth === undefined ? '' : `${this.imageWidth}px`,
-      videoWidth: this.videoWidth === undefined ? '' : this.videoWidth
+      videoWidth: this.videoWidth === undefined ? '' : this.videoWidth,
+      isReplaceUrl: this.isReplaceUrl,
+      replaceText: replaceText
     });
   }
 
