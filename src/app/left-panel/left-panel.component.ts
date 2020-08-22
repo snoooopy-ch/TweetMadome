@@ -318,7 +318,6 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     let output = '';
     let replacedImageList = [];
     for (const twit of this.twitList){
-      console.log(twit);
       let line = '\n\n\n\n\n\n';
       if (value.container > 0 ){
         line += `<div class="t_container${value.container}">`
