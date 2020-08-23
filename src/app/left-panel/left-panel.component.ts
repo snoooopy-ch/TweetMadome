@@ -116,7 +116,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
    * @param pTwitUrls: Twit Url array
    */
   async addTwitUrls(pTwitUrls: string[]) {
-    const emojiRegex = /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g;
+    const emojiRegex = /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f|\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g;
     for (const twitter of pTwitUrls) {
       let isExists = false;
       for (const item of this.twitList){
@@ -158,6 +158,8 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
           newItem.createdAt = apiData.data.created_at;
           newItem.text = apiData.data.text.replace(/\n/gi,'<br>\n');
           newItem.text = newItem.text.replace(emojiRegex, this.getEmojiCode);
+          newItem.text = newItem.text.replace(/(&#\d+;)\?/, `$1`);
+          let youtubeUrlText = '';
           if (apiData.data.entities !== undefined && apiData.data.entities.urls !== undefined){
             let replacedUrls = [];
             for (const urlItem of apiData.data.entities.urls){
@@ -171,10 +173,10 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
                 const response = await fetch(`http://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${youtubeId}`);
                 if (response.ok) {
                   const data = await response.json();
-                  replacedUrl += `\n<div class="t_youtube">\n${data.html}\n</div><!-- e-t_youtube -->\n`;
+                  youtubeUrlText += `${data.html}\n`;
                 }else{
                   if (response.status === 401){
-                    replacedUrl += `\n<div class="t_youtube">\n<iframe width="560" height="315" src="https://www.youtube.com/embed/${youtubeId}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>\n</div><!-- e-t_youtube -->\n`;
+                    youtubeUrlText += `<iframe width="560" height="315" src="https://www.youtube.com/embed/${youtubeId}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>\n`;
                   }
                 }
               }
@@ -182,6 +184,10 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
               replacedUrls.push(urlItem.url);
             }
           }
+          if(youtubeUrlText.length > 0){
+            youtubeUrlText = `\n<div class="t_youtube">\n${youtubeUrlText}</div><!-- e-t_youtube -->`;
+          }
+          newItem.text = `${newItem.text}${youtubeUrlText}`;
 
           newItem.username = apiData.includes.users[0].username;
           newItem.profileImageUrl = apiData.includes.users[0].profile_image_url;
@@ -211,7 +217,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
                 if (response.ok){
                   const videoData = await response.json();
                   if (videoData.length){
-                    if (videoData[0].extended_entities.media[0].video_info.variants !== undefined){
+                    if (videoData[0].extended_entities !== undefined && videoData[0].extended_entities.media[0].video_info.variants !== undefined){
                       for (const videoItem of videoData[0].extended_entities.media[0].video_info.variants){
                        newItem.videos.push({
                          url: videoItem.url,
@@ -372,7 +378,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
           // }
           line += '\n';
         }
-        line += `<!-- e-img --></div><!-- e_t_media -->\n`;
+        line += `<!-- e-img --></div><!-- e-t_media -->\n`;
       }
 
       if(twit.videos.length > 0){
@@ -387,7 +393,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       line += `</div><!-- e-t_honbun -->\n`;
       line += `<div class="t_footer"><div class="t_buttons">\n`;
       line += `<a class="t_reply_button" href="https://twitter.com/intent/tweet?in_reply_to=${twit.id}"><img src="${this.settings.url}tw_icon1.png"></a>\n`;
-      line += `<a class="t_retweet_button" href="https://twitter.com/intent/retweet?tweet_id=${twit.id}"><img src="${this.settings.url}tw_icon2.png"></a> \n`;
+      line += `<a class="t_retweet_button" href="https://twitter.com/intent/retweet?tweet_id=${twit.id}"><img src="${this.settings.url}tw_icon2.png"></a>\n`;
       line += `<a class="t_fav_button" href="https://twitter.com/intent/favorite?tweet_id=${twit.id}"><img src="${this.settings.url}tw_icon3.png"></a>\n`;
       line += `</div><!-- e-t_buttons -->\n`;
       let createdDate = new Date(twit.createdAt);
