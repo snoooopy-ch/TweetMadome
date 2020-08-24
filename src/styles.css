@@ -455,7 +455,7 @@ app-twit-detail .row-4 a {
 }
 
 .main-container app-right-panel .container-group {
-  margin: 10px 0;
+  margin: 5px 0;
   padding: 10px 23px 10px;
   border: 1px solid lightgrey;
 }
@@ -476,9 +476,8 @@ app-twit-detail .row-4 a {
   margin: 2px 0;
 }
 
-.main-container app-right-panel .video-group .txt-replace-url {
-  width: 195px;
-  float: right;
+.main-container app-right-panel .container-group .txt-replace-url {
+  width: calc(100% - 20px);
 }
 
 .main-container app-right-panel .status-total input{

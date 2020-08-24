@@ -156,7 +156,20 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
         if (apiResponse.ok){
           const apiData = await apiResponse.json();
           newItem.createdAt = apiData.data.created_at;
-          newItem.text = apiData.data.text.replace(/\n/gi,'<br>\n');
+          newItem.text = '';
+
+          let fromIndex = 0;
+          if(apiData.data.entities !== undefined && apiData.data.entities.hashtags !== undefined){
+            for (const hashtag of apiData.data.entities.hashtags){
+              newItem.text += apiData.data.text.substr(fromIndex, hashtag.start - fromIndex);
+              newItem.text += `<a class="t_link_hashtag" href="https://twitter.com/hashtag/${hashtag.tag}" target="_blank">#${hashtag.tag}</a>`;
+              fromIndex = hashtag.end;
+            }
+            newItem.text += apiData.data.text.substr(fromIndex, apiData.data.text.length - fromIndex);
+          }else{
+            newItem.text = apiData.data.text;
+          }
+          newItem.text = newItem.text.replace(/\n/gi,'<br>\n');
           newItem.text = newItem.text.replace(emojiRegex, this.getEmojiCode);
 
           let youtubeUrlText = '';
@@ -167,7 +180,17 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
                 continue;
               }
               const re = new RegExp(urlItem.url.replace(/\//gi, '\\/'), 'gi');
-              let replacedUrl = `<a href="${urlItem.url}" target="_blank">${urlItem.display_url}</a>`;
+              let replacedUrl;
+              if (new RegExp(/^pic\.twitter\.com/g).test(urlItem.display_url)){
+                replacedUrl= `<a class="t_link_pic" href="${urlItem.url}" target="_blank">${urlItem.display_url}</a>`;
+              } else if(new RegExp(/^twitter\.com/g).test(urlItem.display_url)){
+                replacedUrl= `<a class="t_link_tweet" href="${urlItem.url}" target="_blank">${urlItem.display_url}</a>`;
+              } else if(new RegExp(/youtu[.]*be\//).test(urlItem.display_url)){
+                replacedUrl= `<a class="t_link_youtube" href="${urlItem.url}" target="_blank">${urlItem.display_url}</a>`;
+              } else{
+                replacedUrl= `<a class="t_link" href="${urlItem.url}" target="_blank">${urlItem.display_url}</a>`;
+              }
+
               if (this.settings.youtube && new RegExp(/youtu[.]*be\//).test(urlItem.display_url)){
                 const youtubeId = urlItem.display_url.replace(/youtu[.]*be\//gi,'');
                 const response = await fetch(`http://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${youtubeId}`);

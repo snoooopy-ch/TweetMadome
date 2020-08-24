@@ -64,12 +64,12 @@
 </div>
 <div class="video-group">
   <div>videoの横幅</div>
-  <div><input type="text" name="txt-video-width" [(ngModel)]="videoWidth" class="w-100"></div>
+  <div><input type="text" name="txt-video-width" [(ngModel)]="videoWidth" class="w-100 px-1"></div>
 </div>
-<div class="video-group">
-  <div class="py-1"><label><input type="checkbox" [(ngModel)]="isReplaceUrl">画像URL形式変更</label></div>
-  <div class="py-1"><input type="radio" name="opt-change-image" [(ngModel)]="replaceUrlKind" value="1"><input class="txt-replace-url" type="text" [(ngModel)]="replacedUrl1"></div>
-  <div class="py-1"><input type="radio" name="opt-change-image" [(ngModel)]="replaceUrlKind" value="2"><input class="txt-replace-url" type="text" [(ngModel)]="replacedUrl2"></div>
+<div class="container-group">
+  <div class="row pb-1"><label><input type="checkbox" [(ngModel)]="isReplaceUrl">画像URL形式変更</label></div>
+  <div class="row pb-1 px-1"><input type="radio" name="opt-change-image" [(ngModel)]="replaceUrlKind" value="1"><input class="txt-replace-url" type="text" [(ngModel)]="replacedUrl1"></div>
+  <div class="row pb-1 px-1"><input type="radio" name="opt-change-image" [(ngModel)]="replaceUrlKind" value="2"><input class="txt-replace-url" type="text" [(ngModel)]="replacedUrl2"></div>
 </div>
 <div class="row-container">
   <button id="btn-print-html-tag" class="border-round" (click)="btnPrintHtmlClickHandler()">出力</button>
@@ -79,7 +79,7 @@
 <div class="row-container">
   <button class="border-round sakusyo-btn" (click)="btnDeleteAllClickHandler()">全て削除</button>
 </div>
-<div class="row-container">
+<div class="row-container mt-1">
   <textarea class="twitter-url" [(ngModel)]="twitterUrl"></textarea>
   <button class="add-url" (click)="btnAddUrlClickHandler()">追加</button>
 </div>
