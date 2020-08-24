@@ -1,7 +1,18 @@
-import {Component, EventEmitter, Input, OnInit, Output, Pipe, PipeTransform} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  Pipe,
+  PipeTransform,
+  ViewChild
+} from '@angular/core';
 import {TwitItem} from "../../models/twit-item";
 import {DomSanitizer} from "@angular/platform-browser";
 import {SimpleItem} from "../../models/pair-item";
+import {VirtualScrollerComponent} from "ngx-virtual-scroller";
 
 @Pipe({ name: 'safeHtml'})
 export class SafeHtmlPipe implements PipeTransform  {

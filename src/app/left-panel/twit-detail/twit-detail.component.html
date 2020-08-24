@@ -2,8 +2,17 @@
 
 </div>
 <div class="row-2">
-  <button class="btn-move btn-left-round btn-right-round" (click)="btnMoveTopClickHandler()">▲</button>
-  <button class="btn-move btn-left-round btn-right-round" (click)="btnMoveBottomClickHandler()">▼</button>
+  <div>
+    <div>
+      <button class="btn-move btn-left-round btn-right-round" (click)="btnMoveTopClickHandler()">▲</button>
+      <button class="btn-move btn-left-round btn-right-round" (click)="btnMoveBottomClickHandler()">▼</button>
+    </div>
+    <div class="select-url">
+      <label>
+        <input type="checkbox" [(ngModel)]="item.isReplaceUrl">URL
+      </label>
+    </div>
+  </div>
   <div>
     <div class="radio-line line1">
       <label class="radio-container" *ngFor="let conItem of conList">
@@ -20,3 +29,4 @@
   </div>
   <button class="btn-left-round btn-right-round btn-delete" (click)="btnDeleteClickHandler()">削除</button>
 </div>
+

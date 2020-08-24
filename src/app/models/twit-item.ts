@@ -12,4 +12,5 @@ export class TwitItem{
   photos: any[];
   videos: any[];
   previewImageUrl: string;
+  isReplaceUrl: boolean;
 }

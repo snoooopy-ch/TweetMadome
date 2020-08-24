@@ -57,6 +57,11 @@
   <div style="font-size: 13px;">videoの横幅</div>
   <div><input type="text" name="txt-video-width" [(ngModel)]="videoWidth" class="w-100"></div>
 </div>
+<div class="video-group">
+  <div class="py-1"><label><input type="checkbox" [(ngModel)]="isReplaceUrl">画像URL形式変更</label></div>
+  <div class="py-1"><input type="radio" name="opt-change-image" [(ngModel)]="replaceUrlKind" value="1"><input class="txt-replace-url" type="text" [(ngModel)]="replacedUrl1"></div>
+  <div class="py-1"><input type="radio" name="opt-change-image" [(ngModel)]="replaceUrlKind" value="2"><input class="txt-replace-url" type="text" [(ngModel)]="replacedUrl2"></div>
+</div>
 <div class="row-container">
   <button id="btn-print-html-tag" class="border-round" (click)="btnPrintHtmlClickHandler()">出力</button>
   <button id="btn-copy-tag" class="" [cdkCopyToClipboard]="outputHtml">コピー</button>

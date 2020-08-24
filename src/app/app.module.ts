@@ -9,9 +9,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { ClipboardModule } from '@angular/cdk/clipboard';
-import {TabsModule} from 'ngx-bootstrap/tabs';
 import {ButtonsModule} from 'ngx-bootstrap/buttons';
 import { TwitDetailComponent, SafeHtmlPipe } from './left-panel/twit-detail/twit-detail.component';
+import {HotkeyModule} from "angular2-hotkeys";
 
 @NgModule({
   declarations: [
@@ -27,10 +27,9 @@ import { TwitDetailComponent, SafeHtmlPipe } from './left-panel/twit-detail/twit
     FormsModule,
     DragDropModule,
     BrowserAnimationsModule,
-
+    HotkeyModule.forRoot(),
     ReactiveFormsModule,
     VirtualScrollerModule,
-    TabsModule.forRoot(),
     ButtonsModule,
 
   ],

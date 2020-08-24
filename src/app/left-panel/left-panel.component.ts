@@ -14,6 +14,7 @@ import {TwitItem} from "../models/twit-item";
 import {CdkDragDrop, CdkDragStart, moveItemInArray} from "@angular/cdk/drag-drop";
 import {SimpleItem} from "../models/pair-item";
 import {VirtualScrollerComponent} from "ngx-virtual-scroller";
+import {Hotkey, HotkeysService} from "angular2-hotkeys";
 
 const electron = (window as any).require('electron');
 
@@ -34,7 +35,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
   private selectedTwitIndex: number;
 
   constructor(private mainService: MainService, private cdRef: ChangeDetectorRef,
-              private zone: NgZone) {
+              private zone: NgZone, private hotkeysService: HotkeysService) {
 
   }
 
@@ -79,6 +80,8 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     this.subscribers.printHtml = this.mainService.printHtmlCommand.subscribe(value => {
       this.printHtml(value);
     });
+
+    this.setHotKeys();
   }
 
   /**
@@ -91,6 +94,23 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     this.subscribers.printHtml.unsubscribe();
   }
 
+  /**
+   * ショートカットキー値を設定します。
+   */
+  setHotKeys(){
+    // レス描写エリアの一番上に移動
+    this.hotkeysService.add(new Hotkey(['ins', 'home'],
+      (event: KeyboardEvent): boolean => {
+        this.listContainer.scrollToIndex(0);
+        return false; // Prevent bubbling
+      }));
+
+    // レス描写エリアの一番下に移動
+    this.hotkeysService.add(new Hotkey(['end', 'del'], (event: KeyboardEvent): boolean => {
+      this.listContainer.scrollToIndex(this.twitList.length-1);
+      return false; // Prevent bubbling
+    }));
+  }
   /**
    * add Twit items from the string array of Twit Url to Twit list
    * @param pTwitUrls: Twit Url array
@@ -111,6 +131,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       const newItem = new TwitItem();
       newItem.container = '0';
       newItem.picture = '0';
+      newItem.isReplaceUrl = false;
       newItem.photos = [];
       const embedResponse = await fetch(`https://publish.twitter.com/oembed?hide_thread=true&align=center&omit_script=true&url=${twitter}`);
       if (embedResponse.ok) {
@@ -295,6 +316,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
 
   private printHtml(value: any) {
     let output = '';
+    let replacedImageList = [];
     for (const twit of this.twitList){
       let line = '\n\n\n\n\n\n';
       if (value.container > 0 ){
@@ -332,10 +354,15 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
         }
 
         for (const photo of twit.photos) {
+          let photoUrl = photo.url;
+          if (value.isReplaceUrl || (!value.isReplaceUrl && twit.isReplaceUrl)){
+            photoUrl = photo.url.replace(/https:\/\/pbs.twimg.com\/media/gi,value.replaceText);
+            replacedImageList.push(photo.url);
+          }
           // if(value.imageType > 1 || (value.imageType === 0 && Number(twit.picture) > 1)){
             line += '<div>';
           // }
-          line += `<a href="${photo.url}" class="swipe" rel="${twit.id}" title="${imageTitle}" target="_blank"><img src="${photo.url}" class="no_image"`;
+          line += `<a href="${photoUrl}" class="swipe" rel="${twit.id}" title="${imageTitle}" target="_blank"><img src="${photoUrl}" class="no_image"`;
           if (value.imageType === 1 || (twit.picture === '1' && value.imageType === 0)){
             line += ` width="${value.imageWidth}"`
           }
@@ -369,7 +396,16 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       line += `</div><!-- e-t_footer --></div><!-- e-t_container -->\n\n\n\n\n\n`;
       output += line;
     }
+    if(replacedImageList.length > 0){
+      output += `<div class ="img_shuturyoku">\n\n`;
+    }
+    for (const replacedItem of replacedImageList){
+      output += `${replacedItem}\n`;
+    }
 
+    if(replacedImageList.length > 0){
+      output += `\n</div>`;
+    }
     this.mainService.setPrintHtml({
       html: output
     });
