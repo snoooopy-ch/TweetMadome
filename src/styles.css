@@ -794,3 +794,14 @@ input[type='radio']:checked:before {
 .w-100.image-group label {
   padding: 1px 0;
 }
+
+.select-url label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+.select-url label input{
+  margin-right: 4px;
+}
