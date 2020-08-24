@@ -55,6 +55,10 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       this.outputHtml = value.html;
       this.clipboard.copy(this.outputHtml);
     });
+
+    this.subscribers.totalCountStatus = this.mainService.totalCount.subscribe(value => {
+      this.totalCount = value.totalCount;
+    });
   }
 
   /**
@@ -62,6 +66,8 @@ export class RightPanelComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy(){
     this.subscribers.settings.unsubscribe();
+    this.subscribers.printHtml.unsubscribe();
+    this.subscribers.totalCountStatus.unsubscribe();
   }
 
   @HostListener('window:beforeunload', [ '$event' ])

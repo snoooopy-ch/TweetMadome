@@ -16,6 +16,8 @@ export class MainService {
   printHtmlCommand = this.printHtmlCommandSource.asObservable();
   printHtmlSource = new BehaviorSubject<any>({tabIndex: 0, html: ''});
   printHtml = this.printHtmlSource.asObservable();
+  totalCountSource = new BehaviorSubject<any>({totalCount: 0});
+  totalCount = this.totalCountSource.asObservable();
 
   constructor() {
     electron.ipcRenderer.on('getSettings', (event, value) => {
@@ -26,6 +28,10 @@ export class MainService {
   loadSettings(){
     electron.ipcRenderer.send('loadSettings');
   }
+
+  // saveTest(data){
+  //   electron.ipcRenderer.send('saveTest', data);
+  // }
 
   setAddedUrls(value: string[]) {
     this.urlsSource.next(value);
@@ -45,5 +51,9 @@ export class MainService {
 
   setPrintHtml(value){
     this.printHtmlSource.next(value);
+  }
+
+  setTotalCount(value){
+    this.totalCountSource.next(value);
   }
 }
