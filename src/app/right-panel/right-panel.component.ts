@@ -25,6 +25,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   replaceUrlKind: any;
   replacedUrl1: any;
   replacedUrl2: any;
+  totalCount: number;
 
   constructor(private mainService: MainService, private cdRef: ChangeDetectorRef, private clipboard: Clipboard) {
 
@@ -42,6 +43,9 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       this.settings = value;
       if (value.hasOwnProperty('image_width')) {
         this.imageWidth = this.settings.image_width;
+      }
+      if (value.hasOwnProperty('video_width')) {
+        this.videoWidth = this.settings.video_width;
       }
 
       this.cdRef.detectChanges();
@@ -67,7 +71,8 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     //   pict = this.imageType;
     // }
     this.mainService.saveSettings({
-      imageWidth: this.imageWidth
+      imageWidth: this.imageWidth,
+      videoWidth: this.videoWidth
     })
   }
 

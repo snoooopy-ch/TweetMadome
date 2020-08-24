@@ -451,6 +451,7 @@ app-twit-detail .row-4 a {
   margin-top: -5px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+  background-color: #40cfff;
 }
 
 .main-container app-right-panel .container-group {
@@ -480,6 +481,12 @@ app-twit-detail .row-4 a {
   float: right;
 }
 
+.main-container app-right-panel .status-total input{
+  height: 28px;
+  font-size: 28px;
+  color: red;
+  text-align: center;
+}
 
 
 /*.main-container app-right-panel .image-group .image-type label span{*/
@@ -780,13 +787,13 @@ input[type='radio']:checked:before {
   margin-top: 8px;
 }
 
-.main-container app-right-panel .row-container .sakusyo-btn {
+.main-container app-right-panel .row-container button.sakusyo-btn {
   height: 60px;
   background-color: #dc3545;
   color: white;
 }
 
-.main-container app-right-panel .row-container .btn-top-delete{
+.main-container app-right-panel .row-container button.btn-top-delete{
   height: 30px;
   margin: 2px 0;
 }

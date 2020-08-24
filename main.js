@@ -231,11 +231,11 @@ function saveSettings(params) {
       data = data.replace(/(image_width:)[^\r^\n]+(\r\n)/g, `$1${params.imageWidth}$2`);
     }
 
-    // if (data.match(/(pict:)[^\r^\n]+(\r\n)/g) === null) {
-    //   data = data.replace(/(pict:)+(\r\n)/g, `$1${params.picture}$2`);
-    // } else {
-    //   data = data.replace(/(pict:)[^\r\n]+(\r\n)/g, `$1${params.picture}$2`);
-    // }
+    if (data.match(/(video_width:)[^\r^\n]+(\r\n)/g) === null) {
+      data = data.replace(/(video_width:)+(\r\n)/g, `$1${params.videoWidth}$2`);
+    } else {
+      data = data.replace(/(video_width:)[^\r^\n]+(\r\n)/g, `$1${params.videoWidth}$2`);
+    }
 
     fs.writeFile('Setting.ini', data, (err) => {
       if (err) throw err;
