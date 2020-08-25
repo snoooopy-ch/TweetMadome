@@ -5,7 +5,7 @@ let win;
 let settingPath = 'Setting.ini';
 
 let curComment = '';
-let yesNoKeys = ['youtube'];
+let yesNoKeys = ['youtube', 'pict1mai_kyousei_tuujou'];
 let selectKeys = ['res_menu'];
 let settings;
 
@@ -232,11 +232,11 @@ function saveSettings(params) {
       data = data.replace(/(image_width:)[^\r^\n]+(\r\n)/g, `$1${params.imageWidth}$2`);
     }
 
-    // if (data.match(/(pict:)[^\r^\n]+(\r\n)/g) === null) {
-    //   data = data.replace(/(pict:)+(\r\n)/g, `$1${params.picture}$2`);
-    // } else {
-    //   data = data.replace(/(pict:)[^\r\n]+(\r\n)/g, `$1${params.picture}$2`);
-    // }
+    if (data.match(/(video_width:)[^\r^\n]+(\r\n)/g) === null) {
+      data = data.replace(/(video_width:)+(\r\n)/g, `$1${params.videoWidth}$2`);
+    } else {
+      data = data.replace(/(video_width:)[^\r^\n]+(\r\n)/g, `$1${params.videoWidth}$2`);
+    }
 
     fs.writeFile('Setting.ini', data, (err) => {
       if (err) throw err;
@@ -244,3 +244,12 @@ function saveSettings(params) {
     });
   });
 }
+
+// ipcMain.on("saveTest", (event, data) => {
+//   if(data !== undefined) {
+//     fs.writeFile('test.txt', data, 'ascii', (err) => {
+//       if (err) throw err;
+//       console.log('The search keywords has been saved!');
+//     });
+//   }
+// });

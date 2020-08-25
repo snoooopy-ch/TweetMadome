@@ -9,14 +9,14 @@ import {
   ViewChild
 } from '@angular/core';
 import {MainService} from '../main.service';
-import { Title } from '@angular/platform-browser';
 import {TwitItem} from "../models/twit-item";
 import {CdkDragDrop, CdkDragStart, moveItemInArray} from "@angular/cdk/drag-drop";
 import {SimpleItem} from "../models/pair-item";
 import {VirtualScrollerComponent} from "ngx-virtual-scroller";
 import {Hotkey, HotkeysService} from "angular2-hotkeys";
 
-const electron = (window as any).require('electron');
+declare const require: any;
+export const Encoding = require('encoding-japanese');
 
 @Component({
   selector: 'app-left-panel',
@@ -156,9 +156,22 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
         if (apiResponse.ok){
           const apiData = await apiResponse.json();
           newItem.createdAt = apiData.data.created_at;
-          newItem.text = apiData.data.text.replace(/\n/gi,'<br>\n');
+          newItem.text = '';
+
+          let fromIndex = 0;
+          if(apiData.data.entities !== undefined && apiData.data.entities.hashtags !== undefined){
+            for (const hashtag of apiData.data.entities.hashtags){
+              newItem.text += apiData.data.text.substr(fromIndex, hashtag.start - fromIndex);
+              newItem.text += `<a class="t_link_hashtag" href="https://twitter.com/hashtag/${hashtag.tag}" target="_blank">#${hashtag.tag}</a>`;
+              fromIndex = hashtag.end;
+            }
+            newItem.text += apiData.data.text.substr(fromIndex, apiData.data.text.length - fromIndex);
+          }else{
+            newItem.text = apiData.data.text;
+          }
+          newItem.text = newItem.text.replace(/\n/gi,'<br>\n');
           newItem.text = newItem.text.replace(emojiRegex, this.getEmojiCode);
-          newItem.text = newItem.text.replace(/(&#\d+;)\?/, `$1`);
+
           let youtubeUrlText = '';
           if (apiData.data.entities !== undefined && apiData.data.entities.urls !== undefined){
             let replacedUrls = [];
@@ -167,7 +180,17 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
                 continue;
               }
               const re = new RegExp(urlItem.url.replace(/\//gi, '\\/'), 'gi');
-              let replacedUrl = `<a href="${urlItem.url}" target="_blank">${urlItem.display_url}</a>`;
+              let replacedUrl;
+              if (new RegExp(/^pic\.twitter\.com/g).test(urlItem.display_url)){
+                replacedUrl= `<a class="t_link_pic" href="${urlItem.url}" target="_blank">${urlItem.display_url}</a>`;
+              } else if(new RegExp(/^twitter\.com/g).test(urlItem.display_url)){
+                replacedUrl= `<a class="t_link_tweet" href="${urlItem.url}" target="_blank">${urlItem.display_url}</a>`;
+              } else if(new RegExp(/youtu[.]*be\//).test(urlItem.display_url)){
+                replacedUrl= `<a class="t_link_youtube" href="${urlItem.url}" target="_blank">${urlItem.display_url}</a>`;
+              } else{
+                replacedUrl= `<a class="t_link" href="${urlItem.url}" target="_blank">${urlItem.display_url}</a>`;
+              }
+
               if (this.settings.youtube && new RegExp(/youtu[.]*be\//).test(urlItem.display_url)){
                 const youtubeId = urlItem.display_url.replace(/youtu[.]*be\//gi,'');
                 const response = await fetch(`http://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${youtubeId}`);
@@ -195,7 +218,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
           newItem.name = newItem.name.replace(emojiRegex, this.getEmojiCode);
           for (const user of apiData.includes.users){
             const re = new RegExp(`@${user.username}`,'gi');
-            newItem.text = newItem.text.replace(re, `<a class="tweet-url username" href="https://twitter.com/${user.username}" data-screen-name="${user.username}">@${user.username}</a>`);
+            newItem.text = newItem.text.replace(re, `<a class="t_link_username" href="https://twitter.com/${user.username}" data-screen-name="${user.username}">@${user.username}</a>`);
           }
           newItem.photos = [];
           newItem.videos = [];
@@ -234,27 +257,30 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
         }
       }
     }
-
+    this.setTotalCountStatus();
     this.cdRef.detectChanges();
 
   }
 
+  setTotalCountStatus(){
+    this.mainService.setTotalCount({
+      totalCount: this.twitList.length
+    })
+  }
   /**
    * delete all items from Twit list
    */
   deleteAll(){
     this.twitList.length = 0;
+    this.setTotalCountStatus();
     this.cdRef.detectChanges();
   }
 
   deleteOne(twitItem: TwitItem) {
     const index = this.twitList.indexOf(twitItem);
     this.twitList.splice(index,1);
+    this.setTotalCountStatus();
     this.cdRef.detectChanges();
-  }
-
-  vsTwitUpdateHandler($event: any[]) {
-
   }
 
   vsTwitDragStartedHandler($event: CdkDragStart, twitItem: any) {
@@ -325,19 +351,24 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     let replacedImageList = [];
     for (const twit of this.twitList){
       let line = '\n\n\n\n\n\n';
+      let containerNum = 1;
       if (value.container > 0 ){
-        line += `<div class="t_container${value.container}">`
+        line += `<div class="t_container${value.container}">`;
+        containerNum = value.container;
       } else if (value.container === 0 && twit.container !== '0'){
-        line += `<div class="t_container${twit.container}">`
+        line += `<div class="t_container${twit.container}">`;
+        containerNum = Number(twit.container);
       } else{
-        line += `<div class="t_container1">`
+        line += `<div class="t_container1">`;
+        containerNum = 1;
       }
       line += `<div class="t_header"><div class="t_user_icon">\n`;
       line += `<a href="https://twitter.com/${twit.username}" target="_blank"><img src="${twit.profileImageUrl}" class="no_image_profile"></a></div>\n`;
       line += `<div class="t_user_wrap">\n`;
       line += `<span class="t_user_name"><a href="https://twitter.com/${twit.username}" target="_blank">${twit.name}</a></span>\n`;
       line += `<span class="t_user_id"><a href="https://twitter.com/${twit.username}" target="_blank">@${twit.username}</a></span></div>\n`;
-      line += `<span class="t_bird_icon"><a href="${twit.url}" target="_blank"><img src="${this.settings.url}tw_bird.png"></a></span></div><!-- e-t_header -->\n`
+      const tw_bird = this.settings[`con${containerNum}_tw_bird`];
+      line += `<span class="t_bird_icon"><a href="${twit.url}" target="_blank"><img src="${this.settings.url}${tw_bird}"></a></span></div><!-- e-t_header -->\n`
       line += `<div class="t_honbun">\n`;
       line += twit.text + '\n';
 
@@ -349,7 +380,9 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       }
 
       if(twit.photos.length > 0) {
-        if (value.imageType > 0){
+        if(this.settings.pict1mai_kyousei_tuujou && twit.photos.length === 1){
+          line += `<div class="t_media1"><!-- s-img -->\n`;
+        }else if (value.imageType > 0){
           line += `<div class="t_media${value.imageType}"><!-- s-img -->\n`;
         } else{
           if (Number(twit.picture) > 0){
@@ -392,9 +425,12 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       }
       line += `</div><!-- e-t_honbun -->\n`;
       line += `<div class="t_footer"><div class="t_buttons">\n`;
-      line += `<a class="t_reply_button" href="https://twitter.com/intent/tweet?in_reply_to=${twit.id}"><img src="${this.settings.url}tw_icon1.png"></a>\n`;
-      line += `<a class="t_retweet_button" href="https://twitter.com/intent/retweet?tweet_id=${twit.id}"><img src="${this.settings.url}tw_icon2.png"></a>\n`;
-      line += `<a class="t_fav_button" href="https://twitter.com/intent/favorite?tweet_id=${twit.id}"><img src="${this.settings.url}tw_icon3.png"></a>\n`;
+      const tw_icon1 = this.settings[`con${containerNum}_tw_icon1`];
+      const tw_icon2 = this.settings[`con${containerNum}_tw_icon2`];
+      const tw_icon3 = this.settings[`con${containerNum}_tw_icon3`];
+      line += `<a class="t_reply_button" href="https://twitter.com/intent/tweet?in_reply_to=${twit.id}"><img src="${this.settings.url}${tw_icon1}"></a>\n`;
+      line += `<a class="t_retweet_button" href="https://twitter.com/intent/retweet?tweet_id=${twit.id}"><img src="${this.settings.url}${tw_icon2}"></a>\n`;
+      line += `<a class="t_fav_button" href="https://twitter.com/intent/favorite?tweet_id=${twit.id}"><img src="${this.settings.url}${tw_icon3}"></a>\n`;
       line += `</div><!-- e-t_buttons -->\n`;
       let createdDate = new Date(twit.createdAt);
       let formattedDate = `${createdDate.getFullYear()}-${("0" + (createdDate.getMonth() +　1)).slice(-2)}-${("0" + (createdDate.getDate())).slice(-2)} ${("0" + (createdDate.getHours())).slice(-2)}:${("0" + (createdDate.getMinutes())).slice(-2)}`;
@@ -412,6 +448,19 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     if(replacedImageList.length > 0){
       output += `\n</div>`;
     }
+    output = output.replace(/〜/gi,'&sim;');
+    let encoded_data = Encoding.convert(output, {
+      from: 'UNICODE',
+      to: 'SJIS',
+      type: 'string',
+    });
+    encoded_data = encoded_data.replace(/(&#\d+;)\?/gi, `$1`);
+    output = Encoding.convert(encoded_data, {
+      from: 'SJIS',
+      to: 'UNICODE',
+      type: 'string',
+    });
+
     this.mainService.setPrintHtml({
       html: output
     });

@@ -25,6 +25,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   replaceUrlKind: any;
   replacedUrl1: any;
   replacedUrl2: any;
+  totalCount: number;
 
   constructor(private mainService: MainService, private cdRef: ChangeDetectorRef, private clipboard: Clipboard) {
 
@@ -33,7 +34,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.twitterContainer = '0';
     this.imageKind = 'twitter';
-    this.twitterUrl = 'https://twitter.com/88TcvQhanLysNCd/status/1238277721752350720';
+    this.twitterUrl = '';
     this.isReplaceUrl = false;
     this.replaceUrlKind = '0';
     this.replacedUrl1 = '';
@@ -43,6 +44,9 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       if (value.hasOwnProperty('image_width')) {
         this.imageWidth = this.settings.image_width;
       }
+      if (value.hasOwnProperty('video_width')) {
+        this.videoWidth = this.settings.video_width;
+      }
 
       this.cdRef.detectChanges();
     });
@@ -51,6 +55,10 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       this.outputHtml = value.html;
       this.clipboard.copy(this.outputHtml);
     });
+
+    this.subscribers.totalCountStatus = this.mainService.totalCount.subscribe(value => {
+      this.totalCount = value.totalCount;
+    });
   }
 
   /**
@@ -58,6 +66,8 @@ export class RightPanelComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy(){
     this.subscribers.settings.unsubscribe();
+    this.subscribers.printHtml.unsubscribe();
+    this.subscribers.totalCountStatus.unsubscribe();
   }
 
   @HostListener('window:beforeunload', [ '$event' ])
@@ -67,7 +77,8 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     //   pict = this.imageType;
     // }
     this.mainService.saveSettings({
-      imageWidth: this.imageWidth
+      imageWidth: this.imageWidth,
+      videoWidth: this.videoWidth
     })
   }
 

@@ -37,9 +37,12 @@
   </div>
   <div class="px-2 image-type">
     <div class="row">
-      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="1" (click)="optImageTypeClickHandler()">{{settings.pict1}}<br>(画像横幅）</label>
+      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="1" (click)="optImageTypeClickHandler()">{{settings.pict1}}</label>
     </div>
-    <div class="row px-2">
+    <div class="px-1">
+      <div>
+        (画像横幅）
+      </div>
       <input type="number" name="txt-image-width" [(ngModel)]="imageWidth" min="0">
     </div>
     <div class="row">
@@ -56,14 +59,17 @@
     </div>
   </div>
 </div>
-<div class="video-group">
-  <div style="font-size: 13px;">videoの横幅</div>
-  <div><input type="text" name="txt-video-width" [(ngModel)]="videoWidth" class="w-100"></div>
+<div class="status-total">
+  <input type="text" [(ngModel)]="totalCount" class="w-100" readonly>
 </div>
 <div class="video-group">
-  <div class="py-1"><label><input type="checkbox" [(ngModel)]="isReplaceUrl">画像URL形式変更</label></div>
-  <div class="py-1"><input type="radio" name="opt-change-image" [(ngModel)]="replaceUrlKind" value="1"><input class="txt-replace-url" type="text" [(ngModel)]="replacedUrl1"></div>
-  <div class="py-1"><input type="radio" name="opt-change-image" [(ngModel)]="replaceUrlKind" value="2"><input class="txt-replace-url" type="text" [(ngModel)]="replacedUrl2"></div>
+  <div style="font-size: 13px;">videoの横幅</div>
+  <div><input type="text" name="txt-video-width" [(ngModel)]="videoWidth" class="w-100 px-1"></div>
+</div>
+<div class="container-group">
+  <div class="row pb-1"><label><input type="checkbox" [(ngModel)]="isReplaceUrl">画像URL形式変更</label></div>
+  <div class="row pb-1 px-1"><input type="radio" name="opt-change-image" [(ngModel)]="replaceUrlKind" value="1"><input class="txt-replace-url" type="text" [(ngModel)]="replacedUrl1"></div>
+  <div class="row pb-1 px-1"><input type="radio" name="opt-change-image" [(ngModel)]="replaceUrlKind" value="2"><input class="txt-replace-url" type="text" [(ngModel)]="replacedUrl2"></div>
 </div>
 <div class="row-container">
   <button id="btn-print-html-tag" class="border-round" (click)="btnPrintHtmlClickHandler()">出力</button>
@@ -72,4 +78,8 @@
 </div>
 <div class="row-container">
   <button class="border-round sakusyo-btn" (click)="btnDeleteAllClickHandler()">全て削除</button>
+</div>
+<div class="row-container mt-1">
+  <textarea class="twitter-url" [(ngModel)]="twitterUrl"></textarea>
+  <button class="add-url" (click)="btnAddUrlClickHandler()">追加</button>
 </div>

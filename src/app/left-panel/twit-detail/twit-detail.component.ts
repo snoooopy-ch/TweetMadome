@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -41,11 +42,21 @@ export class TwitDetailComponent implements OnInit {
   @Output() moveBottomEmitter = new EventEmitter();
   @Output() deleteEmitter = new EventEmitter();
 
-  constructor() { }
+  @ViewChild('tweetContent') tweetContent: ElementRef;
+
+  constructor(private cdRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     // @ts-ignore
-    twttr.widgets.load();
+    twttr.widgets.load().then((value) => {
+      // this.item.content = this.tweetContent.nativeElement.innerHTML;
+    });
+    // @ts-ignore
+    twttr.ready(
+      function (twttr) {
+        // bind events here
+      }
+    );
     this.item.container = this.conList[this.selectedCon-1].value;
     this.item.picture = this.picList[this.selectedPict-1].value;
   }
