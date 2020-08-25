@@ -3,7 +3,7 @@
   <button type="button" class="btn-sort" (click)="btnSortAscDateClickHandler()">日付が新しい順</button>
   <button type="button" class="btn-sort" (click)="btnSortDescDateClickHandler()">日付が古い順</button>
 </div>
-<virtual-scroller class="twitter-container" #listContainer [items]="twitList" [bufferAmount]="20"
+<virtual-scroller class="twitter-container" #listContainer [items]="twitList" [bufferAmount]="200"
                   cdkDropList (cdkDropListDropped)="vsTwitDropHandler($event)" [scrollAnimationTime] = 0 [enableUnequalChildrenSizes]="true">
 
 <!--  [cdkDragDisabled]="getDraggable(twitList.indexOf(twitItem))"-->
