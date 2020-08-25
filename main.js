@@ -238,6 +238,18 @@ function saveSettings(params) {
       data = data.replace(/(video_width:)[^\r^\n]+(\r\n)/g, `$1${params.videoWidth}$2`);
     }
 
+    if (data.match(/(replace_image_url1:)[^\r^\n]+(\r\n)/g) === null) {
+      data = data.replace(/(replace_image_url1:)+(\r\n)/g, `$1${params.replaceUrl1}$2`);
+    } else {
+      data = data.replace(/(replace_image_url1:)[^\r^\n]+(\r\n)/g, `$1${params.replaceUrl1}$2`);
+    }
+
+    if (data.match(/(replace_image_url2:)[^\r^\n]+(\r\n)/g) === null) {
+      data = data.replace(/(replace_image_url2:)+(\r\n)/g, `$1${params.replaceUrl2}$2`);
+    } else {
+      data = data.replace(/(replace_image_url2:)[^\r^\n]+(\r\n)/g, `$1${params.replaceUrl2}$2`);
+    }
+
     fs.writeFile('Setting.ini', data, (err) => {
       if (err) throw err;
       console.log('The settings file has been saved!');

@@ -47,6 +47,12 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       if (value.hasOwnProperty('video_width')) {
         this.videoWidth = this.settings.video_width;
       }
+      if (value.hasOwnProperty('replace_image_url1')) {
+        this.replacedUrl1 = this.settings.replace_image_url1;
+      }
+      if (value.hasOwnProperty('replace_image_url2')) {
+        this.replacedUrl2 = this.settings.replace_image_url2;
+      }
 
       this.cdRef.detectChanges();
     });
@@ -78,7 +84,9 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     // }
     this.mainService.saveSettings({
       imageWidth: this.imageWidth,
-      videoWidth: this.videoWidth
+      videoWidth: this.videoWidth,
+      replaceUrl1: this.replacedUrl1,
+      replaceUrl2: this.replacedUrl2
     })
   }
 
