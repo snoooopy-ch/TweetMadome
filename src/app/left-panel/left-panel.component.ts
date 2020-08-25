@@ -161,11 +161,12 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
           let fromIndex = 0;
           if(apiData.data.entities !== undefined && apiData.data.entities.hashtags !== undefined){
             for (const hashtag of apiData.data.entities.hashtags){
-              newItem.text += apiData.data.text.substr(fromIndex, hashtag.start - fromIndex);
+              let toIndex = apiData.data.text.indexOf(hashtag.tag, hashtag.start) - 1;
+              newItem.text += apiData.data.text.substring(fromIndex, toIndex);
               newItem.text += `<a class="t_link_hashtag" href="https://twitter.com/hashtag/${hashtag.tag}" target="_blank">#${hashtag.tag}</a>`;
-              fromIndex = hashtag.end;
+              fromIndex = toIndex + hashtag.tag.length + 1;
             }
-            newItem.text += apiData.data.text.substr(fromIndex, apiData.data.text.length - fromIndex);
+            newItem.text += apiData.data.text.substr(fromIndex);
           }else{
             newItem.text = apiData.data.text;
           }
