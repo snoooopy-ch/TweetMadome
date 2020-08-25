@@ -636,7 +636,7 @@ app-twit-detail .row-4 a {
 }
 
 .main-container app-right-panel #txt-html-tag {
-  height: 80px;
+  height: 160px;
   margin-top: -5px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;

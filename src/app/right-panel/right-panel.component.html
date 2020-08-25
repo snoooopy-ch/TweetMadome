@@ -43,7 +43,7 @@
       <div>
         (画像横幅）
       </div>
-      <input type="number" name="txt-image-width" [(ngModel)]="imageWidth" min="0">
+      <input type="text" name="txt-image-width" [(ngModel)]="imageWidth">
     </div>
     <div class="row">
       <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="2" (click)="optImageTypeClickHandler()">{{settings.pict2}}</label>
