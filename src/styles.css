@@ -454,6 +454,12 @@ app-twit-detail .row-4 a {
   background-color: #40cfff;
 }
 
+.main-container app-right-panel .row-container button.add-url:hover {
+  border: solid 1px #40cfff;
+  background-color: #fff;
+  color: #40cfff;
+}
+
 .main-container app-right-panel .container-group {
   margin: 5px 0;
   padding: 10px 23px 10px;
@@ -790,6 +796,12 @@ input[type='radio']:checked:before {
   height: 60px;
   background-color: #dc3545;
   color: white;
+}
+
+.main-container app-right-panel .row-container button.sakusyo-btn:hover {
+  border: solid 1px #dc3545;
+  color: #dc3545;
+  background-color: white;
 }
 
 .main-container app-right-panel .row-container button.btn-top-delete{
