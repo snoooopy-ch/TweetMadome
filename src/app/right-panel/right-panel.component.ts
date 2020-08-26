@@ -26,6 +26,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   replacedUrl1: any;
   replacedUrl2: any;
   totalCount: number;
+  addedUrls: any;
 
   constructor(private mainService: MainService, private cdRef: ChangeDetectorRef, private clipboard: Clipboard) {
 
@@ -36,9 +37,10 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     this.imageKind = 'twitter';
     this.twitterUrl = '';
     this.isReplaceUrl = false;
-    this.replaceUrlKind = '0';
+    this.replaceUrlKind = '1';
     this.replacedUrl1 = '';
     this.replacedUrl2 = '';
+    this.addedUrls = '';
     this.subscribers.settings = this.mainService.settings.subscribe((value) => {
       this.settings = value;
       if (value.hasOwnProperty('image_width')) {
@@ -120,9 +122,13 @@ export class RightPanelComponent implements OnInit, OnDestroy {
 
   btnAddUrlClickHandler() {
     if(this.twitterUrl.length > 0){
-      const twitters = this.twitterUrl.match(/(https?:\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+))/ig);
+      const twitters = this.twitterUrl.match(/(https?:\/\/(mobile\.)*twitter\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+))/ig);
+      this.addedUrls = '';
       if (Array.isArray(twitters) && twitters.length) {
         this.mainService.setAddedUrls(twitters);
+      }
+      if(twitters !== undefined) {
+        this.addedUrls = twitters.join('\n');
       }
       this.twitterUrl = '';
     }
