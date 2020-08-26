@@ -774,7 +774,7 @@ input[type='radio']:checked:before {
 .radio-line {
   height: 32px;
   display: flex;
-  width: 340px;
+  width: 400px;
   justify-content: space-evenly;
   border: 1px solid #93d6ff;
   border-radius: 5px;

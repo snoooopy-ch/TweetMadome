@@ -17,6 +17,8 @@ import {Hotkey, HotkeysService} from "angular2-hotkeys";
 
 declare const require: any;
 export const Encoding = require('encoding-japanese');
+export const emojiUnicode = require("emoji-unicode");
+export const emoji = require('emoji-node');
 
 @Component({
   selector: 'app-left-panel',
@@ -138,7 +140,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
         const data = await embedResponse.json();
         newItem.content = data.html;
         newItem.url = twitter;
-        const id = twitter.replace(/(https?:\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+))/gi, `$3`);
+        const id = twitter.replace(/(https?:\/\/(mobile\.)*twitter\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+))/gi, `$4`);
         newItem.id = id;
         let apiUrl = `https://api.twitter.com/2/tweets/${id}?`;
         apiUrl += `tweet.fields=attachments,author_id,context_annotations,conversation_id,created_at,entities` +
@@ -171,7 +173,8 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
             newItem.text = apiData.data.text;
           }
           newItem.text = newItem.text.replace(/\n/gi,'<br>\n');
-          newItem.text = newItem.text.replace(emojiRegex, this.getEmojiCode);
+          // newItem.text = newItem.text.replace(emojiRegex, this.getEmojiCode);
+          newItem.text = emoji.replace(newItem.text, this.getEmojiCode);
 
           let youtubeUrlText = '';
           if (apiData.data.entities !== undefined && apiData.data.entities.urls !== undefined){
@@ -216,7 +219,8 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
           newItem.username = apiData.includes.users[0].username;
           newItem.profileImageUrl = apiData.includes.users[0].profile_image_url;
           newItem.name = apiData.includes.users[0].name;
-          newItem.name = newItem.name.replace(emojiRegex, this.getEmojiCode);
+          // newItem.name = newItem.name.replace(emojiRegex, this.getEmojiCode);
+          newItem.name = emoji.replace(newItem.name, this.getEmojiCode);
           for (const user of apiData.includes.users){
             const re = new RegExp(`@${user.username}`,'gi');
             newItem.text = newItem.text.replace(re, `<a class="t_link_username" href="https://twitter.com/${user.username}" data-screen-name="${user.username}">@${user.username}</a>`);
@@ -246,7 +250,22 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
                        newItem.videos.push({
                          url: videoItem.url,
                          contentType: videoItem.content_type
-                       })
+                       });
+                      }
+                    }else{
+                      const response = await fetch(`https://cdn.syndication.twimg.com/tweet?id=${id}&lang=jp`);
+                      if (response.ok){
+                        const cdnVideoData = await response.json();
+                        if(cdnVideoData !== undefined){
+                          if(cdnVideoData.video !== undefined && cdnVideoData.video.variants !== undefined ){
+                            for (const videoItem of cdnVideoData.video.variants){
+                              newItem.videos.push({
+                                url: videoItem.src,
+                                contentType: videoItem.type
+                              });
+                            }
+                          }
+                        }
                       }
                     }
                   }
@@ -455,7 +474,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       to: 'SJIS',
       type: 'string',
     });
-    encoded_data = encoded_data.replace(/(&#\d+;)\?/gi, `$1&#65039;`);
+    encoded_data = encoded_data.replace(/(&#\d+;)\?/gi, `$1`);
     output = Encoding.convert(encoded_data, {
       from: 'SJIS',
       to: 'UNICODE',
@@ -468,22 +487,29 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
   }
 
   getEmojiCode (emoji) {
-    let comp;
-    if (emoji.length === 1) {
-      comp = emoji.charCodeAt(0);
-    } else {
-      comp = (
-        (emoji.charCodeAt(0) - 0xD800) * 0x400
-        + (emoji.charCodeAt(1) - 0xDC00) + 0x10000
-      );
+    console.log(emoji);
+    console.log(emojiUnicode.raw(emoji.emoji));
+    let result = emojiUnicode.raw(emoji.emoji);
+    if (result.length > 0){
+      result = `&#${result.replace(/\s+/g,';&#')};`;
     }
-    if (comp < 0) {
-      comp = emoji.charCodeAt(0);
-    }
-    if(Number.isNaN(comp)){
-      return emoji;
-    }else{
-      return `&#${comp.toString()};`;
-    }
+    return result;
+    // let comp;
+    // if (emoji.length === 1) {
+    //   comp = emoji.charCodeAt(0);
+    // } else {
+    //   comp = (
+    //     (emoji.charCodeAt(0) - 0xD800) * 0x400
+    //     + (emoji.charCodeAt(1) - 0xDC00) + 0x10000
+    //   );
+    // }
+    // if (comp < 0) {
+    //   comp = emoji.charCodeAt(0);
+    // }
+    // if(Number.isNaN(comp)){
+    //   return emoji;
+    // }else{
+    //   return `&#${comp.toString()};`;
+    // }
   };
 }
