@@ -118,7 +118,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
    * @param pTwitUrls: Twit Url array
    */
   async addTwitUrls(pTwitUrls: string[]) {
-    const emojiRegex = /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f|\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g;
+    const emojiRegex = /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f|\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff]|\ufe0f|\ufe0e)/g;
     for (const twitter of pTwitUrls) {
       let isExists = false;
       for (const item of this.twitList){
@@ -173,8 +173,10 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
             newItem.text = apiData.data.text;
           }
           newItem.text = newItem.text.replace(/\n/gi,'<br>\n');
-          // newItem.text = newItem.text.replace(emojiRegex, this.getEmojiCode);
-          newItem.text = emoji.replace(newItem.text, this.getEmojiCode);
+          newItem.text = newItem.text.replace(emojiRegex, this.getEmojiCode);
+          newItem.text = newItem.text.replace(' &#65038;', "");
+          newItem.text = newItem.text.replace(' &#65039;', "");
+          // newItem.text = emoji.replace(newItem.text, this.getEmojiCode);
 
           let youtubeUrlText = '';
           if (apiData.data.entities !== undefined && apiData.data.entities.urls !== undefined){
@@ -219,8 +221,11 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
           newItem.username = apiData.includes.users[0].username;
           newItem.profileImageUrl = apiData.includes.users[0].profile_image_url;
           newItem.name = apiData.includes.users[0].name;
-          // newItem.name = newItem.name.replace(emojiRegex, this.getEmojiCode);
-          newItem.name = emoji.replace(newItem.name, this.getEmojiCode);
+          newItem.name = newItem.name.replace(emojiRegex, this.getEmojiCode);
+          newItem.name = newItem.name.replace(' &#65038;', "");
+          newItem.name = newItem.name.replace(' &#65039;', "");
+
+          // newItem.name = emoji.replace(newItem.name, this.getEmojiCode);
           for (const user of apiData.includes.users){
             const re = new RegExp(`@${user.username}`,'gi');
             newItem.text = newItem.text.replace(re, `<a class="t_link_username" href="https://twitter.com/${user.username}" data-screen-name="${user.username}">@${user.username}</a>`);
@@ -487,29 +492,29 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
   }
 
   getEmojiCode (emoji) {
-    console.log(emoji);
-    console.log(emojiUnicode.raw(emoji.emoji));
-    let result = emojiUnicode.raw(emoji.emoji);
-    if (result.length > 0){
-      result = `&#${result.replace(/\s+/g,';&#')};`;
+    // console.log(emoji);
+    // console.log(emojiUnicode.raw(emoji.emoji));
+    // let result = emojiUnicode.raw(emoji.emoji);
+    // if (result.length > 0){
+    //   result = `&#${result.replace(/\s+/g,';&#')};`;
+    // }
+    // return result;
+    let comp;
+    if (emoji.length === 1) {
+      comp = emoji.charCodeAt(0);
+    } else {
+      comp = (
+        (emoji.charCodeAt(0) - 0xD800) * 0x400
+        + (emoji.charCodeAt(1) - 0xDC00) + 0x10000
+      );
     }
-    return result;
-    // let comp;
-    // if (emoji.length === 1) {
-    //   comp = emoji.charCodeAt(0);
-    // } else {
-    //   comp = (
-    //     (emoji.charCodeAt(0) - 0xD800) * 0x400
-    //     + (emoji.charCodeAt(1) - 0xDC00) + 0x10000
-    //   );
-    // }
-    // if (comp < 0) {
-    //   comp = emoji.charCodeAt(0);
-    // }
-    // if(Number.isNaN(comp)){
-    //   return emoji;
-    // }else{
-    //   return `&#${comp.toString()};`;
-    // }
+    if (comp < 0) {
+      comp = emoji.charCodeAt(0);
+    }
+    if(Number.isNaN(comp)){
+      return emoji;
+    }else{
+      return `&#${comp.toString()};`;
+    }
   };
 }
