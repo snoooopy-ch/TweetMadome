@@ -33,7 +33,6 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
   twitList: TwitItem[];
   conList: SimpleItem[];
   picList: SimpleItem[];
-  draggable: number;
   private selectedTwitIndex: number;
 
   constructor(private mainService: MainService, private cdRef: ChangeDetectorRef,
@@ -228,7 +227,11 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
           // newItem.name = emoji.replace(newItem.name, this.getEmojiCode);
           for (const user of apiData.includes.users){
             const re = new RegExp(`@${user.username}`,'gi');
-            newItem.text = newItem.text.replace(re, `<a class="t_link_username" href="https://twitter.com/${user.username}" data-screen-name="${user.username}">@${user.username}</a>`);
+            if (this.settings.username_link_br) {
+              newItem.text = newItem.text.replace(re, `<a class="t_link_username" href="https://twitter.com/${user.username}" data-screen-name="${user.username}">@${user.username}</a><br>`);
+            }else{
+              newItem.text = newItem.text.replace(re, `<a class="t_link_username" href="https://twitter.com/${user.username}" data-screen-name="${user.username}">@${user.username}</a>`);
+            }
           }
           newItem.photos = [];
           newItem.videos = [];
@@ -312,17 +315,6 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     this.selectedTwitIndex = this.twitList.indexOf(twitItem);
   }
 
-  getDraggable(index: number) {
-    return this.draggable !== index;
-  }
-
-  setDraggable(index: number, $event: any) {
-    if ($event){
-      this.draggable = index;
-    }else{
-      this.draggable = -1;
-    }
-  }
 
   vsTwitDropHandler($event: CdkDragDrop<any[]>) {
 
