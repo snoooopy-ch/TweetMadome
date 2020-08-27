@@ -391,7 +391,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       line += `<span class="t_bird_icon"><a href="${twit.url}" target="_blank"><img src="${this.settings.url}${tw_bird}"></a></span></div><!-- e-t_header -->\n`
       line += `<div class="t_honbun">\n`;
       line += twit.text + '\n';
-
+      line += `</div><!-- e-t_honbun -->\n`;
       let imageTitle = '';
       if(twit.photos.length === 1){
         imageTitle = this.settings.title;
@@ -443,7 +443,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
         line += `<p>動画を再生するには、videoタグをサポートしたブラウザが必要です。</p></video>\n`;
         line += `</div><!-- e-t_media_video -->\n`;
       }
-      line += `</div><!-- e-t_honbun -->\n`;
+
       line += `<div class="t_footer"><div class="t_buttons">\n`;
       const tw_icon1 = this.settings[`con${containerNum}_tw_icon1`];
       const tw_icon2 = this.settings[`con${containerNum}_tw_icon2`];
@@ -459,7 +459,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       output += line;
     }
     if(replacedImageList.length > 0){
-      output += `<div class ="img_shuturyoku">\n\n`;
+      output += `<div class="img_shuturyoku">\n\n`;
     }
     for (const replacedItem of replacedImageList){
       output += `${replacedItem}\n`;

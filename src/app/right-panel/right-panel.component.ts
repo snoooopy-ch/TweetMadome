@@ -118,6 +118,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
 
   btnDeleteAllClickHandler() {
     this.mainService.doDeleteAll({});
+    this.addedUrls = '';
   }
 
   btnAddUrlClickHandler() {
@@ -128,7 +129,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
         this.mainService.setAddedUrls(twitters);
       }
       if(twitters !== undefined) {
-        this.addedUrls = twitters.join('\n');
+        this.addedUrls += twitters.join('\n');
       }
       this.twitterUrl = '';
     }
