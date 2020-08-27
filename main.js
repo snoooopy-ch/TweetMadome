@@ -5,7 +5,7 @@ let win;
 let settingPath = 'Setting.ini';
 
 let curComment = '';
-let yesNoKeys = ['youtube', 'pict1mai_kyousei_tuujou'];
+let yesNoKeys = ['youtube', 'pict1mai_kyousei_tuujou', 'username_link_br'];
 let selectKeys = ['res_menu'];
 let settings;
 
@@ -257,11 +257,3 @@ function saveSettings(params) {
   });
 }
 
-// ipcMain.on("saveTest", (event, data) => {
-//   if(data !== undefined) {
-//     fs.writeFile('test.txt', data, 'ascii', (err) => {
-//       if (err) throw err;
-//       console.log('The search keywords has been saved!');
-//     });
-//   }
-// });

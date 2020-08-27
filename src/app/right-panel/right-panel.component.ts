@@ -124,7 +124,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   btnAddUrlClickHandler() {
     if(this.twitterUrl.length > 0){
       const twitters = this.twitterUrl.match(/(https?:\/\/(mobile\.)*twitter\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+))/ig);
-      this.addedUrls = '';
+      // this.addedUrls = '';
       if (Array.isArray(twitters) && twitters.length) {
         this.mainService.setAddedUrls(twitters);
       }
