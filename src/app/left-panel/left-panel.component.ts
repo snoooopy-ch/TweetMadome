@@ -174,9 +174,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
             newItem.text = apiData.data.text;
           }
           newItem.text = newItem.text.replace(/\n/gi,'<br>\n');
-          console.log(newItem.text);
           newItem.text = newItem.text.replace(emojiRegex, this.getEmojiCode);
-          console.log(newItem.text);
           newItem.text = newItem.text.replace(' &#65038;', "");
           newItem.text = newItem.text.replace(' &#65039;', "");
           // newItem.text = emoji.replace(newItem.text, this.getEmojiCode);
@@ -224,9 +222,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
           newItem.username = apiData.includes.users[0].username;
           newItem.profileImageUrl = apiData.includes.users[0].profile_image_url;
           newItem.name = apiData.includes.users[0].name;
-          console.log(newItem.name);
           newItem.name = newItem.name.replace(emojiRegex, this.getEmojiCode);
-          console.log(newItem.name);
           newItem.name = newItem.name.replace(' &#65038;', "");
           newItem.name = newItem.name.replace(' &#65039;', "");
 
@@ -283,6 +279,19 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
                       }
                     }
                   }
+                }
+              }
+            }
+          }else{
+            const response = await fetch(`https://cdn.syndication.twimg.com/tweet?id=${id}&lang=jp`);
+            if (response.ok){
+              const cdnCardData = await response.json();
+              if(cdnCardData !== undefined){
+                if(cdnCardData.card !== undefined && cdnCardData.card.binding_values.photo_image_full_size_large !== undefined
+                 && cdnCardData.card.binding_values.photo_image_full_size_large.image_value !== undefined){
+                    newItem.photos.push({
+                      url: cdnCardData.card.binding_values.photo_image_full_size_large.image_value.url,
+                    });
                 }
               }
             }
@@ -418,7 +427,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
         for (const photo of twit.photos) {
           let photoUrl = photo.url;
           if (value.isReplaceUrl || (!value.isReplaceUrl && twit.isReplaceUrl)){
-            photoUrl = photo.url.replace(/https:\/\/pbs.twimg.com\/media/gi,value.replaceText);
+            photoUrl = photo.url.replace(/https:\/\/pbs.twimg.com\/(media|card_img)/gi,value.replaceText);
             replacedImageList.push(photo.url);
           }
           // if(value.imageType > 1 || (value.imageType === 0 && Number(twit.picture) > 1)){

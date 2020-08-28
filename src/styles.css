@@ -85,33 +85,6 @@ app-left-panel .sort-group .btn-sort {
   border-radius: .25em;
 }
 
-.main-container app-left-panel app-content h3 {
-  color: red;
-  font-size: 16px;
-  margin: 0;
-  padding: 4px 0;
-}
-
-.main-container app-left-panel app-content .content-url {
-  display: flex;
-  padding: 3px 0;
-  justify-content: center;
-  align-items: center;
-}
-
-.main-container app-left-panel app-content .dropdown-menu {
-  min-width: 353px;
-}
-
-.main-container app-left-panel app-content .dropdown-item {
-  width: 99%;
-}
-
-.main-container app-left-panel app-content input[type="text"] {
-  width: 90%;
-  height: 26px;
-}
-
 app-left-panel .twitter-container {
   margin: 10px 0 0;
   border-top: 1px solid #adadad;
@@ -119,60 +92,6 @@ app-left-panel .twitter-container {
   height: calc(100vh - 50px);
 }
 
-.main-container app-left-panel app-content .extract {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.main-container app-left-panel app-content .extract .toggle-all {
-  min-width: 95px;
-  height: 29px;
-}
-
-.main-container app-left-panel app-content .extract .toggle-context {
-  min-width: 45px;
-  height: 29px;
-}
-
-.main-container app-left-panel app-content .extract .toggle-tree {
-  min-width: 40px;
-  height: 29px;
-  margin: 0 0 0 10px;
-  background-color: #fff;
-  border: 1px solid #0366b6;
-}
-
-.main-container app-left-panel app-content .extract .toggle-tree.active{
-  background-color: #0366b6;
-  color: #fff;
-  min-width: 40px;
-  height: 29px;
-}
-
-.main-container app-left-panel app-content .extract .btn-long {
-  min-width: 154px;
-  width: 14%;
-  height: 29px;
-}
-
-.main-container app-left-panel app-content .extract input[type="text"] {
-  min-width: 353px;
-  width: 30%;
-  height: 29px;
-  margin: 0 3px;
-}
-
-.main-container app-left-panel app-content .extract .toggle-select {
-  margin: 0 0 0 2px;
-  background-color: #fff;
-  border: 1px solid #0366b6;
-}
-
-.main-container app-left-panel app-content .extract .toggle-select.active{
-  background-color: #0366b6;
-  color: #fff;
-}
 
 app-twit-detail {
   display: block;
@@ -217,7 +136,6 @@ app-twit-detail div .radio-container {
   align-items: center;
   width: 50px;
 }
-
 
 app-twit-detail div .line1 .radio-container {
   width: 62px;
@@ -303,26 +221,6 @@ app-twit-detail div .btn-cancel-select-and-catch-id {
   width: 143px;
 }
 
-app-twit-detail div .btn-hide-res {
-  width: 76px;
-}
-
-app-twit-detail div .btn-copy-res {
-  width: 49px;
-}
-
-app-twit-detail .row-4 {
-  display: block;
-  /*color: red;*/
-  line-height: 1.2em;
-  overflow-wrap: break-word;
-}
-
-app-twit-detail .row-4 a {
-  text-decoration: underline;
-  color: #3981e6;
-}
-
 .btn-left-round {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
@@ -333,7 +231,6 @@ app-twit-detail .row-4 a {
   border-bottom-left-radius: 5px;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
-
 }
 
 .btn-right-round {
@@ -341,15 +238,6 @@ app-twit-detail .row-4 a {
   border-bottom-right-radius: 5px;
 }
 
-.main-container app-left-panel app-status {
-  bottom: 2px;
-  border: 1px solid lightgrey;
-  width: 100%;
-  padding: 5px;
-  max-width: 956px;
-  display: flex;
-  justify-content: space-between;
-}
 .main-container app-left-panel .status-label-content{
   display: flex;
 }
@@ -364,32 +252,6 @@ app-twit-detail .row-4 a {
 
 .main-container app-left-panel .lbl-sts-main-of-total {
   color: red;
-}
-
-.main-container app-left-panel app-content .lbl-sts-main-of-total {
-  margin: 0 5px 0 0;
-}
-
-.main-container app-left-panel app-status .btn-print-html-tag {
-  width: 95px;
-  background-color: lightsalmon;
-  border:solid 1px lightsalmon;
-}
-
-.main-container app-left-panel app-status .btn-print-html-tag:hover {
-  background-color: white;
-  color: lightsalmon;
-}
-
-.main-container app-left-panel app-status .btn-print-all-tag {
-  width: 95px;
-  background-color: #cc99FF;
-  border:solid 1px #cc99FF;
-}
-
-.main-container app-left-panel app-status .btn-print-all-tag:hover {
-  background-color: white;
-  color: #cc99FF;
 }
 
 .main-container app-right-panel {
@@ -442,7 +304,6 @@ app-twit-detail .row-4 a {
 }
 
 .main-container app-right-panel textarea.twitter-url{
-
   height: 145px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
@@ -493,12 +354,6 @@ app-twit-detail .row-4 a {
   color: red;
   text-align: center;
 }
-
-
-/*.main-container app-right-panel .image-group .image-type label span{*/
-/*  display: block;*/
-/*}*/
-
 
 .main-container app-right-panel .move-res div {
   display: -webkit-box;
@@ -615,7 +470,7 @@ app-twit-detail .row-4 a {
 .main-container app-right-panel .sure-specific button{
   width: 33.33%;
   height: 55px;
-  margin: 0px;
+  margin: 0;
   /*margin-left: -1px;*/
 }
 
@@ -684,19 +539,15 @@ height: 100px;
   height: 32px;
 }
 
-app-res {
-  width: 100%;
-}
-
 img.popup-image{
-  border:0px;
+  border:0;
   /*width: 400px;*/
 	box-shadow: 2px 2px 3px #555562;
 }
 #preview{
 	position: absolute;
   background: #fff;
-  padding: 0px;
+  padding: 0;
   display: none;
   color: #fff;
   z-index: 100;
@@ -705,26 +556,6 @@ img.popup-image{
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-.ck.ck-reset_all, .ck.ck-reset_all *{
-  display: none;
-}
-.ck.ck-editor__main{
-  width: 100%;
-}
-.ck.ck-content{
-  width: 100%;
-  display: block;
-}
-.ck.ck-content .image{
-  width: 148px;
-  height: 108px;
-  margin: 0;
-}
-.ck.ck-content a{
-  text-decoration: underline;
-  color: #3981e6;
-}
 
 .label-res-kaihei {
   user-select: none;
