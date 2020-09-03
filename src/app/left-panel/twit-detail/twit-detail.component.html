@@ -3,7 +3,7 @@
 </div>
 <div class="row-2">
   <div>
-    <div>
+    <div class="d-flex justify-content-between">
       <button class="btn-move btn-left-round btn-right-round" (click)="btnMoveTopClickHandler()">▲</button>
       <button class="btn-move btn-left-round btn-right-round" (click)="btnMoveBottomClickHandler()">▼</button>
     </div>
@@ -14,19 +14,28 @@
     </div>
   </div>
   <div>
-    <div class="radio-line line1">
+    <div class="radio-line line1" [ngStyle]="{'background-color': item.containerColor}">
       <label class="radio-container" *ngFor="let conItem of conList">
         <input type="radio" name="twit-container-{{twitIndex}}" [(ngModel)]="item.container"
-               value="{{conItem.value}}">{{conItem.label}}
+               value="{{conItem.value}}" (click)="optContainerClickHandler(conItem)">{{conItem.label}}
       </label>
     </div>
-    <div class="radio-line line2">
+    <div class="radio-line line2" [ngStyle]="{'background-color': item.pictureColor}">
       <label class="radio-container" *ngFor="let picItem of picList">
         <input type="radio" name="twit-pic-{{twitIndex}}" [(ngModel)]="item.picture"
-               value="{{picItem.value}}">{{picItem.label}}
+               value="{{picItem.value}}"  (click)="optPictureClickHandler(picItem)">{{picItem.label}}
       </label>
     </div>
   </div>
-  <button class="btn-left-round btn-right-round btn-delete" (click)="btnDeleteClickHandler()">削除</button>
+  <div>
+    <div>
+      <button class="btn-left-round btn-right-round btn-delete" (click)="btnDeleteClickHandler()">削除</button>
+    </div>
+    <div class="select-url">
+      <label>
+        <input type="checkbox" [(ngModel)]="item.isImageOutput">非出力
+      </label>
+    </div>
+  </div>
 </div>
 

@@ -53,6 +53,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
           const conItem = new SimpleItem();
           conItem.label = this.settings[`view_container${i}`];
           conItem.value = i.toString();
+          conItem.color = this.settings[`container_color_${i}`];
           this.conList.push(conItem);
         }
       }
@@ -61,6 +62,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
           const picItem = new SimpleItem();
           picItem.label = this.settings[`view_pict${i}`];
           picItem.value = i.toString();
+          picItem.color = this.settings[`pict_color_${i}`];
           this.picList.push(picItem);
         }
       }
@@ -112,15 +114,23 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       return false; // Prevent bubbling
     }));
   }
+
   /**
    * add Twit items from the string array of Twit Url to Twit list
-   * @param pTwitUrls: Twit Url array
+   * @param params: Twit Url array and top addition flag
    */
-  async addTwitUrls(pTwitUrls: string[]) {
+  async addTwitUrls(params: any) {
+    if(params.twitters === undefined){
+      return;
+    }
     // const emojiRegex = /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f|\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff]|\ufe0f|\ufe0e|[\u3000-\u303f]|[\ufe30-\ufe4f]|[\u1400-\u167f]|[\u02b0-\u02ff]|[\u0200-\u027f]|[\u1100-\u11ff]|[\u3130-\u318f]|[\u2070-\u209f]|[\u25a0-\u25ff]|[\u0080-\u00ff]|[\ua490-\ua4cf]|[\u0E00-\u0E7F])/g;
     const emojiRegex = /(?:[[\u0080-þĀ-žƀ-ɎḀ-ỾⱠ-\u2c7e꜠-ꟾ]|[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f|\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff]|[ɐ-ʮʰ-˾\u0300-\u036eͰ-ϾЀ-ӾԀ-\u052e\u0530-\u058e\u0590-\u05fe\u0600-۾܀-ݎݐ-ݾހ-\u07be߀-\u07fe\u0800-\u083e\u0840-\u085e\u08a0-\u08fe\u0900-ॾ\u0980-\u09fe\u0a00-\u0a7e\u0a80-\u0afe\u0b00-\u0b7e\u0b80-\u0bfe\u0c00-౾\u0c80-\u0cfe\u0d00-ൾ\u0d80-\u0dfe\u0e00-\u0e7e\u0e80-\u0efeༀ-\u0ffeက-႞Ⴀ-\u10feᄀ-\u11feሀ-\u137eᎀ-\u139eᎠ-\u13fe\u1400-\u167e\u1680-\u169eᚠ-\u16feᜀ-\u171eᜠ-\u173eᝀ-\u175eᝠ-\u177eក-\u17fe᠀-\u18ae\u18b0-\u18feᤀ-᥎ᥐ-\u197eᦀ-᧞᧠-᧾ᨀ-᨞\u1a20-\u1aae\u1b00-\u1b7e\u1b80-\u1bbe\u1bc0-\u1bfeᰀ-ᱎ᱐-᱾\u1cc0-\u1cce\u1cd0-\u1cfeᴀ-ᵾᶀ-ᶾ\u1dc0-\u1dfeἀ-῾\u2000-\u206e⁰-\u209e₠-\u20ce\u20d0-\u20fe℀-ⅎ\u2150-\u218e←-⇾∀-⋾⌀-\u23fe␀-\u243e⑀-\u245e①-⓾─-╾▀-▞■-◾☀-\u26fe\u2700-➾⟀-⟮⟰-⟾⠀-⣾⤀-⥾⦀-⧾⨀-⫾⬀-\u2bfeⰀ-ⱞⲀ-⳾ⴀ-\u2d2eⴰ-\u2d7eⶀ-ⷞ\u2de0-\u2dfe⸀-\u2e7e⺀-\u2efe⼀-\u2fde⿰-\u2ffe\u3000-〾\u3100-\u312e\u3130-ㆎ㆐-㆞ㆠ-\u31be㇀-\u31ee㈀-㋾㌀-㏾䷀-䷾ꀀ-\ua48e꒐-\ua4ce\ua4d0-\ua4feꔀ-\ua63eꙀ-\ua69e\ua6a0-\ua6fe꜀-ꜞꠀ-\ua82e\ua830-\ua83eꡀ-\ua87e\ua880-\ua8de\ua8e0-\ua8fe꤀-꤮ꤰ-\ua95e\ua960-\ua97e\ua980-\ua9deꨀ-꩞\uaa60-\uaa7e\uaa80-\uaade\uaae0-\uaafe\uab00-\uab2e\uabc0-\uabfe가-\ud7ae\ud7b0-\ud7fe\ud806-\ud807\ud80a-\ud80b\ud80e-\ud819\ud81c-\ud82b\ud82d-\ud833\ud836-\ud83a\ud83e-\ud87d\ud87f-\udb3f\udb41-\udb7e\udc00-\udffe\ue000-\uf8fe豈-\ufafeﬀ-פֿﭐ-\ufdfe\ufe00-\ufe0e︐-\ufe1e\ufe20-\ufe2e︰-﹎﹐-\ufe6eﹰ-\ufefe\uff00-￮\ufff0-\ufffe]|[\ud80c\udb80-\udbbe\udbc0-\udbfe][\udc00-\udfff]|\ud800[\udc00-\udc7e\udc80-\udcfe\udd00-\udd3e\udd40-\udd8e\udd90-\uddce\uddd0-\uddfe\ude80-\ude9e\udea0-\udede\udf00-\udf2e\udf30-\udf4e\udf80-\udf9e\udfa0-\udfde]|\ud801[\udc00-\udc4e\udc50-\udc7e\udc80-\udcae]|\ud802[\udc00-\udc3e\udc40-\udc5e\udd00-\udd1e\udd20-\udd3e\udd80-\udd9e\udda0-\uddfe\ude00-\ude5e\ude60-\ude7e\udf00-\udf3e\udf40-\udf5e\udf60-\udf7e]|\ud803[\udc00-\udc4e\ude60-\ude7e]|\ud804[\udc00-\udc7e\udc80-\udcce\udcd0-\udcfe\udd00-\udd4e\udd80-\uddde]|\ud805[\ude80-\udece]|\ud808[\udc00-\udffe]|\ud809[\udc00-\udc7e]|\ud80d[\udc00-\udc2e]|\ud81a[\udc00-\ude3e]|\ud81b[\udf00-\udf9e]|\ud82c[\udc00-\udcfe]|\ud834[\udc00-\udcfe\udd00-\uddfe\ude00-\ude4e\udf00-\udf5e\udf60-\udf7e]|\ud835[\udc00-\udffe]|\ud83b[\ude00-\udefe]|\ud83c[\udc00-\udc2e\udc30-\udc9e\udca0-\udcfe\udd00-\uddfe\ude00-\udefe\udf00-\udfff]|\ud83d[\udc00-\uddfe\ude00-\ude4e\ude80-\udefe\udf00-\udf7e]|\ud87e[\udc00-\ude1e]|\udb40[\udc00-\udc7e\udd00-\uddee]|\udbbf[\udc00-\udffe]|\udbff[\udc00-\udffe]|[\ud800-\ud805\ud808-\ud809\ud80c-\ud80d\ud81a-\ud81b\ud82c\ud834-\ud835\ud83b-\ud83d\ud87e\udb40\udb80-\udbfe]|\u00b7|\ufe0f|\ufe0e)/g;
 
-    for (const twitter of pTwitUrls) {
+    if (params.isAddTop){
+      params.twitters.reverse();
+    }
+
+    for (const twitter of params.twitters) {
       let isExists = false;
       for (const item of this.twitList){
         if(item.url === twitter){
@@ -296,13 +306,17 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
               }
             }
           }
-          this.twitList.push(newItem);
+          if (params.isAddTop){
+            this.twitList.splice(0,0,newItem);
+          }else{
+            this.twitList.push(newItem);
+          }
+
         }
       }
     }
     this.setTotalCountStatus();
     this.cdRef.detectChanges();
-
   }
 
   setTotalCountStatus(){
@@ -382,7 +396,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     let output = '';
     let replacedImageList = [];
     for (const twit of this.twitList){
-      let line = '\n\n\n\n\n\n';
+      let line = '\n\n\n\n\n\n\n';
       let containerNum = 1;
       if (value.container > 0 ){
         line += `<div class="t_container${value.container}">`;
@@ -411,39 +425,47 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
         imageTitle = this.settings.title_fukusuu;
       }
 
-      if(twit.photos.length > 0) {
-        if(this.settings.pict1mai_kyousei_tuujou && twit.photos.length === 1){
-          line += `<div class="t_media1"><!-- s-img -->\n`;
-        }else if (value.imageType > 0){
-          line += `<div class="t_media${value.imageType}"><!-- s-img -->\n`;
-        } else{
-          if (Number(twit.picture) > 0){
-            line += `<div class="t_media${twit.picture}"><!-- s-img -->\n`;
-          }else{
-            line += `<div class="t_media1"><!-- s-img -->\n`;
-          }
-        }
+      if(twit.photos.length > 0 && !twit.isImageOutput) {
 
+        let mediaLine = '';
         for (const photo of twit.photos) {
           let photoUrl = photo.url;
+          if (value.notCardImageOutput){
+            if(new RegExp(/card_img/g).test(photo.url)){
+              continue;
+            }
+          }
           if (value.isReplaceUrl || (!value.isReplaceUrl && twit.isReplaceUrl)){
             photoUrl = photo.url.replace(/https:\/\/pbs.twimg.com\/(media|card_img)/gi,value.replaceText);
             replacedImageList.push(photo.url);
           }
           // if(value.imageType > 1 || (value.imageType === 0 && Number(twit.picture) > 1)){
-            line += '<div>';
+          mediaLine += '<div>';
           // }
-          line += `<a href="${photoUrl}" class="swipe" rel="${twit.id}" title="${imageTitle}" target="_blank"><img src="${photoUrl}" class="no_image"`;
+          mediaLine += `<a href="${photoUrl}" class="swipe" rel="${twit.id}" title="${imageTitle}" target="_blank"><img src="${photoUrl}" class="no_image"`;
           if ((this.settings.pict1mai_kyousei_tuujou && twit.photos.length === 1) || value.imageType === 1 || (twit.picture === '1' && value.imageType === 0)){
-            line += ` width="${value.imageWidth}"`
+            mediaLine += ` width="${value.imageWidth}"`
           }
-          line += `></a>`;
+          mediaLine += `></a>`;
           // if(value.imageType > 1 || (value.imageType === 0 && Number(twit.picture) > 1)){
-            line += '</div>';
+          mediaLine += '</div>';
           // }
-          line += '\n';
+          mediaLine += '\n';
         }
-        line += `<!-- e-img --></div><!-- e-t_media -->\n`;
+        if(mediaLine.length > 0) {
+          if (this.settings.pict1mai_kyousei_tuujou && twit.photos.length === 1) {
+            line += `<div class="t_media1"><!-- s-img -->\n`;
+          } else if (value.imageType > 0) {
+            line += `<div class="t_media${value.imageType}"><!-- s-img -->\n`;
+          } else {
+            if (Number(twit.picture) > 0) {
+              line += `<div class="t_media${twit.picture}"><!-- s-img -->\n`;
+            } else {
+              line += `<div class="t_media1"><!-- s-img -->\n`;
+            }
+          }
+          line += `${mediaLine}<!-- e-img --></div><!-- e-t_media -->\n`;
+        }
       }
 
       if(twit.videos.length > 0){
@@ -467,9 +489,10 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       let createdDate = new Date(twit.createdAt);
       let formattedDate = `${createdDate.getFullYear()}-${("0" + (createdDate.getMonth() +　1)).slice(-2)}-${("0" + (createdDate.getDate())).slice(-2)} ${("0" + (createdDate.getHours())).slice(-2)}:${("0" + (createdDate.getMinutes())).slice(-2)}`;
       line += `<div class="t_date"><a href="${twit.url}" target="_blank">${formattedDate}</a></div>\n`;
-      line += `</div><!-- e-t_footer --></div><!-- e-t_container -->\n\n\n\n\n\n`;
+      line += `</div><!-- e-t_footer --></div><!-- e-t_container -->\n\n\n\n\n\n\n\n`;
       output += line;
     }
+    output = `\n\n\n\n${output}\n\n\n\n`;
     if(replacedImageList.length > 0){
       output += `<div class="img_shuturyoku">\n\n`;
     }

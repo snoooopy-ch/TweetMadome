@@ -11,7 +11,7 @@ body {
   font-family: "Yu Gothic UI", "Microsoft Sans Serif", "Yu Gothic", "MS PGothic",  sans-serif !important;
   font-weight: 400 !important;
   color: #000;
-  font-size: 11px;
+  font-size: 13px;
   overflow: hidden;
 }
 
@@ -127,7 +127,7 @@ app-twit-detail div .label-res-cal1 {
 
 app-twit-detail div .radio-container {
   margin: 0;
-  padding: 0 5px;
+  padding: 0 2px;
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
@@ -153,7 +153,7 @@ app-twit-detail .row-2 {
 
 app-twit-detail .row-2 button {
   border: 1px solid #dc3545;
-  margin: 0 5px;
+  margin: 0;
 }
 
 app-twit-detail .row-2 .btn-move {
@@ -165,8 +165,9 @@ app-twit-detail .row-2 .btn-move {
 }
 
 app-twit-detail .row-2 .select-url {
+  width: 68px;
   height: 32px;
-  margin: 8px 5px 0;
+  margin: 8px 0 0;
   justify-content: center;
   align-items: center;
   display: flex;
@@ -178,7 +179,7 @@ app-twit-detail .row-2 .select-url {
 app-twit-detail .row-2 .btn-delete {
   background-color: #dc3545;
   color: white;
-  width: 60px;
+  width: 68px;
   height: 32px;
   padding: 6px 10px;
 }
@@ -513,7 +514,7 @@ app-twit-detail div .btn-cancel-select-and-catch-id {
 }
 
 .main-container app-right-panel #btn-print-html-tag {
-height: 100px;
+  height: 130px;
   margin: 0 0 5px;  background-color: lightsalmon;
   border:solid 1px lightsalmon;
 }
@@ -611,12 +612,12 @@ input[type='radio']:checked:before {
 .radio-line {
   height: 32px;
   display: flex;
-  width: 400px;
+  width: 407px;
   justify-content: space-evenly;
-  border: 1px solid #93d6ff;
+  /*border: 1px solid #93d6ff;*/
   border-radius: 5px;
   background-color: #93d6ff;
-  margin: 0 5px;
+  margin: 0 4px;
 }
 
 .radio-line:last-child {
@@ -653,4 +654,9 @@ input[type='radio']:checked:before {
 
 .select-url label input{
   margin-right: 4px;
+}
+
+.label-vertical-center{
+  display: flex;
+  align-items: center;
 }

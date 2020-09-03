@@ -5,8 +5,7 @@ let win;
 let settingPath = 'Setting.ini';
 
 let curComment = '';
-let yesNoKeys = ['youtube', 'pict1mai_kyousei_tuujou', 'username_link_br'];
-let selectKeys = ['res_menu'];
+let yesNoKeys = ['youtube', 'pict1mai_kyousei_tuujou', 'username_link_br', 't_top_link'];
 let settings;
 
 function createWindow() {
@@ -200,8 +199,6 @@ function getSettings() {
 
       if (yesNoKeys.indexOf(lineArgs[0]) !== -1) {
         settings[lineArgs[0]] = (lineArgs[1] === 'yes' || lineArgs[1] === 'yes;');
-      } else if (selectKeys.indexOf(lineArgs[0]) !== -1) {
-        settings[lineArgs[0]] = lineArgs[1];
       } else {
         if (lineArgs.length > 1) {
           settings[lineArgs[0]] = lineArgs[1].replace(/;/g, '');

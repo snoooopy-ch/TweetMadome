@@ -13,4 +13,7 @@ export class TwitItem{
   videos: any[];
   previewImageUrl: string;
   isReplaceUrl: boolean;
+  pictureColor: string;
+  containerColor: string;
+  isImageOutput: boolean;
 }

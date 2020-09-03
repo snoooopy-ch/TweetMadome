@@ -8,7 +8,7 @@ const electron = (window as any).require('electron');
 })
 export class MainService {
   settings = new BehaviorSubject<any>({});
-  urlsSource = new BehaviorSubject<string[]>([]);
+  urlsSource = new BehaviorSubject<any>({});
   addedUrls = this.urlsSource.asObservable();
   deleteAllSource = new BehaviorSubject<any>({});
   deleteAll = this.deleteAllSource.asObservable();
@@ -33,7 +33,7 @@ export class MainService {
   //   electron.ipcRenderer.send('saveTest', data);
   // }
 
-  setAddedUrls(value: string[]) {
+  setAddedUrls(value: any) {
     this.urlsSource.next(value);
   }
 

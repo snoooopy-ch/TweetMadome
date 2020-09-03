@@ -48,17 +48,16 @@ export class TwitDetailComponent implements OnInit {
 
   ngOnInit(): void {
     // @ts-ignore
-    twttr.widgets.load().then((value) => {
-      // this.item.content = this.tweetContent.nativeElement.innerHTML;
-    });
-    // @ts-ignore
-    twttr.ready(
-      function (twttr) {
-        // bind events here
-      }
-    );
-    this.item.container = this.conList[this.selectedCon-1].value;
-    this.item.picture = this.picList[this.selectedPict-1].value;
+    twttr.widgets.load();
+
+    if(this.selectedCon > 0){
+      this.item.container = this.conList[this.selectedCon-1].value;
+      this.item.containerColor = this.conList[this.selectedCon-1].color;
+    }
+    if(this.selectedPict > 0) {
+      this.item.picture = this.picList[this.selectedPict - 1].value;
+      this.item.pictureColor = this.picList[this.selectedPict - 1].color;
+    }
   }
 
   btnMoveTopClickHandler() {
@@ -71,5 +70,13 @@ export class TwitDetailComponent implements OnInit {
 
   btnDeleteClickHandler() {
     this.deleteEmitter.emit();
+  }
+
+  optContainerClickHandler(conItem: SimpleItem) {
+    this.item.containerColor = conItem.color;
+  }
+
+  optPictureClickHandler(picItem: SimpleItem) {
+    this.item.pictureColor = picItem.color;
   }
 }
