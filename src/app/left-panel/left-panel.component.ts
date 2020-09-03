@@ -416,7 +416,13 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       const tw_bird = this.settings[`con${containerNum}_tw_bird`];
       line += `<span class="t_bird_icon"><a href="${twit.url}" target="_blank"><img src="${this.settings.url}${tw_bird}"></a></span></div><!-- e-t_header -->\n`
       line += `<div class="t_honbun">\n`;
-      line += twit.text + '\n';
+
+      if (this.settings.t_top_link){
+        line += twit.text.replace(/((^\s*<a class="t_link_username"[^(<)]+<\/a>(<br>)*)(\s*<a class="(t_link_username|t_link_tweet)"[^(<)]+<\/a>(<br>)*)*)/,`<div class="t_top_link">$1</div>`) + '\n';
+      }else{
+        line += twit.text + '\n';
+      }
+
       line += `</div><!-- e-t_honbun -->\n`;
       let imageTitle = '';
       if(twit.photos.length === 1){
