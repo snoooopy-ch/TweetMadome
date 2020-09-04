@@ -324,6 +324,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       totalCount: this.twitList.length
     })
   }
+
   /**
    * delete all items from Twit list
    */

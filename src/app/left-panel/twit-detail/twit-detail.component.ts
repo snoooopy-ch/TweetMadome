@@ -36,6 +36,8 @@ export class TwitDetailComponent implements OnInit {
   @Input() picList: SimpleItem[];
   @Input() selectedCon;
   @Input() selectedPict;
+  @Input() urlCheckColor;
+  @Input() showCheckColor;
 
   @Output() setDraggableEmitter = new EventEmitter();
   @Output() moveTopEmitter = new EventEmitter();
@@ -58,6 +60,8 @@ export class TwitDetailComponent implements OnInit {
       this.item.picture = this.picList[this.selectedPict - 1].value;
       this.item.pictureColor = this.picList[this.selectedPict - 1].color;
     }
+
+    console.log(this.showCheckColor);
   }
 
   btnMoveTopClickHandler() {

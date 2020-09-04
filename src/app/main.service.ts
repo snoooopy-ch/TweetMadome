@@ -56,4 +56,5 @@ export class MainService {
   setTotalCount(value){
     this.totalCountSource.next(value);
   }
+
 }

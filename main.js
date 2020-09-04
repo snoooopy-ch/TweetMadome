@@ -201,6 +201,8 @@ function getSettings() {
       } else {
         if (lineArgs.length > 1) {
           settings[lineArgs[0]] = lineArgs[1].replace(/;/g, '');
+
+          console.log(settings[lineArgs[0]]);
         } else {
           settings[lineArgs[0]] = '';
         }

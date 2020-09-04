@@ -164,15 +164,14 @@ app-twit-detail .row-2 .btn-move {
   border-color: #77cc6d;
 }
 
-app-twit-detail .row-2 .select-url {
+app-twit-detail .row-2 .select-url,
+app-twit-detail .row-2 .select-show {
   width: 68px;
   height: 32px;
   margin: 8px 0 0;
   justify-content: center;
   align-items: center;
   display: flex;
-  background-color: lightgrey;
-  border: 1px solid grey;
   border-radius: 5px;
 }
 
@@ -499,7 +498,7 @@ app-twit-detail div .btn-cancel-select-and-catch-id {
 }
 
 .main-container app-right-panel #txt-html-tag {
-  height: 160px;
+  height: 240px;
   margin-top: -5px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
@@ -514,7 +513,7 @@ app-twit-detail div .btn-cancel-select-and-catch-id {
 }
 
 .main-container app-right-panel #btn-print-html-tag {
-  height: 130px;
+  height: 150px;
   margin: 0 0 5px;  background-color: lightsalmon;
   border:solid 1px lightsalmon;
 }
