@@ -418,6 +418,9 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       line += `<span class="t_bird_icon"><a href="${twit.url}" target="_blank"><img src="${this.settings.url}${tw_bird}"></a></span></div><!-- e-t_header -->\n`
       line += `<div class="t_honbun">\n`;
 
+      if (!this.settings.username_link_br) {
+        twit.text = twit.text.replace(/(\s*<a class="(t_link_username|t_link_tweet)"[^(<)]+<\/a>)(<br>)*/gi,`$1`);
+      }
       if (this.settings.t_top_link){
         line += twit.text.replace(/((^\s*<a class="t_link_username"[^(<)]+<\/a>(<br>)*)(\s*<a class="(t_link_username|t_link_tweet)"[^(<)]+<\/a>(<br>)*)*)/,`<div class="t_top_link">$1</div>\n`) + '\n';
       }else{
