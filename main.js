@@ -16,7 +16,7 @@ function createWindow() {
     minWidth: 956,
     title: 'ツイート取得',
     backgroundColor: '#ffffff',
-    icon: `file://${__dirname}/dist/assets/logo.png`,
+    icon: `${__dirname}\\src\\assets\\green_circle.png`,
     webPreferences: {
       nodeIntegration: true
     }
@@ -201,8 +201,6 @@ function getSettings() {
       } else {
         if (lineArgs.length > 1) {
           settings[lineArgs[0]] = lineArgs[1].replace(/;/g, '');
-
-          console.log(settings[lineArgs[0]]);
         } else {
           settings[lineArgs[0]] = '';
         }

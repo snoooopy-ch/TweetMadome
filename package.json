@@ -11,7 +11,7 @@
     "e2e": "ng e2e",
     "electron": "electron .",
     "electron-build": "ng build --prod && electron .",
-    "package": "electron-packager . --platform=win32 --overwrite",
+    "package": "electron-packager . --icon=src/assets/green_circle_16.ico --platform=win32 --overwrite",
     "archive": "asar pack tweetmadome-win32-x64/resources/app tweetmadome-win32-x64/resources/app.asar"
   },
   "private": true,

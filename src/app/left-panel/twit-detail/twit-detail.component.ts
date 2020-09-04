@@ -83,4 +83,5 @@ export class TwitDetailComponent implements OnInit {
   optPictureClickHandler(picItem: SimpleItem) {
     this.item.pictureColor = picItem.color;
   }
+
 }

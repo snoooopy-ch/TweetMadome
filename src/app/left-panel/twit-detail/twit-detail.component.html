@@ -7,9 +7,9 @@
       <button class="btn-move btn-left-round btn-right-round" (click)="btnMoveTopClickHandler()">▲</button>
       <button class="btn-move btn-left-round btn-right-round" (click)="btnMoveBottomClickHandler()">▼</button>
     </div>
-    <div class="select-url" [ngStyle]="{'background-color': urlCheckColor, 'border-width': '1px', 'border-style': 'solid', 'border-color': urlCheckColor}">
+    <div class="select-url" [ngStyle]="{'background-color': item.isReplaceUrl == true? urlCheckColor : '#ffffff', 'border-width': '1px', 'border-style': 'solid', 'border-color': item.isReplaceUrl == true? urlCheckColor : 'grey'}">
       <label>
-        <input type="checkbox" [(ngModel)]="item.isReplaceUrl">URL
+        <input type="checkbox" [(ngModel)]="item.isReplaceUrl" >URL
       </label>
     </div>
   </div>
@@ -31,9 +31,9 @@
     <div>
       <button class="btn-left-round btn-right-round btn-delete" (click)="btnDeleteClickHandler()">削除</button>
     </div>
-    <div class="select-show" [ngStyle]="{'background-color': showCheckColor, 'border-width': '1px', 'border-style': 'solid', 'border-color': showCheckColor}">
+    <div class="select-show" [ngStyle]="{'background-color': item.isImageOutput == true? showCheckColor : '#ffffff', 'border-width': '1px', 'border-style': 'solid', 'border-color': item.isImageOutput == true? showCheckColor : 'grey'}">
       <label>
-        <input type="checkbox" [(ngModel)]="item.isImageOutput">非出力
+        <input type="checkbox" [(ngModel)]="item.isImageOutput" >非出力
       </label>
     </div>
   </div>
