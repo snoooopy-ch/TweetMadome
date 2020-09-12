@@ -29,6 +29,8 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   addedUrls: any;
   isAddTop: boolean;
   notCardImageOutput: boolean;
+  twitterDefContainer: any;
+  twitterDefImage: any;
 
   constructor(private mainService: MainService, private cdRef: ChangeDetectorRef, private clipboard: Clipboard) {
 
@@ -44,6 +46,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     this.replacedUrl2 = '';
     this.addedUrls = '';
     this.isAddTop = false;
+
     this.subscribers.settings = this.mainService.settings.subscribe((value) => {
       this.settings = value;
       if (value.hasOwnProperty('image_width')) {
@@ -58,6 +61,12 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       if (value.hasOwnProperty('replace_image_url2')) {
         this.replacedUrl2 = this.settings.replace_image_url2;
       }
+      if (value.hasOwnProperty('con')) {
+        this.twitterDefContainer = this.settings.con;
+      }
+      if (value.hasOwnProperty('pict')) {
+        this.twitterDefImage = this.settings.pict;
+      }
 
       this.cdRef.detectChanges();
     });
@@ -70,6 +79,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     this.subscribers.totalCountStatus = this.mainService.totalCount.subscribe(value => {
       this.totalCount = value.totalCount;
     });
+
   }
 
   /**
@@ -129,8 +139,8 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     if(this.twitterUrl.length > 0){
       const filteredTwitters = this.twitterUrl.match(/(https?:\/\/(mobile\.)*twitter\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+))/ig);
       if (Array.isArray(filteredTwitters) && filteredTwitters.length) {
-        this.mainService.setAddedUrls({twitters: filteredTwitters, isAddTop: this.isAddTop});
-        this.addedUrls += filteredTwitters.join('\n');
+        this.mainService.setAddedUrls({twitters: filteredTwitters, isAddTop: this.isAddTop, con:this.twitterDefContainer, pict:this.twitterDefImage});
+        this.addedUrls += filteredTwitters.join('\n') + '\n';
       }
       this.twitterUrl = '';
     }

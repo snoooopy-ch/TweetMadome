@@ -64,7 +64,7 @@ input[type="text"] {
 
 label {
   font-size: 13px;
-  margin: 0 5px;
+  margin: 0 4px;
 }
 
 .main-container {
@@ -280,10 +280,6 @@ app-twit-detail div .btn-cancel-select-and-catch-id {
 
 .main-container app-right-panel input[type="text"] {
   height: 18px;
-}
-
-.main-container app-right-panel .row-container input {
-  width: 100%;
 }
 
 .main-container app-right-panel .row-container button {
@@ -656,6 +652,15 @@ input[type='radio']:checked:before {
 }
 
 .label-vertical-center{
+  display: flex;
+  align-items: center;
+}
+
+.row-container-con, .row-container-pict{
+  display: flex;
+}
+
+.row-container-con label, .row-container-pict label{
   display: flex;
   align-items: center;
 }

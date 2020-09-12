@@ -142,8 +142,8 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       }
 
       const newItem = new TwitItem();
-      newItem.container = '0';
-      newItem.picture = '0';
+      newItem.container = params.con;
+      newItem.picture = params.pict;
       newItem.isReplaceUrl = false;
       newItem.photos = [];
       const embedResponse = await fetch(`https://publish.twitter.com/oembed?hide_thread=true&align=center&omit_script=true&url=${twitter}`);
@@ -303,6 +303,9 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
                       url: cdnCardData.card.binding_values.photo_image_full_size_large.image_value.url,
                     });
                 }
+
+                if (this.settings.inyo_tweet)
+                  newItem.content = newItem.content.replace("<blockquote", "<blockquote data-cards=\"hidden\"");
               }
             }
           }
@@ -421,12 +424,16 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       if (!this.settings.username_link_br) {
         twit.text = twit.text.replace(/(\s*<a class="(t_link_username|t_link_tweet)"[^(<)]+<\/a>)(<br>)*/gi,`$1`);
       }
+
       if (this.settings.t_top_link){
-        line += twit.text.replace(/((^\s*<a class="t_link_username"[^(<)]+<\/a>(<br>)*)(\s*<a class="(t_link_username|t_link_tweet)"[^(<)]+<\/a>(<br>)*)*)/,`<div class="t_top_link">$1</div>\n`) + '\n';
-      }else{
-        line += twit.text + '\n';
+        twit.text = twit.text.replace(/((^\s*<a class="t_link_username"[^(<)]+<\/a>(<br>)*)(\s*<a class="(t_link_username|t_link_tweet)"[^(<)]+<\/a>(<br>)*)*)/,`<div class="t_top_link">$1</div>\n`);
       }
 
+      if (this.settings.t_bottom_link){
+        twit.text = twit.text.replace(/((<a class="t_link_tweet"[^(<)]+<\/a>(<br>)*\s*)(<a class="(t_link_tweet|t_link_pic)"[^(<)]+<\/a>(<br>)*\s*)+)|((\<a class="(t_link_pic|t_link_tweet)"[^(<)]+<\/a>(<br>)*)+)$/,`<div class="t_bottom_link">$&</div>`);
+      }
+
+      line += twit.text + '\n';
       line += `</div><!-- e-t_honbun -->\n`;
       let imageTitle = '';
       if(twit.photos.length === 1){

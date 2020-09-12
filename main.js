@@ -5,7 +5,7 @@ let win;
 let settingPath = 'Setting.ini';
 
 let curComment = '';
-let yesNoKeys = ['youtube', 'pict1mai_kyousei_tuujou', 'username_link_br', 't_top_link'];
+let yesNoKeys = ['youtube', 'pict1mai_kyousei_tuujou', 'username_link_br', 't_top_link', 'inyo_tweet'];
 let settings;
 
 function createWindow() {
