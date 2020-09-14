@@ -74,6 +74,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     this.subscribers.printHtml = this.mainService.printHtml.subscribe(value => {
       this.outputHtml = value.html;
       this.clipboard.copy(this.outputHtml);
+
     });
 
     this.subscribers.totalCountStatus = this.mainService.totalCount.subscribe(value => {

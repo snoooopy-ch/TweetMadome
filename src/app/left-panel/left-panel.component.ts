@@ -397,6 +397,9 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
   }
 
   private printHtml(value: any) {
+    if (this.twitList.length == 0)
+      return;
+      
     let output = '';
     let replacedImageList = [];
     for (const twit of this.twitList){
@@ -525,6 +528,8 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     this.mainService.setPrintHtml({
       html: output
     });
+
+    console.log('left-panel.components');
   }
 
   getEmojiCode (emoji) {
