@@ -15,22 +15,26 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   private title: any;
   twitterContainer: any;
-  imageKind: any;
   imageType: any;
   imageWidth: any;
   outputHtml: any;
   settings: any;
   videoWidth: any;
   isReplaceUrl: boolean;
-  replaceUrlKind: any;
-  replacedUrl1: any;
-  replacedUrl2: any;
+  replaceImgUrlKind: any;
+  replacedImgUrl1: any;
+  replacedImgUrl2: any;
+  replaceAnchorUrlKind: any;
+  replacedAnchorUrl1: any;
+  replacedAnchorUrl2: any;
   totalCount: number;
   addedUrls: any;
+  addedImgUrls: any;
   isAddTop: boolean;
   notCardImageOutput: boolean;
   twitterDefContainer: any;
   twitterDefImage: any;
+  appendLargeName: any;
 
   constructor(private mainService: MainService, private cdRef: ChangeDetectorRef, private clipboard: Clipboard) {
 
@@ -38,14 +42,18 @@ export class RightPanelComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.twitterContainer = '0';
-    this.imageKind = 'twitter';
     this.twitterUrl = '';
     this.isReplaceUrl = false;
-    this.replaceUrlKind = '1';
-    this.replacedUrl1 = '';
-    this.replacedUrl2 = '';
+    this.replaceImgUrlKind = '1';
+    this.replacedImgUrl1 = '';
+    this.replacedImgUrl2 = '';
+    this.replaceAnchorUrlKind = '1';
+    this.replacedAnchorUrl1 = '';
+    this.replacedAnchorUrl2 = '';
     this.addedUrls = '';
+    this.addedImgUrls = '';
     this.isAddTop = false;
+    this.appendLargeName = ''
 
     this.subscribers.settings = this.mainService.settings.subscribe((value) => {
       this.settings = value;
@@ -56,10 +64,16 @@ export class RightPanelComponent implements OnInit, OnDestroy {
         this.videoWidth = this.settings.video_width;
       }
       if (value.hasOwnProperty('replace_image_url1')) {
-        this.replacedUrl1 = this.settings.replace_image_url1;
+        this.replacedImgUrl1 = this.settings.replace_image_url1;
       }
       if (value.hasOwnProperty('replace_image_url2')) {
-        this.replacedUrl2 = this.settings.replace_image_url2;
+        this.replacedImgUrl2 = this.settings.replace_image_url2;
+      }
+      if (value.hasOwnProperty('replace_anchor_url1')) {
+        this.replacedAnchorUrl1 = this.settings.replace_anchor_url1;
+      }
+      if (value.hasOwnProperty('replace_anchor_url2')) {
+        this.replacedAnchorUrl2 = this.settings.replace_anchor_url2;
       }
       if (value.hasOwnProperty('con')) {
         this.twitterDefContainer = this.settings.con;
@@ -67,14 +81,23 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       if (value.hasOwnProperty('pict')) {
         this.twitterDefImage = this.settings.pict;
       }
+      if (value.hasOwnProperty('large')) {
+        this.appendLargeName = this.settings.large;
+      }
+
 
       this.cdRef.detectChanges();
     });
 
     this.subscribers.printHtml = this.mainService.printHtml.subscribe(value => {
       this.outputHtml = value.html;
+      this.addedImgUrls = value.images;
       this.clipboard.copy(this.outputHtml);
 
+    });
+
+    this.subscribers.copyImageUrls = this.mainService.copyImageUrls.subscribe(value => {
+      this.clipboard.copy(this.addedImgUrls);
     });
 
     this.subscribers.totalCountStatus = this.mainService.totalCount.subscribe(value => {
@@ -94,46 +117,57 @@ export class RightPanelComponent implements OnInit, OnDestroy {
 
   @HostListener('window:beforeunload', [ '$event' ])
   beforeUnloadHandler(event) {
-    // let pict = '0';
-    // if (this.imageKind === 'custom'){
-    //   pict = this.imageType;
-    // }
     this.mainService.saveSettings({
       imageWidth: this.imageWidth,
       videoWidth: this.videoWidth,
-      replaceUrl1: this.replacedUrl1,
-      replaceUrl2: this.replacedUrl2
+      replaceImgUrl1: this.replacedImgUrl1,
+      replaceImgUrl2: this.replacedImgUrl2,
+      replaceAnchorUrl1: this.replacedAnchorUrl1,
+      replaceAnchorUrl2: this.replacedAnchorUrl2
     })
   }
 
   btnPrintHtmlClickHandler() {
     let pict = '0';
-    if (this.imageKind === 'custom'){
-      pict = this.imageType;
+    let replaceImgText = '';
+    let replaceAnchorText = '';
+
+    if(this.replaceImgUrlKind === '1'){
+      replaceImgText = this.replacedImgUrl1;
+    }else if (this.replaceImgUrlKind === '2'){
+      replaceImgText = this.replacedImgUrl2;
     }
 
-    let replaceText = '';
-
-    if(this.replaceUrlKind === '1'){
-      replaceText = this.replacedUrl1;
-    }else if (this.replaceUrlKind === '2'){
-      replaceText = this.replacedUrl2;
+    if(this.replaceAnchorUrlKind === '1'){
+      replaceAnchorText = this.replacedAnchorUrl1;
+    }else if (this.replaceAnchorUrlKind === '2'){
+      replaceAnchorText = this.replacedAnchorUrl2;
     }
 
     this.mainService.doPrintHtml({
-      container: Number(this.twitterContainer),
       imageType: Number(pict),
       imageWidth: this.imageWidth === undefined ? '' : this.imageWidth,
       videoWidth: this.videoWidth === undefined ? '' : this.videoWidth,
       isReplaceUrl: this.isReplaceUrl,
-      replaceText: replaceText,
-      notCardImageOutput: this.notCardImageOutput
+      replaceImgText: replaceImgText,
+      replaceAnchorText: replaceAnchorText,
+      notCardImageOutput: this.notCardImageOutput,
+      appendLargeName: this.appendLargeName,
     });
   }
 
   btnDeleteAllClickHandler() {
     this.mainService.doDeleteAll({});
     this.addedUrls = '';
+    this.addedImgUrls = '';
+  }
+
+  containerCollectiveSelectionHandler(index: any) {
+    this.mainService.doContainerCollectiveChange(index);
+  }
+
+  optImageTypeClickHandler(index: any) {
+    this.mainService.doImageCollectiveChange(index);
   }
 
   btnAddUrlClickHandler() {
@@ -145,13 +179,5 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       }
       this.twitterUrl = '';
     }
-  }
-
-  optImageTypeClickHandler() {
-    this.imageKind = 'custom';
-  }
-
-  optImageKindClickHandler() {
-    this.imageType = '0';
   }
 }

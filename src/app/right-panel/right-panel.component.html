@@ -28,57 +28,48 @@
   </div>
 </div>
 <div class="container-group">
+  <div class="row">一括変更</div>
   <div class="row">
-    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="0">各ツイートの状態を優先</label>
+    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="1" (click)="containerCollectiveSelectionHandler('1')">{{settings.container1}}</label>
   </div>
   <div class="row">
-    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="1">{{settings.container1}}</label>
+    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="2" (click)="containerCollectiveSelectionHandler('2')">{{settings.container2}}</label>
   </div>
   <div class="row">
-    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="2">{{settings.container2}}</label>
+    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="3" (click)="containerCollectiveSelectionHandler('3')">{{settings.container3}}</label>
   </div>
   <div class="row">
-    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="3">{{settings.container3}}</label>
+    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="4" (click)="containerCollectiveSelectionHandler('4')">{{settings.container4}}</label>
   </div>
   <div class="row">
-    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="4">{{settings.container4}}</label>
+    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="5" (click)="containerCollectiveSelectionHandler('5')">{{settings.container5}}</label>
   </div>
   <div class="row">
-    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="5">{{settings.container5}}</label>
-  </div>
-  <div class="row">
-    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="6">{{settings.container6}}</label>
+    <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="6" (click)="containerCollectiveSelectionHandler('6')">{{settings.container6}}</label>
   </div>
 </div>
 <div class="w-100 image-group">
+  <div class="row">一括変更</div>
   <div class="row">
-    <label><input type="radio" name="opt-image-kind" [(ngModel)]="imageKind" value="twitter" (click)="optImageKindClickHandler()">各ツイートの状態を優先</label>
+    <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="1" (click)="optImageTypeClickHandler('1')">{{settings.pict1}}</label>
+  </div>
+  <div class="px-1">
+    <div>
+      (画像横幅）
+    </div>
+    <input type="text" name="txt-image-width" [(ngModel)]="imageWidth">
   </div>
   <div class="row">
-    <label><input type="radio" name="opt-image-kind" [(ngModel)]="imageKind" value="custom">画像形式</label>
+    <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="2" (click)="optImageTypeClickHandler('2')">{{settings.pict2}}</label>
   </div>
-  <div class="px-2 image-type">
-    <div class="row">
-      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="1" (click)="optImageTypeClickHandler()">{{settings.pict1}}</label>
-    </div>
-    <div class="px-1">
-      <div>
-        (画像横幅）
-      </div>
-      <input type="text" name="txt-image-width" [(ngModel)]="imageWidth">
-    </div>
-    <div class="row">
-      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="2" (click)="optImageTypeClickHandler()">{{settings.pict2}}</label>
-    </div>
-    <div class="row">
-      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="3" (click)="optImageTypeClickHandler()">{{settings.pict3}}</label>
-    </div>
-    <div class="row">
-      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="4" (click)="optImageTypeClickHandler()">{{settings.pict4}}</label>
-    </div>
-    <div class="row">
-      <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="5" (click)="optImageTypeClickHandler()">{{settings.pict5}}</label>
-    </div>
+  <div class="row">
+    <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="3" (click)="optImageTypeClickHandler('3')">{{settings.pict3}}</label>
+  </div>
+  <div class="row">
+    <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="4" (click)="optImageTypeClickHandler('4')">{{settings.pict4}}</label>
+  </div>
+  <div class="row">
+    <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="5" (click)="optImageTypeClickHandler('5')">{{settings.pict5}}</label>
   </div>
 </div>
 <div class="status-total">
@@ -91,10 +82,17 @@
 <div class="pt-1">
   <label class="label-vertical-center"><input class="mr-1" type="checkbox" [(ngModel)]="notCardImageOutput">Twitterカード画像を出力せず</label>
 </div>
+<div class="pt-1">
+  <label class="label-vertical-center"><input class="mr-1" type="checkbox" [(ngModel)]="appendLargeName" value='1'>画像にLargeを付与</label>
+</div>
 <div class="container-group">
   <div class="row pb-1"><label><input type="checkbox" [(ngModel)]="isReplaceUrl">画像URL形式変更</label></div>
-  <div class="row pb-1 px-1"><input type="radio" name="opt-change-image" [(ngModel)]="replaceUrlKind" value="1"><input class="txt-replace-url" type="text" [(ngModel)]="replacedUrl1"></div>
-  <div class="row pb-1 px-1"><input type="radio" name="opt-change-image" [(ngModel)]="replaceUrlKind" value="2"><input class="txt-replace-url" type="text" [(ngModel)]="replacedUrl2"></div>
+  <div class="row">a href</div>
+  <div class="row pb-1 px-1"><input type="radio" name="opt-change-anchor" [(ngModel)]="replaceAnchorUrlKind" value="1"><input class="txt-replace-url" type="text" [(ngModel)]="replacedAnchorUrl1"></div>
+  <div class="row pb-1 px-1"><input type="radio" name="opt-change-anchor" [(ngModel)]="replaceAnchorUrlKind" value="2"><input class="txt-replace-url" type="text" [(ngModel)]="replacedAnchorUrl2"></div>
+  <div class="row">img</div>
+  <div class="row pb-1 px-1"><input type="radio" name="opt-change-image" [(ngModel)]="replaceImgUrlKind" value="1"><input class="txt-replace-url" type="text" [(ngModel)]="replacedImgUrl1"></div>
+  <div class="row pb-1 px-1"><input type="radio" name="opt-change-image" [(ngModel)]="replaceImgUrlKind" value="2"><input class="txt-replace-url" type="text" [(ngModel)]="replacedImgUrl2"></div>
 </div>
 <div class="row-container">
   <button id="btn-print-html-tag" class="border-round" (click)="btnPrintHtmlClickHandler()">出力</button>
@@ -135,4 +133,10 @@
     追加されたツイート
   </div>
   <textarea class="twitter-url" [(ngModel)]="addedUrls"></textarea>
+</div>
+<div class="row-container mt-1">
+  <div>
+    出力された画像URL
+  </div>
+  <textarea class="twitter-url" [(ngModel)]="addedImgUrls"></textarea>
 </div>

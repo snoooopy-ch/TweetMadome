@@ -12,6 +12,12 @@ export class MainService {
   addedUrls = this.urlsSource.asObservable();
   deleteAllSource = new BehaviorSubject<any>({});
   deleteAll = this.deleteAllSource.asObservable();
+  copyImgUrlSource = new BehaviorSubject<any>({});
+  copyImageUrls = this.copyImgUrlSource.asObservable();
+  containerCollectiveChangeSource = new BehaviorSubject<any>({});
+  containerCollectiveChange = this.containerCollectiveChangeSource.asObservable();
+  imageCollectiveChangeSource = new BehaviorSubject<any>({});
+  imageCollectiveChange = this.imageCollectiveChangeSource.asObservable();
   printHtmlCommandSource = new BehaviorSubject<any>({});
   printHtmlCommand = this.printHtmlCommandSource.asObservable();
   printHtmlSource = new BehaviorSubject<any>({tabIndex: 0, html: ''});
@@ -29,16 +35,24 @@ export class MainService {
     electron.ipcRenderer.send('loadSettings');
   }
 
-  // saveTest(data){
-  //   electron.ipcRenderer.send('saveTest', data);
-  // }
-
   setAddedUrls(value: any) {
     this.urlsSource.next(value);
   }
 
   doDeleteAll(value){
     this.deleteAllSource.next(value);
+  }
+
+  doCopyImgUrlToClipboard(value) {
+    this.copyImgUrlSource.next(value);
+  }
+
+  doContainerCollectiveChange(index: any) {
+    this.containerCollectiveChangeSource.next(index);
+  }
+
+  doImageCollectiveChange(index: any) {
+    this.imageCollectiveChangeSource.next(index);
   }
 
   saveSettings(params){

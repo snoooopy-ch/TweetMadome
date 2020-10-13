@@ -34,9 +34,13 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
   conList: SimpleItem[];
   picList: SimpleItem[];
   private selectedTwitIndex: number;
+  hovered: number;
+  containerClicked: number;
 
   constructor(private mainService: MainService, private cdRef: ChangeDetectorRef,
               private zone: NgZone, private hotkeysService: HotkeysService) {
+                this.hovered = -1;
+                this.containerClicked = -1;
 
   }
 
@@ -54,6 +58,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
           conItem.label = this.settings[`view_container${i}`];
           conItem.value = i.toString();
           conItem.color = this.settings[`container_color_${i}`];
+          conItem.backcolor = this.settings[`backcolor${i}`];
           this.conList.push(conItem);
         }
       }
@@ -77,7 +82,17 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     // raise the event of deleting all Twit
     this.subscribers.deleteAll = this.mainService.deleteAll.subscribe( value => {
       this.deleteAll();
-    })
+    });
+
+    // collective change of all tweet's container
+    this.subscribers.containerCollectiveChange = this.mainService.containerCollectiveChange.subscribe( value => {
+      this.containerCollectiveChange(value);
+    });
+
+    // collective change of all tweet's image
+    this.subscribers.imagerCollectiveChange = this.mainService.imageCollectiveChange.subscribe( value => {
+      this.imageCollectiveChange(value);
+    });
 
     // print html from Twit list
     this.subscribers.printHtml = this.mainService.printHtmlCommand.subscribe(value => {
@@ -142,9 +157,11 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       }
 
       const newItem = new TwitItem();
+      newItem.backcolor = this.settings[`backcolor${params.con}`];
       newItem.container = params.con;
       newItem.picture = params.pict;
       newItem.isReplaceUrl = false;
+      newItem.imageDirectWidth = '';
       newItem.photos = [];
       const embedResponse = await fetch(`https://publish.twitter.com/oembed?hide_thread=true&align=center&omit_script=true&url=${twitter}`);
       if (embedResponse.ok) {
@@ -337,6 +354,21 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     this.cdRef.detectChanges();
   }
 
+  containerCollectiveChange(index: any) {
+    this.twitList.forEach(item => {
+      item.container = index;
+      item.containerColor = this.conList[index - 1].color;
+      item.backcolor = this.conList[index - 1].backcolor;
+    });
+  }
+
+  imageCollectiveChange(index: any) {
+    this.twitList.forEach(item => {
+      item.picture = index;
+      item.pictureColor = this.picList[index - 1].color;
+    });
+  }
+
   deleteOne(twitItem: TwitItem) {
     const index = this.twitList.indexOf(twitItem);
     this.twitList.splice(index,1);
@@ -396,19 +428,21 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     this.cdRef.detectChanges();
   }
 
+  btnCopyImageUrlClickHandler() {
+    this.mainService.doCopyImgUrlToClipboard({});
+  }
+
   private printHtml(value: any) {
     if (this.twitList.length == 0)
       return;
       
     let output = '';
+    let outputImg = '';
     let replacedImageList = [];
     for (const twit of this.twitList){
       let line = '\n\n\n\n\n\n\n';
       let containerNum = 1;
-      if (value.container > 0 ){
-        line += `<div class="t_container${value.container}">`;
-        containerNum = value.container;
-      } else if (value.container === 0 && twit.container !== '0'){
+      if (twit.container !== '0'){
         line += `<div class="t_container${twit.container}">`;
         containerNum = Number(twit.container);
       } else{
@@ -449,34 +483,42 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
 
         let mediaLine = '';
         for (const photo of twit.photos) {
-          let photoUrl = photo.url;
+          let photoUrl = '';
+          if (value.appendLargeName === true) {
+            photoUrl = photo.url.replace(/.(jpg|png)$/gi, `?format=$1&name=large`);
+          } else {
+            photoUrl = photo.url;
+          }
+          let photoImgUrl = photoUrl;
+          let photoAnchorUrl = photoUrl;
           if (value.notCardImageOutput){
-            if(new RegExp(/card_img/g).test(photo.url)){
+            if(new RegExp(/card_img/g).test(photoUrl)){
               continue;
             }
           }
           if (value.isReplaceUrl || (!value.isReplaceUrl && twit.isReplaceUrl)){
-            photoUrl = photo.url.replace(/https:\/\/pbs.twimg.com\/(media|card_img)/gi,value.replaceText);
-            replacedImageList.push(photo.url);
+            photoImgUrl = photoUrl.replace(/https:\/\/pbs.twimg.com\/(media|card_img)/gi,value.replaceImgText);
+            photoAnchorUrl = photoUrl.replace(/https:\/\/pbs.twimg.com\/(media|card_img)/gi,value.replaceAnchorText);
+            replacedImageList.push(photoUrl);
           }
-          // if(value.imageType > 1 || (value.imageType === 0 && Number(twit.picture) > 1)){
           mediaLine += '<div>';
-          // }
-          mediaLine += `<a href="${photoUrl}" class="swipe" rel="${twit.id}" title="${imageTitle}" target="_blank"><img src="${photoUrl}" class="no_image"`;
-          if ((this.settings.pict1mai_kyousei_tuujou && twit.photos.length === 1) || value.imageType === 1 || (twit.picture === '1' && value.imageType === 0)){
-            mediaLine += ` width="${value.imageWidth}"`
+          mediaLine += `<a href="${photoAnchorUrl}" class="swipe" rel="${twit.id}" title="${imageTitle}" target="_blank"><img src="${photoImgUrl}" class="no_image"`;
+          if ((this.settings.pict1mai_kyousei_tuujou && twit.photos.length === 1) || (twit.picture === '1')){
+            if (twit.imageDirectWidth === '')
+              mediaLine += ` width="${value.imageWidth}"`
+            else
+              mediaLine += ` width="${twit.imageDirectWidth}"`
           }
           mediaLine += `></a>`;
-          // if(value.imageType > 1 || (value.imageType === 0 && Number(twit.picture) > 1)){
           mediaLine += '</div>';
-          // }
           mediaLine += '\n';
+
+          outputImg += photoUrl;
+          outputImg += '\n';
         }
         if(mediaLine.length > 0) {
           if (this.settings.pict1mai_kyousei_tuujou && twit.photos.length === 1) {
             line += `<div class="t_media1"><!-- s-img -->\n`;
-          } else if (value.imageType > 0) {
-            line += `<div class="t_media${value.imageType}"><!-- s-img -->\n`;
           } else {
             if (Number(twit.picture) > 0) {
               line += `<div class="t_media${twit.picture}"><!-- s-img -->\n`;
@@ -490,7 +532,10 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
 
       if(twit.videos.length > 0){
         line += `<div class="t_media_video">\n`;
-        line += `<video width="${value.videoWidth}" class="twitter_video" controls="controls" poster="${twit.previewImageUrl}" class="mtpro-media-video">`;
+        if (twit.imageDirectWidth === '')
+          line += `<video width="${value.videoWidth}" class="twitter_video" controls="controls" poster="${twit.previewImageUrl}" class="mtpro-media-video">`;
+        else
+          line += `<video width="${twit.imageDirectWidth}" class="twitter_video" controls="controls" poster="${twit.previewImageUrl}" class="mtpro-media-video">`;
         for (const videoItem of twit.videos){
           line += `<source src="${videoItem.url}" type="${videoItem.contentType}">`;
         }
@@ -513,20 +558,11 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       output += line;
     }
     output = `\n\n\n\n${output}\n\n\n\n`;
-    if(replacedImageList.length > 0){
-      output += `<div class="img_shuturyoku">\n\n`;
-    }
-    for (const replacedItem of replacedImageList){
-      output += `${replacedItem}\n`;
-    }
-
-    if(replacedImageList.length > 0){
-      output += `\n</div>`;
-    }
     output = output.replace(/〜/gi,'&sim;');
 
     this.mainService.setPrintHtml({
-      html: output
+      html: output,
+      images: outputImg
     });
 
     console.log('left-panel.components');
@@ -551,4 +587,26 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       return `&#${comp.toString()};`;
     }
   };
+
+  mouseEnterHandler(index: number) {
+    this.hovered = index;
+  }
+
+  mouseLeaveHandler() {
+    this.hovered = -1;
+    this.containerClicked = -1;
+  }
+
+  getHoverColor(backColor: string) {
+    if (this.containerClicked == -1) {
+      return '#efefef';
+    } else {
+      return backColor;
+    }
+  }
+
+  containerClick() {
+    this.containerClicked = 0;
+  }
+
 }

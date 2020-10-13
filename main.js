@@ -5,7 +5,7 @@ let win;
 let settingPath = 'Setting.ini';
 
 let curComment = '';
-let yesNoKeys = ['youtube', 'pict1mai_kyousei_tuujou', 'username_link_br', 't_top_link', 'inyo_tweet'];
+let yesNoKeys = ['youtube', 'pict1mai_kyousei_tuujou', 'username_link_br', 't_top_link', 'inyo_tweet', 'large'];
 let settings;
 
 function createWindow() {
@@ -235,15 +235,27 @@ function saveSettings(params) {
     }
 
     if (data.match(/(replace_image_url1:)[^\r^\n]+(\r\n)/g) === null) {
-      data = data.replace(/(replace_image_url1:)+(\r\n)/g, `$1${params.replaceUrl1}$2`);
+      data = data.replace(/(replace_image_url1:)+(\r\n)/g, `$1${params.replaceImgUrl1}$2`);
     } else {
-      data = data.replace(/(replace_image_url1:)[^\r^\n]+(\r\n)/g, `$1${params.replaceUrl1}$2`);
+      data = data.replace(/(replace_image_url1:)[^\r^\n]+(\r\n)/g, `$1${params.replaceImgUrl1}$2`);
     }
 
     if (data.match(/(replace_image_url2:)[^\r^\n]+(\r\n)/g) === null) {
-      data = data.replace(/(replace_image_url2:)+(\r\n)/g, `$1${params.replaceUrl2}$2`);
+      data = data.replace(/(replace_image_url2:)+(\r\n)/g, `$1${params.replaceImgUrl2}$2`);
     } else {
-      data = data.replace(/(replace_image_url2:)[^\r^\n]+(\r\n)/g, `$1${params.replaceUrl2}$2`);
+      data = data.replace(/(replace_image_url2:)[^\r^\n]+(\r\n)/g, `$1${params.replaceImgUrl2}$2`);
+    }
+
+    if (data.match(/(replace_anchor_url1:)[^\r^\n]+(\r\n)/g) === null) {
+      data = data.replace(/(replace_anchor_url1:)+(\r\n)/g, `$1${params.replaceAnchorUrl1}$2`);
+    } else {
+      data = data.replace(/(replace_anchor_url1:)[^\r^\n]+(\r\n)/g, `$1${params.replaceAnchorUrl1}$2`);
+    }
+
+    if (data.match(/(replace_anchor_url2:)[^\r^\n]+(\r\n)/g) === null) {
+      data = data.replace(/(replace_anchor_url2:)+(\r\n)/g, `$1${params.replaceAnchorUrl2}$2`);
+    } else {
+      data = data.replace(/(replace_anchor_url2:)[^\r^\n]+(\r\n)/g, `$1${params.replaceAnchorUrl2}$2`);
     }
 
     fs.writeFile('Setting.ini', data, (err) => {

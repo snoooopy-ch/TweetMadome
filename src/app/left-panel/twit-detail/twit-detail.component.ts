@@ -43,6 +43,7 @@ export class TwitDetailComponent implements OnInit {
   @Output() moveTopEmitter = new EventEmitter();
   @Output() moveBottomEmitter = new EventEmitter();
   @Output() deleteEmitter = new EventEmitter();
+  @Output() containerClickEmitter = new EventEmitter();
 
   @ViewChild('tweetContent') tweetContent: ElementRef;
 
@@ -78,6 +79,8 @@ export class TwitDetailComponent implements OnInit {
 
   optContainerClickHandler(conItem: SimpleItem) {
     this.item.containerColor = conItem.color;
+    this.item.backcolor = conItem.backcolor;
+    this.containerClickEmitter.emit();
   }
 
   optPictureClickHandler(picItem: SimpleItem) {

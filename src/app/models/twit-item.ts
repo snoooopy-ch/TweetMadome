@@ -16,4 +16,6 @@ export class TwitItem{
   pictureColor: string;
   containerColor: string;
   isImageOutput: boolean;
+  backcolor: string;
+  imageDirectWidth: string;
 }
