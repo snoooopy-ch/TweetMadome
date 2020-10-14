@@ -97,7 +97,8 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     });
 
     this.subscribers.copyImageUrls = this.mainService.copyImageUrls.subscribe(value => {
-      this.clipboard.copy(this.addedImgUrls);
+      if (this.addedImgUrls !== undefined)
+        this.clipboard.copy(this.addedImgUrls);
     });
 
     this.subscribers.totalCountStatus = this.mainService.totalCount.subscribe(value => {
