@@ -2,46 +2,47 @@
 
 </div>
 <div class="row-2">
-  <div class="tweet-width-container">
-    <div class="tweet-width-label">横幅</div>
-    <div class="tweet-width-value">
-      <input type="input" [(ngModel)]="item.imageDirectWidth" value="item.imageDirectWidth">
-    </div>
-  </div>
-
-  <div>
-    <div class="d-flex justify-content-between">
-      <button class="btn-move btn-left-round btn-right-round" (click)="btnMoveTopClickHandler()">▲</button>
-      <button class="btn-move btn-left-round btn-right-round" (click)="btnMoveBottomClickHandler()">▼</button>
-    </div>
-    <div class="select-url" [ngStyle]="{'background-color': item.isReplaceUrl == true? urlCheckColor : '#ffffff', 'border-width': '1px', 'border-style': 'solid', 'border-color': item.isReplaceUrl == true? urlCheckColor : 'grey'}">
-      <label>
-        <input type="checkbox" [(ngModel)]="item.isReplaceUrl" >URL
-      </label>
-    </div>
+  <div class="btn-delete-container">
+    <button class="btn-left-round btn-right-round btn-delete" (click)="btnDeleteClickHandler()">削除</button>
   </div>
   <div>
     <div class="radio-line line1" [ngStyle]="{'background-color': item.containerColor}">
       <label class="radio-container" *ngFor="let conItem of conList">
         <input type="radio" name="twit-container-{{twitIndex}}" [(ngModel)]="item.container"
-               value="{{conItem.value}}" (click)="optContainerClickHandler(conItem)">{{conItem.label}}
+               value="{{conItem.value}}" (click)="optContainerClickHandler($event, conItem)">{{conItem.label}}
       </label>
     </div>
     <div class="radio-line line2" [ngStyle]="{'background-color': item.pictureColor}">
       <label class="radio-container" *ngFor="let picItem of picList">
         <input type="radio" name="twit-pic-{{twitIndex}}" [(ngModel)]="item.picture"
-               value="{{picItem.value}}"  (click)="optPictureClickHandler(picItem)">{{picItem.label}}
+               value="{{picItem.value}}"  (click)="optPictureClickHandler($event, picItem)">{{picItem.label}}
       </label>
     </div>
   </div>
   <div>
-    <div>
-      <button class="btn-left-round btn-right-round btn-delete" (click)="btnDeleteClickHandler()">削除</button>
+    <div class="d-flex justify-content-between" [ngStyle]="{'margin-bottom': '7px'}">
+      <button class="btn-move btn-left-round btn-right-round" (click)="btnMoveTopClickHandler()">▲</button>
+      <button class="btn-move-step btn-left-round btn-right-round" (click)="btnMoveUpClickHandler()">&#8593;</button>
+      <div class="tweet-width-container">
+        <div class="tweet-width-label">横幅</div>
+        <div class="tweet-width-value">
+          <input type="input" [(ngModel)]="item.imageDirectWidth" value="item.imageDirectWidth" #toFocus>
+        </div>
+      </div>
     </div>
-    <div class="select-show" [ngStyle]="{'background-color': item.isImageOutput == true? showCheckColor : '#ffffff', 'border-width': '1px', 'border-style': 'solid', 'border-color': item.isImageOutput == true? showCheckColor : 'grey'}">
-      <label>
-        <input type="checkbox" [(ngModel)]="item.isImageOutput" >非出力
-      </label>
+    <div class="d-flex justify-content-between">
+      <button class="btn-move btn-left-round btn-right-round" (click)="btnMoveBottomClickHandler()">▼</button>
+      <button class="btn-move-step btn-left-round btn-right-round" (click)="btnMoveDownClickHandler()">&#8595;</button>
+      <div class="select-show" [ngStyle]="{'background-color': item.isImageOutput == true? showCheckColor : '#ffffff', 'border-width': '1px', 'border-style': 'solid', 'border-color': item.isImageOutput == true? showCheckColor : 'grey'}">
+        <label>
+          <input type="checkbox" [(ngModel)]="item.isImageOutput" (click)="noneDisplayClickHandler($event)" (onfocus)="noneDisplayClickHandler($event)">非出力
+        </label>
+      </div>
+      <div class="select-url" [ngStyle]="{'background-color': item.isReplaceUrl == true? urlCheckColor : '#ffffff', 'border-width': '1px', 'border-style': 'solid', 'border-color': item.isReplaceUrl == true? urlCheckColor : 'grey'}">
+        <label>
+          <input type="checkbox" [(ngModel)]="item.isReplaceUrl" (click)="urlDisplayClickHandler($event)" (onfocus)="urlDisplayClickHandler($event)">URL
+        </label>
+      </div>
     </div>
   </div>
 </div>

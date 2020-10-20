@@ -90,13 +90,35 @@ app-left-panel .sort-group .btn-gazou {
   padding: .35em 0.8em;
   border-radius: .25em;
   width: 350px;
+  background-color: #ffa07a;
+}
+
+app-left-panel .sort-group .btn-gazou:hover {
+  background-color: #0366d6 !important;
+  border: 1px solid #0366d6 !important;
+}
+
+app-left-panel .sort-group .btn-douga {
+  font-size: 13px;
+  padding: .35em 0.8em;
+  border-radius: .25em;
+  width: 150px;
+}
+
+.btn-douga:hover {
+  background-color: #0366d6 !important;
+  border: 1px solid #0366d6 !important;
+}
+
+app-left-panel .sort-group .gray-button {
+  background-color: #aaaaaa;
 }
 
 app-left-panel .twitter-container {
   margin: 10px 0 0;
   border-top: 1px solid #adadad;
   width: 100%;
-  height: calc(100vh - 50px);
+  height: calc(100vh - 85px);
 }
 
 
@@ -118,8 +140,8 @@ app-twit-detail div.row-1 .btn-cancel-all{
   margin: 0 3px 0 auto;
   width: 55px;
   height: 20px;
-  background-color: #5b9bd5;
-  border: 1px solid #447fb5;
+  background-color: #0366d6;
+  border: 1px solid #0366d6;
 }
 
 app-twit-detail div .label-res-id-num {
@@ -155,6 +177,7 @@ app-twit-detail div .line2 .radio-container {
 app-twit-detail .row-2 {
   display: flex;
   padding: 0 0 5px 0;
+  justify-content: center;
 }
 
 app-twit-detail .row-2 button {
@@ -170,11 +193,24 @@ app-twit-detail .row-2 .btn-move {
   border-color: #77cc6d;
 }
 
+app-twit-detail .row-2 .btn-move-step {
+  width: 32px;
+  height: 32px;
+  padding: 6px 10px;
+  background-color: #abeba4;
+  border-color: #abeba4;
+  margin: 0 5px;
+}
+
+app-twit-detail .row-2 .btn-move:focus, 
+app-twit-detail .row-2 .btn-move-step:focus {
+  outline-color: #ffffff00;
+}
+
 app-twit-detail .row-2 .select-url,
 app-twit-detail .row-2 .select-show {
   width: 68px;
   height: 32px;
-  margin: 8px 0 0;
   justify-content: center;
   align-items: center;
   display: flex;
@@ -185,7 +221,7 @@ app-twit-detail .row-2 .btn-delete {
   background-color: #dc3545;
   color: white;
   width: 68px;
-  height: 32px;
+  height: 70px;
   padding: 6px 10px;
 }
 
@@ -672,12 +708,14 @@ input[type='radio']:checked:before {
 }
 
 .tweet-width-container {
-  width: 66px;
   margin-right: 2px;
   border: solid 1px #b1b1b1;
-  padding: 2px 4px;
   background-color: white;
   border-radius: 5px;
+  display: flex;
+  height: 33px;
+  padding: 0 2px;
+  width: 135px;
 }
 
 .tweet-width-label {
@@ -686,12 +724,14 @@ input[type='radio']:checked:before {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 50%;
 }
 
 .tweet-width-value {
   display: flex;
-    align-items: center;
-    height: 30px;
+  align-items: center;
+  height: 30px;
+  width: 50%;
 }
 
 .tweet-width-value input{

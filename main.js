@@ -184,9 +184,7 @@ function getSettings() {
       last = index + 1;
       index = remaining.indexOf('\n', last);
       if (line.startsWith('#')) {
-        // if(stateComments.indexOf(line) !== -1) {
         curComment = line;
-        // }
         continue;
       }
       if (line.length === 0) {

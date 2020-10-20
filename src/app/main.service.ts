@@ -15,6 +15,10 @@ export class MainService {
   copyImgUrlSource = new BehaviorSubject<any>({});
   copyImageUrls = this.copyImgUrlSource.asObservable();
   containerCollectiveChangeSource = new BehaviorSubject<any>({});
+  copyVideoUrlSource = new BehaviorSubject<any>({});
+  copyVideoUrls = this.copyVideoUrlSource.asObservable();
+  copyImgVideoUrlSource = new BehaviorSubject<any>({});
+  copyImgVideoUrls = this.copyImgVideoUrlSource.asObservable();
   containerCollectiveChange = this.containerCollectiveChangeSource.asObservable();
   imageCollectiveChangeSource = new BehaviorSubject<any>({});
   imageCollectiveChange = this.imageCollectiveChangeSource.asObservable();
@@ -22,8 +26,14 @@ export class MainService {
   printHtmlCommand = this.printHtmlCommandSource.asObservable();
   printHtmlSource = new BehaviorSubject<any>({tabIndex: 0, html: ''});
   printHtml = this.printHtmlSource.asObservable();
+  excutePrintSource = new BehaviorSubject<any>({tabIndex: 0, html: ''});
+  excutePrint = this.excutePrintSource.asObservable();
   totalCountSource = new BehaviorSubject<any>({totalCount: 0});
   totalCount = this.totalCountSource.asObservable();
+  outputUrlSource = new BehaviorSubject<any>({});
+  outputUrls = this.outputUrlSource.asObservable();
+  focusImageWidthSource = new BehaviorSubject<any>({});
+  focusImageWidth = this.focusImageWidthSource.asObservable();
 
   constructor() {
     electron.ipcRenderer.on('getSettings', (event, value) => {
@@ -45,6 +55,14 @@ export class MainService {
 
   doCopyImgUrlToClipboard(value) {
     this.copyImgUrlSource.next(value);
+  }
+
+  doCopyVideoUrlToClipboard(value) {
+    this.copyVideoUrlSource.next(value);
+  }
+
+  doCopyImgVideoUrlToClipboard(value) {
+    this.copyImgVideoUrlSource.next(value);
   }
 
   doContainerCollectiveChange(index: any) {
@@ -71,4 +89,15 @@ export class MainService {
     this.totalCountSource.next(value);
   }
 
+  setOutputUrls(value: any) {
+    this.outputUrlSource.next(value);
+  }
+
+  setFocusImageWidth(index: number) {
+    this.focusImageWidthSource.next(index);
+  }
+
+  excutePrintHtml(index: number) {
+    this.excutePrintSource.next(1);
+  }
 }

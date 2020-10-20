@@ -18,4 +18,5 @@ export class TwitItem{
   isImageOutput: boolean;
   backcolor: string;
   imageDirectWidth: string;
+  youtubeText: string;
 }

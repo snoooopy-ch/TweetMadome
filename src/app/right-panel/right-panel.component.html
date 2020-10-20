@@ -80,6 +80,9 @@
   <div><input type="text" name="txt-video-width" [(ngModel)]="videoWidth" class="w-100 px-1"></div>
 </div>
 <div class="pt-1">
+  <label class="label-vertical-center"><input class="mr-1" type="checkbox" [(ngModel)]="notYoutubeText">Youtubeを出力せず</label>
+</div>
+<div class="pt-1">
   <label class="label-vertical-center"><input class="mr-1" type="checkbox" [(ngModel)]="notCardImageOutput">Twitterカード画像を出力せず</label>
 </div>
 <div class="pt-1">
@@ -139,4 +142,10 @@
     出力された画像URL
   </div>
   <textarea class="twitter-url" [(ngModel)]="addedImgUrls"></textarea>
+</div>
+<div class="row-container mt-1">
+  <div>
+    出力された動画URL
+  </div>
+  <textarea class="twitter-url" [(ngModel)]="addedVideoUrls"></textarea>
 </div>

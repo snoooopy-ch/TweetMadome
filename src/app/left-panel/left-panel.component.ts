@@ -36,12 +36,12 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
   private selectedTwitIndex: number;
   hovered: number;
   containerClicked: number;
+  subHotKeys = [];
 
   constructor(private mainService: MainService, private cdRef: ChangeDetectorRef,
               private zone: NgZone, private hotkeysService: HotkeysService) {
                 this.hovered = -1;
                 this.containerClicked = -1;
-
   }
 
   ngOnInit(): void {
@@ -71,7 +71,25 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
           this.picList.push(picItem);
         }
       }
+
+      this.subHotKeys = [];
+      if (value.hasOwnProperty('key_container1')) {
+        const arrayKeys = ['key_container1', 'key_container2', 'key_container3', 'key_container4', 'key_container5', 'key_container6', 
+        'key_pict1', 'key_pict2', 'key_pict3', 'key_pict4', 'key_pict5', 
+        'key_top', 'key_down', 'key_yokohaba', 'key_url', 'key_del', 'key_hi_shuturyoku', 'key_most_top', 'key_most_down', 'scroll_most_top', 'scroll_most_down'];
+        for (const key of arrayKeys) {
+          if (this.settings[key].toLowerCase() === 'insert'){
+            this.subHotKeys[key] = 'ins';
+          }else if (this.settings[key].toLowerCase() === 'delete'){
+            this.subHotKeys[key] = 'del';
+          }else{
+            this.subHotKeys[key] = this.settings[key].toLowerCase();
+          }
+        }
+      }
+
       this.cdRef.detectChanges();
+      this.setHotKeys();
     });
 
     // get the Twit Url array from the right panel
@@ -99,7 +117,6 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       this.printHtml(value);
     });
 
-    this.setHotKeys();
   }
 
   /**
@@ -110,24 +127,182 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     this.subscribers.twitUrls.unsubscribe();
     this.subscribers.deleteAll.unsubscribe();
     this.subscribers.printHtml.unsubscribe();
+    this.subscribers.imagerCollectiveChange.unsubscribe();
+  }
+
+  containerHotkeyClicked(index: number) {
+    if (this.hovered >= 0) {
+      this.containerClicked = 0;
+      this.twitList[this.hovered].container = `${index}`;
+      this.twitList[this.hovered].containerColor = this.conList[index - 1].color;
+      this.twitList[this.hovered].backcolor = this.conList[index - 1].backcolor;
+    }
+  }
+
+  pictureHotkeyClicked(index: number) {
+    if (this.hovered >= 0) {
+        this.twitList[this.hovered].picture = `${index}`;
+        this.twitList[this.hovered].pictureColor = this.picList[index - 1].color;
+    }
   }
 
   /**
    * ショートカットキー値を設定します。
    */
-  setHotKeys(){
-    // レス描写エリアの一番上に移動
-    this.hotkeysService.add(new Hotkey(['ins', 'home'],
-      (event: KeyboardEvent): boolean => {
+  setHotKeys() {
+    // 選択ボタン
+    if (this.subHotKeys.hasOwnProperty('key_container1')) {
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['key_container1'], (event: KeyboardEvent): boolean => {
+        this.containerHotkeyClicked(1);
+        return false;
+      }));
+  
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['key_container2'], (event: KeyboardEvent): boolean => {
+        this.containerHotkeyClicked(2);
+        return false;
+      }));
+  
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['key_container3'], (event: KeyboardEvent): boolean => {
+        this.containerHotkeyClicked(3);
+        return false;
+      }));
+  
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['key_container4'], (event: KeyboardEvent): boolean => {
+        this.containerHotkeyClicked(4);
+        return false;
+      }));
+  
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['key_container5'], (event: KeyboardEvent): boolean => {
+        this.containerHotkeyClicked(5);
+        return false;
+      }));
+  
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['key_container6'], (event: KeyboardEvent): boolean => {
+        this.containerHotkeyClicked(6);
+        return false;
+      }));
+  
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['key_pict1'], (event: KeyboardEvent): boolean => {
+        this.pictureHotkeyClicked(1);
+        return false;
+      }));
+  
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['key_pict2'], (event: KeyboardEvent): boolean => {
+        this.pictureHotkeyClicked(2);
+        return false;
+      }));
+  
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['key_pict3'], (event: KeyboardEvent): boolean => {
+        this.pictureHotkeyClicked(3);
+        return false;
+      }));
+  
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['key_pict4'], (event: KeyboardEvent): boolean => {
+        this.pictureHotkeyClicked(4);
+        return false;
+      }));
+  
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['key_pict5'], (event: KeyboardEvent): boolean => {
+        this.pictureHotkeyClicked(5);
+        return false;
+      }));
+  
+      // 横幅欄にフォーカス
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['key_yokohaba'], (event: KeyboardEvent): boolean => {
+        if (this.hovered >= 0) {
+          // this.twitList[this.hovered].
+          this.mainService.setFocusImageWidth(this.hovered);
+        }
+        return false;
+      }));
+  
+      // URL欄にチェック
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['key_url'], (event: KeyboardEvent): boolean => {
+        if (this.hovered >= 0) {
+          this.twitList[this.hovered].isReplaceUrl = !this.twitList[this.hovered].isReplaceUrl;
+        }
+        return false;
+      }));
+  
+      // 削除
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['key_del'], (event: KeyboardEvent): boolean => {
+        if (this.hovered >= 0) {
+          const index = this.hovered;
+          this.twitList.splice(index,1);
+          this.setTotalCountStatus();
+          this.cdRef.detectChanges();
+        }
+        return false;
+      }));
+  
+      // 予備選択ボタン4
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['key_hi_shuturyoku'], (event: KeyboardEvent): boolean => {
+        if (this.hovered >= 0) {
+          this.twitList[this.hovered].isImageOutput = !this.twitList[this.hovered].isImageOutput;
+        }
+        return false;
+      }));
+
+      // 一番上へボタン
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['key_most_top'], (event: KeyboardEvent): boolean => {
+        if (this.hovered >= 0) {
+          const index = this.hovered;
+          const startIndex = this.listContainer.viewPortInfo.startIndex + 1;
+          moveItemInArray(this.twitList, index, 0);
+          this.listContainer.scrollToIndex(startIndex);
+        }
+        return false;
+      }));
+  
+      // 一番下へボタン
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['key_most_down'], (event: KeyboardEvent): boolean => {
+        if (this.hovered >= 0) {
+          const index = this.hovered;
+          const startIndex = this.listContainer.viewPortInfo.startIndex;
+          moveItemInArray(this.twitList, index, this.twitList.length - 1);
+          this.listContainer.scrollToIndex(startIndex);
+        }
+        return false;
+      }));
+
+      // ↑ボタン
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['key_top'], (event: KeyboardEvent): boolean => {
+        if (this.hovered >= 0) {
+          console.log('key_top');
+          const index = this.hovered;
+          // const startIndex = this.listContainer.viewPortInfo.startIndex + 1;
+          moveItemInArray(this.twitList, index, index - 1);
+          // this.listContainer.scrollToIndex(startIndex);
+        }
+        return false;
+      }));
+  
+      // ↓ボタン
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['key_down'], (event: KeyboardEvent): boolean => {
+        if (this.hovered >= 0) {
+          console.log('key_down');
+          const index = this.hovered;
+          // const startIndex = this.listContainer.viewPortInfo.startIndex;
+          moveItemInArray(this.twitList, index, index + 1);
+          // this.listContainer.scrollToIndex(startIndex);
+        }
+        return false;
+      }));
+
+      // レス描写エリアの一番上に移動
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['scroll_most_top'], (event: KeyboardEvent): boolean => {
+        console.log('scroll_most_top');
         this.listContainer.scrollToIndex(0);
         return false; // Prevent bubbling
       }));
 
-    // レス描写エリアの一番下に移動
-    this.hotkeysService.add(new Hotkey(['end', 'del'], (event: KeyboardEvent): boolean => {
-      this.listContainer.scrollToIndex(this.twitList.length-1);
-      return false; // Prevent bubbling
-    }));
+      // レス描写エリアの一番下に移動
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['scroll_most_down'], (event: KeyboardEvent): boolean => {
+        console.log('scroll_most_down');
+        this.listContainer.scrollToIndex(this.twitList.length-1);
+        return false; // Prevent bubbling
+      }));
+    }
   }
 
   /**
@@ -138,7 +313,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     if(params.twitters === undefined){
       return;
     }
-    // const emojiRegex = /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f|\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff]|\ufe0f|\ufe0e|[\u3000-\u303f]|[\ufe30-\ufe4f]|[\u1400-\u167f]|[\u02b0-\u02ff]|[\u0200-\u027f]|[\u1100-\u11ff]|[\u3130-\u318f]|[\u2070-\u209f]|[\u25a0-\u25ff]|[\u0080-\u00ff]|[\ua490-\ua4cf]|[\u0E00-\u0E7F])/g;
+    
     const emojiRegex = /(?:[[\u0080-þĀ-žƀ-ɎḀ-ỾⱠ-\u2c7e꜠-ꟾ]|[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f|\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff]|[ɐ-ʮʰ-˾\u0300-\u036eͰ-ϾЀ-ӾԀ-\u052e\u0530-\u058e\u0590-\u05fe\u0600-۾܀-ݎݐ-ݾހ-\u07be߀-\u07fe\u0800-\u083e\u0840-\u085e\u08a0-\u08fe\u0900-ॾ\u0980-\u09fe\u0a00-\u0a7e\u0a80-\u0afe\u0b00-\u0b7e\u0b80-\u0bfe\u0c00-౾\u0c80-\u0cfe\u0d00-ൾ\u0d80-\u0dfe\u0e00-\u0e7e\u0e80-\u0efeༀ-\u0ffeက-႞Ⴀ-\u10feᄀ-\u11feሀ-\u137eᎀ-\u139eᎠ-\u13fe\u1400-\u167e\u1680-\u169eᚠ-\u16feᜀ-\u171eᜠ-\u173eᝀ-\u175eᝠ-\u177eក-\u17fe᠀-\u18ae\u18b0-\u18feᤀ-᥎ᥐ-\u197eᦀ-᧞᧠-᧾ᨀ-᨞\u1a20-\u1aae\u1b00-\u1b7e\u1b80-\u1bbe\u1bc0-\u1bfeᰀ-ᱎ᱐-᱾\u1cc0-\u1cce\u1cd0-\u1cfeᴀ-ᵾᶀ-ᶾ\u1dc0-\u1dfeἀ-῾\u2000-\u206e⁰-\u209e₠-\u20ce\u20d0-\u20fe℀-ⅎ\u2150-\u218e←-⇾∀-⋾⌀-\u23fe␀-\u243e⑀-\u245e①-⓾─-╾▀-▞■-◾☀-\u26fe\u2700-➾⟀-⟮⟰-⟾⠀-⣾⤀-⥾⦀-⧾⨀-⫾⬀-\u2bfeⰀ-ⱞⲀ-⳾ⴀ-\u2d2eⴰ-\u2d7eⶀ-ⷞ\u2de0-\u2dfe⸀-\u2e7e⺀-\u2efe⼀-\u2fde⿰-\u2ffe\u3000-〾\u3100-\u312e\u3130-ㆎ㆐-㆞ㆠ-\u31be㇀-\u31ee㈀-㋾㌀-㏾䷀-䷾ꀀ-\ua48e꒐-\ua4ce\ua4d0-\ua4feꔀ-\ua63eꙀ-\ua69e\ua6a0-\ua6fe꜀-ꜞꠀ-\ua82e\ua830-\ua83eꡀ-\ua87e\ua880-\ua8de\ua8e0-\ua8fe꤀-꤮ꤰ-\ua95e\ua960-\ua97e\ua980-\ua9deꨀ-꩞\uaa60-\uaa7e\uaa80-\uaade\uaae0-\uaafe\uab00-\uab2e\uabc0-\uabfe가-\ud7ae\ud7b0-\ud7fe\ud806-\ud807\ud80a-\ud80b\ud80e-\ud819\ud81c-\ud82b\ud82d-\ud833\ud836-\ud83a\ud83e-\ud87d\ud87f-\udb3f\udb41-\udb7e\udc00-\udffe\ue000-\uf8fe豈-\ufafeﬀ-פֿﭐ-\ufdfe\ufe00-\ufe0e︐-\ufe1e\ufe20-\ufe2e︰-﹎﹐-\ufe6eﹰ-\ufefe\uff00-￮\ufff0-\ufffe]|[\ud80c\udb80-\udbbe\udbc0-\udbfe][\udc00-\udfff]|\ud800[\udc00-\udc7e\udc80-\udcfe\udd00-\udd3e\udd40-\udd8e\udd90-\uddce\uddd0-\uddfe\ude80-\ude9e\udea0-\udede\udf00-\udf2e\udf30-\udf4e\udf80-\udf9e\udfa0-\udfde]|\ud801[\udc00-\udc4e\udc50-\udc7e\udc80-\udcae]|\ud802[\udc00-\udc3e\udc40-\udc5e\udd00-\udd1e\udd20-\udd3e\udd80-\udd9e\udda0-\uddfe\ude00-\ude5e\ude60-\ude7e\udf00-\udf3e\udf40-\udf5e\udf60-\udf7e]|\ud803[\udc00-\udc4e\ude60-\ude7e]|\ud804[\udc00-\udc7e\udc80-\udcce\udcd0-\udcfe\udd00-\udd4e\udd80-\uddde]|\ud805[\ude80-\udece]|\ud808[\udc00-\udffe]|\ud809[\udc00-\udc7e]|\ud80d[\udc00-\udc2e]|\ud81a[\udc00-\ude3e]|\ud81b[\udf00-\udf9e]|\ud82c[\udc00-\udcfe]|\ud834[\udc00-\udcfe\udd00-\uddfe\ude00-\ude4e\udf00-\udf5e\udf60-\udf7e]|\ud835[\udc00-\udffe]|\ud83b[\ude00-\udefe]|\ud83c[\udc00-\udc2e\udc30-\udc9e\udca0-\udcfe\udd00-\uddfe\ude00-\udefe\udf00-\udfff]|\ud83d[\udc00-\uddfe\ude00-\ude4e\ude80-\udefe\udf00-\udf7e]|\ud87e[\udc00-\ude1e]|\udb40[\udc00-\udc7e\udd00-\uddee]|\udbbf[\udc00-\udffe]|\udbff[\udc00-\udffe]|[\ud800-\ud805\ud808-\ud809\ud80c-\ud80d\ud81a-\ud81b\ud82c\ud834-\ud835\ud83b-\ud83d\ud87e\udb40\udb80-\udbfe]|\u00b7|\ufe0f|\ufe0e)/g;
 
     if (params.isAddTop){
@@ -219,14 +394,15 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
                 replacedUrl= `<a class="t_link_pic" href="${urlItem.url}" target="_blank">${urlItem.display_url}</a>`;
               } else if(new RegExp(/^twitter\.com/g).test(urlItem.display_url)){
                 replacedUrl= `<a class="t_link_tweet" href="${urlItem.url}" target="_blank">${urlItem.display_url}</a>`;
-              } else if(new RegExp(/youtu[.]*be\//).test(urlItem.display_url)){
+              } else if(new RegExp(/http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/).test(urlItem.expanded_url)){
                 replacedUrl= `<a class="t_link_youtube" href="${urlItem.url}" target="_blank">${urlItem.display_url}</a>`;
               } else{
                 replacedUrl= `<a class="t_link" href="${urlItem.url}" target="_blank">${urlItem.display_url}</a>`;
               }
 
-              if (this.settings.youtube && new RegExp(/youtu[.]*be\//).test(urlItem.display_url)){
-                const youtubeId = urlItem.display_url.replace(/youtu[.]*be\//gi,'');
+              if (this.settings.youtube && new RegExp(/http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/).test(urlItem.expanded_url)){
+                const matches = new RegExp(/http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/).exec(urlItem.expanded_url);
+                const youtubeId = matches[1];
                 const response = await fetch(`http://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${youtubeId}`);
                 if (response.ok) {
                   const data = await response.json();
@@ -242,9 +418,10 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
             }
           }
           if(youtubeUrlText.length > 0){
-            youtubeUrlText = `\n<div class="t_youtube">\n${youtubeUrlText}</div><!-- e-t_youtube -->`;
+            youtubeUrlText = `<div class="t_youtube">\n${youtubeUrlText}</div><!-- e-t_youtube -->`;
           }
-          newItem.text = `${newItem.text}${youtubeUrlText}`;
+          newItem.youtubeText = `${youtubeUrlText}`;
+          newItem.text = `${newItem.text}`;
 
           newItem.username = apiData.includes.users[0].username;
           newItem.profileImageUrl = apiData.includes.users[0].profile_image_url;
@@ -336,6 +513,8 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       }
     }
     this.setTotalCountStatus();
+
+    this.mainService.setOutputUrls(this.twitList);
     this.cdRef.detectChanges();
   }
 
@@ -409,6 +588,28 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     this.listContainer.scrollToIndex(startIndex);
   }
 
+  /**
+   * ツイートを一つ上に移動
+   * @param item: 移動ツイート
+   */
+  moveToUp(item: any) {
+    const index = this.twitList.indexOf(item);
+    const startIndex = this.listContainer.viewPortInfo.startIndex + 1;
+    moveItemInArray(this.twitList, index, index - 1);
+    this.listContainer.scrollToIndex(startIndex);
+  }
+
+  /**
+   * ツイートを一つ下に移動
+   * @param item: 移動ツイート
+   */
+  moveToDown(item: any) {
+    const index = this.twitList.indexOf(item);
+    const startIndex = this.listContainer.viewPortInfo.startIndex;
+    moveItemInArray(this.twitList, index, index + 1);
+    this.listContainer.scrollToIndex(startIndex);
+  }
+
   btnSortReverseClickHandler() {
     this.twitList.reverse();
     this.cdRef.detectChanges();
@@ -432,12 +633,21 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     this.mainService.doCopyImgUrlToClipboard({});
   }
 
+  btnCopyVideoUrlClickHandler() {
+    this.mainService.doCopyVideoUrlToClipboard({});
+  }
+
+  btnCopyImgVideoUrlClickHandler() {
+    this.mainService.doCopyImgVideoUrlToClipboard({});
+  }
+
   private printHtml(value: any) {
     if (this.twitList.length == 0)
       return;
       
     let output = '';
     let outputImg = '';
+    let outputVideo = '';
     let replacedImageList = [];
     for (const twit of this.twitList){
       let line = '\n\n\n\n\n\n\n';
@@ -472,6 +682,10 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
 
       line += twit.text + '\n';
       line += `</div><!-- e-t_honbun -->\n`;
+      
+      if (value.notYoutubeText === false && !twit.isImageOutput && twit.youtubeText !== '') 
+        line += twit.youtubeText + '\n';
+
       let imageTitle = '';
       if(twit.photos.length === 1){
         imageTitle = this.settings.title;
@@ -516,6 +730,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
           outputImg += photoUrl;
           outputImg += '\n';
         }
+
         if(mediaLine.length > 0) {
           if (this.settings.pict1mai_kyousei_tuujou && twit.photos.length === 1) {
             line += `<div class="t_media1"><!-- s-img -->\n`;
@@ -531,6 +746,16 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       }
 
       if(twit.videos.length > 0){
+        outputVideo += twit.previewImageUrl;
+        outputVideo += '\n';
+
+        for (const video of twit.videos) {
+          var videoRegex = /(https:\/\/[^?"]*)/gi;
+          let matches = videoRegex.exec(video.url);
+          outputVideo += matches[1];
+          outputVideo += '\n';
+        }
+
         line += `<div class="t_media_video">\n`;
         if (twit.imageDirectWidth === '')
           line += `<video width="${value.videoWidth}" class="twitter_video" controls="controls" poster="${twit.previewImageUrl}" class="mtpro-media-video">`;
@@ -562,10 +787,9 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
 
     this.mainService.setPrintHtml({
       html: output,
-      images: outputImg
+      images: outputImg,
+      videos: outputVideo,
     });
-
-    console.log('left-panel.components');
   }
 
   getEmojiCode (emoji) {
@@ -595,6 +819,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
   mouseLeaveHandler() {
     this.hovered = -1;
     this.containerClicked = -1;
+    this.mainService.setFocusImageWidth(this.hovered);
   }
 
   getHoverColor(backColor: string) {
@@ -607,6 +832,10 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
 
   containerClick() {
     this.containerClicked = 0;
+  }
+
+  btnExcutePrintClickHandler() {
+    this.mainService.excutePrintHtml(1);
   }
 
 }

@@ -2,6 +2,7 @@ import {ChangeDetectorRef, Component, HostListener, Input, OnDestroy, OnInit} fr
 import { Clipboard } from '@angular/cdk/clipboard';
 import {MainService} from '../main.service';
 import { Observable, timer } from 'rxjs';
+
 const electron = (window as any).require('electron');
 
 @Component({
@@ -30,11 +31,14 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   totalCount: number;
   addedUrls: any;
   addedImgUrls: any;
+  addedVideoUrls: any;
   isAddTop: boolean;
   notCardImageOutput: boolean;
+  notYoutubeText: boolean;
   twitterDefContainer: any;
   twitterDefImage: any;
   appendLargeName: any;
+  focustesting: boolean = true;
 
   constructor(private mainService: MainService, private cdRef: ChangeDetectorRef, private clipboard: Clipboard) {
 
@@ -52,8 +56,10 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     this.replacedAnchorUrl2 = '';
     this.addedUrls = '';
     this.addedImgUrls = '';
+    this.addedVideoUrls = '';
     this.isAddTop = false;
-    this.appendLargeName = ''
+    this.appendLargeName = '';
+    this.notYoutubeText = false;
 
     this.subscribers.settings = this.mainService.settings.subscribe((value) => {
       this.settings = value;
@@ -85,13 +91,13 @@ export class RightPanelComponent implements OnInit, OnDestroy {
         this.appendLargeName = this.settings.large;
       }
 
-
       this.cdRef.detectChanges();
     });
 
     this.subscribers.printHtml = this.mainService.printHtml.subscribe(value => {
       this.outputHtml = value.html;
       this.addedImgUrls = value.images;
+      this.addedVideoUrls = value.videos;
       this.clipboard.copy(this.outputHtml);
 
     });
@@ -101,10 +107,40 @@ export class RightPanelComponent implements OnInit, OnDestroy {
         this.clipboard.copy(this.addedImgUrls);
     });
 
+    this.subscribers.copyVideoUrls = this.mainService.copyVideoUrls.subscribe(value => {
+      if (this.addedVideoUrls !== undefined)
+        this.clipboard.copy(this.addedVideoUrls);
+    });
+
+    this.subscribers.copyImgVideoUrls = this.mainService.copyImgVideoUrls.subscribe(value => {
+      let copyText = '';
+      
+      if (this.addedImgUrls !== undefined)
+        copyText = this.addedImgUrls;
+      if (this.addedVideoUrls !== undefined)
+        copyText += this.addedVideoUrls;
+        
+      this.clipboard.copy(copyText);
+    });
+
     this.subscribers.totalCountStatus = this.mainService.totalCount.subscribe(value => {
       this.totalCount = value.totalCount;
     });
 
+    this.subscribers.addedUrls = this.mainService.outputUrls.subscribe(value => {
+      if (Array.isArray(value) && value.length) {
+        this.addedUrls = '';
+        value.forEach(item => {
+          this.addedUrls += (item.url + '\n');
+        });
+        this.addedUrls += '\n';
+      }
+    });
+
+    this.subscribers.excutePrint = this.mainService.excutePrint.subscribe(value => {
+      if (value === 1)
+        this.btnPrintHtmlClickHandler();
+    })
   }
 
   /**
@@ -114,6 +150,10 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     this.subscribers.settings.unsubscribe();
     this.subscribers.printHtml.unsubscribe();
     this.subscribers.totalCountStatus.unsubscribe();
+    this.subscribers.copyImageUrls.unsubscribe();
+    this.subscribers.copyVideoUrls.unsubscribe();
+    this.subscribers.copyImgVideoUrls.unsubscribe();
+    this.subscribers.excutePrint.unsubscribe();
   }
 
   @HostListener('window:beforeunload', [ '$event' ])
@@ -154,6 +194,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       replaceAnchorText: replaceAnchorText,
       notCardImageOutput: this.notCardImageOutput,
       appendLargeName: this.appendLargeName,
+      notYoutubeText: this.notYoutubeText,
     });
   }
 
@@ -161,6 +202,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     this.mainService.doDeleteAll({});
     this.addedUrls = '';
     this.addedImgUrls = '';
+    this.addedVideoUrls = '';
   }
 
   containerCollectiveSelectionHandler(index: any) {
@@ -176,7 +218,6 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       const filteredTwitters = this.twitterUrl.match(/(https?:\/\/(mobile\.)*twitter\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+))/ig);
       if (Array.isArray(filteredTwitters) && filteredTwitters.length) {
         this.mainService.setAddedUrls({twitters: filteredTwitters, isAddTop: this.isAddTop, con:this.twitterDefContainer, pict:this.twitterDefImage});
-        this.addedUrls += filteredTwitters.join('\n') + '\n';
       }
       this.twitterUrl = '';
     }

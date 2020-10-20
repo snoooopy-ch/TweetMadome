@@ -1,8 +1,15 @@
-<div class="sort-group d-flex justify-content-around">
-  <button type="button" class="btn-gazou" (click)="btnCopyImageUrlClickHandler()">画像URLコピー</button>
-  <button type="button" class="btn-sort" (click)="btnSortDescDateClickHandler()">日付が古い順</button>
-  <button type="button" class="btn-sort" (click)="btnSortAscDateClickHandler()">日付が新しい順</button>
-  <button type="button" class="btn-sort" (click)="btnSortReverseClickHandler()">上下逆順</button>
+<div class="sort-group">
+  <div class="d-flex justify-content-around" [ngStyle]="{'margin-bottom': '10px'}">
+    <button type="button" class="btn-gazou gray-button" (click)="btnCopyImageUrlClickHandler()">画像URLコピー</button>
+    <button type="button" class="btn-douga gray-button" (click)="btnCopyVideoUrlClickHandler()">動画URLコピー</button>
+    <button type="button" class="btn-douga gray-button" (click)="btnCopyImgVideoUrlClickHandler()">画像＋動画URL</button>
+  </div>
+  <div class="d-flex justify-content-around">
+    <button type="button" class="btn-gazou" (click)="btnExcutePrintClickHandler()">出力</button>
+    <button type="button" class="btn-sort" (click)="btnSortDescDateClickHandler()">日付が古い順</button>
+    <button type="button" class="btn-sort" (click)="btnSortAscDateClickHandler()">日付が新しい順</button>
+    <button type="button" class="btn-sort" (click)="btnSortReverseClickHandler()">上下逆順</button>
+  </div>
 </div>
 <virtual-scroller class="twitter-container" #listContainer [items]="twitList" [bufferAmount]="200"
                   cdkDropList (cdkDropListDropped)="vsTwitDropHandler($event)" [scrollAnimationTime] = 0 [enableUnequalChildrenSizes]="true">
@@ -14,6 +21,8 @@
                    cdkDragLockAxis="y" cdkDrag
                    (moveTopEmitter)="moveToTop(twitItem)"
                    (moveBottomEmitter)="moveToBottom(twitItem)"
+                   (moveUpEmitter)="moveToUp(twitItem)"
+                   (moveDownEmitter)="moveToDown(twitItem)"
                    (mouseenter)="mouseEnterHandler(twitList.indexOf(twitItem))"
                    (mouseleave)="mouseLeaveHandler()"
                    (deleteEmitter)="deleteOne(twitItem)"

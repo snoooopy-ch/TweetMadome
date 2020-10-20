@@ -13,7 +13,9 @@ import {
 import {TwitItem} from "../../models/twit-item";
 import {DomSanitizer} from "@angular/platform-browser";
 import {SimpleItem} from "../../models/pair-item";
+import {MainService} from '../../main.service';
 import {VirtualScrollerComponent} from "ngx-virtual-scroller";
+import {Hotkey, HotkeysService} from 'angular2-hotkeys';
 
 @Pipe({ name: 'safeHtml'})
 export class SafeHtmlPipe implements PipeTransform  {
@@ -29,6 +31,7 @@ export class SafeHtmlPipe implements PipeTransform  {
   styleUrls: ['./twit-detail.component.css']
 })
 export class TwitDetailComponent implements OnInit {
+  public subscribers: any = {};
 
   @Input() item: TwitItem;
   @Input() twitIndex: number;
@@ -44,14 +47,22 @@ export class TwitDetailComponent implements OnInit {
   @Output() moveBottomEmitter = new EventEmitter();
   @Output() deleteEmitter = new EventEmitter();
   @Output() containerClickEmitter = new EventEmitter();
+  @Output() moveUpEmitter = new EventEmitter();
+  @Output() moveDownEmitter = new EventEmitter();
 
   @ViewChild('tweetContent') tweetContent: ElementRef;
+  @ViewChild('toFocus') widthInput: ElementRef;
 
-  constructor(private cdRef: ChangeDetectorRef) { }
+  constructor(private mainService: MainService, private cdRef: ChangeDetectorRef) {
+  }
 
   ngOnInit(): void {
     // @ts-ignore
     twttr.widgets.load();
+
+    this.subscribers.focusImageWidth = this.mainService.focusImageWidth.subscribe(value => {
+      this.imageWidthInputFocus(value)
+    });
 
     if(this.selectedCon > 0){
       this.item.container = this.conList[this.selectedCon-1].value;
@@ -61,8 +72,13 @@ export class TwitDetailComponent implements OnInit {
       this.item.picture = this.picList[this.selectedPict - 1].value;
       this.item.pictureColor = this.picList[this.selectedPict - 1].color;
     }
+  }
 
-    console.log(this.showCheckColor);
+  /**
+   * Unsubscribe the completed service subscribers
+   */
+  ngOnDestroy(){
+    this.subscribers.focusImageWidth.unsubscribe();
   }
 
   btnMoveTopClickHandler() {
@@ -73,18 +89,43 @@ export class TwitDetailComponent implements OnInit {
     this.moveBottomEmitter.emit();
   }
 
+  btnMoveUpClickHandler() {
+    this.moveUpEmitter.emit();
+  }
+
+  btnMoveDownClickHandler() {
+    this.moveDownEmitter.emit();
+  }
+
   btnDeleteClickHandler() {
     this.deleteEmitter.emit();
   }
 
-  optContainerClickHandler(conItem: SimpleItem) {
+  optContainerClickHandler(event, conItem: SimpleItem) {
     this.item.containerColor = conItem.color;
     this.item.backcolor = conItem.backcolor;
     this.containerClickEmitter.emit();
+    event.target.blur();
   }
 
-  optPictureClickHandler(picItem: SimpleItem) {
+  optPictureClickHandler(event, picItem: SimpleItem) {
     this.item.pictureColor = picItem.color;
+    event.target.blur();
   }
 
+  imageWidthInputFocus(value: number) {
+    if (value ===  this.twitIndex)
+      this.widthInput.nativeElement.focus();
+  }
+
+  urlDisplayClickHandler(event) {
+    event.target.blur();
+    this.item.isReplaceUrl = !this.item.isReplaceUrl;
+  }
+
+  noneDisplayClickHandler(event) {
+    event.target.blur();
+    this.item.isImageOutput = !this.item.isImageOutput;
+  }
+  
 }
