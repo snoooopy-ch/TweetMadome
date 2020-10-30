@@ -38,6 +38,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   twitterDefContainer: any;
   twitterDefImage: any;
   appendLargeName: any;
+  dougaUrl: any;
   focustesting: boolean = true;
 
   constructor(private mainService: MainService, private cdRef: ChangeDetectorRef, private clipboard: Clipboard) {
@@ -60,6 +61,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     this.isAddTop = false;
     this.appendLargeName = '';
     this.notYoutubeText = false;
+    this.dougaUrl = '';
 
     this.subscribers.settings = this.mainService.settings.subscribe((value) => {
       this.settings = value;
@@ -90,6 +92,9 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       if (value.hasOwnProperty('large')) {
         this.appendLargeName = this.settings.large;
       }
+      if (value.hasOwnProperty('douga_url')) {
+        this.dougaUrl = this.settings.douga_url;
+      }
 
       this.cdRef.detectChanges();
     });
@@ -98,29 +103,51 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       this.outputHtml = value.html;
       this.addedImgUrls = value.images;
       this.addedVideoUrls = value.videos;
-      this.clipboard.copy(this.outputHtml);
+      
+      switch (value.copyWord) {
+        case 'image':
+          this.clipboard.copy(this.addedImgUrls);    
+          break;
+        case 'video':
+          this.clipboard.copy(this.addedVideoUrls);    
+          break;
+        case 'image-video':
+          let contents = '';
+          if (this.addedImgUrls !== undefined)
+            contents = this.addedImgUrls;
+          if (this.addedVideoUrls !== undefined)
+            contents += this.addedVideoUrls;
+
+          this.clipboard.copy(contents);   
+          break;
+        case 'html':
+          this.clipboard.copy(this.outputHtml);
+          break;
+        default:
+          break;
+      }
+      
 
     });
 
     this.subscribers.copyImageUrls = this.mainService.copyImageUrls.subscribe(value => {
-      if (this.addedImgUrls !== undefined)
-        this.clipboard.copy(this.addedImgUrls);
+      if (value.copyWord !== undefined)
+        this.btnPrintHtmlClickHandler(value.copyWord);
     });
 
     this.subscribers.copyVideoUrls = this.mainService.copyVideoUrls.subscribe(value => {
-      if (this.addedVideoUrls !== undefined)
-        this.clipboard.copy(this.addedVideoUrls);
+      if (value.copyWord !== undefined)
+        this.btnPrintHtmlClickHandler(value.copyWord);
     });
 
     this.subscribers.copyImgVideoUrls = this.mainService.copyImgVideoUrls.subscribe(value => {
-      let copyText = '';
-      
-      if (this.addedImgUrls !== undefined)
-        copyText = this.addedImgUrls;
-      if (this.addedVideoUrls !== undefined)
-        copyText += this.addedVideoUrls;
-        
-      this.clipboard.copy(copyText);
+      if (value.copyWord !== undefined)
+        this.btnPrintHtmlClickHandler(value.copyWord);
+    });
+
+    this.subscribers.excutePrint = this.mainService.excutePrint.subscribe(value => {
+      if (value.copyWord !== undefined)
+        this.btnPrintHtmlClickHandler(value.copyWord);
     });
 
     this.subscribers.totalCountStatus = this.mainService.totalCount.subscribe(value => {
@@ -136,11 +163,6 @@ export class RightPanelComponent implements OnInit, OnDestroy {
         this.addedUrls += '\n';
       }
     });
-
-    this.subscribers.excutePrint = this.mainService.excutePrint.subscribe(value => {
-      if (value === 1)
-        this.btnPrintHtmlClickHandler();
-    })
   }
 
   /**
@@ -164,11 +186,12 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       replaceImgUrl1: this.replacedImgUrl1,
       replaceImgUrl2: this.replacedImgUrl2,
       replaceAnchorUrl1: this.replacedAnchorUrl1,
-      replaceAnchorUrl2: this.replacedAnchorUrl2
+      replaceAnchorUrl2: this.replacedAnchorUrl2,
+      dougaUrl: this.dougaUrl,
     })
   }
 
-  btnPrintHtmlClickHandler() {
+  btnPrintHtmlClickHandler(copyWord: string) {
     let pict = '0';
     let replaceImgText = '';
     let replaceAnchorText = '';
@@ -195,6 +218,8 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       notCardImageOutput: this.notCardImageOutput,
       appendLargeName: this.appendLargeName,
       notYoutubeText: this.notYoutubeText,
+      copyWord: copyWord,
+      dougaUrl: this.dougaUrl
     });
   }
 

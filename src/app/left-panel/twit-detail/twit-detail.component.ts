@@ -13,6 +13,7 @@ import {
 import {TwitItem} from "../../models/twit-item";
 import {DomSanitizer} from "@angular/platform-browser";
 import {SimpleItem} from "../../models/pair-item";
+import {BtnColor} from "../../models/btn-color";
 import {MainService} from '../../main.service';
 import {VirtualScrollerComponent} from "ngx-virtual-scroller";
 import {Hotkey, HotkeysService} from 'angular2-hotkeys';
@@ -37,6 +38,7 @@ export class TwitDetailComponent implements OnInit {
   @Input() twitIndex: number;
   @Input() conList: SimpleItem[];
   @Input() picList: SimpleItem[];
+  @Input() btnColorList: BtnColor;
   @Input() selectedCon;
   @Input() selectedPict;
   @Input() urlCheckColor;

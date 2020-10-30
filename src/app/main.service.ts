@@ -73,6 +73,10 @@ export class MainService {
     this.imageCollectiveChangeSource.next(index);
   }
 
+  excutePrintHtml(value) {
+    this.excutePrintSource.next(value);
+  }
+
   saveSettings(params){
     electron.ipcRenderer.send('saveSettings', params);
   }
@@ -97,7 +101,4 @@ export class MainService {
     this.focusImageWidthSource.next(index);
   }
 
-  excutePrintHtml(index: number) {
-    this.excutePrintSource.next(1);
-  }
 }

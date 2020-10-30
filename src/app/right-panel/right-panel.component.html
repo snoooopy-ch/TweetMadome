@@ -1,13 +1,6 @@
 <div class="row-container">
   <button class="border-round sakusyo-btn btn-top-delete" (click)="btnDeleteAllClickHandler()">全て削除</button>
 </div>
-<div class="row-container">
-  <textarea class="twitter-url" [(ngModel)]="twitterUrl"></textarea>
-  <button class="add-url" (click)="btnAddUrlClickHandler()">追加</button>
-</div>
-<div class="pt-1">
-  <label class="label-vertical-center"><input class="mr-1" type="checkbox" [(ngModel)]="isAddTop">上に追加</label>
-</div>
 <div class="container-group">
   <div class="row">containter</div>
   <div class="row row-container-con">
@@ -27,7 +20,14 @@
     <label><input type="radio" name="opt-def-image1" [(ngModel)]="twitterDefImage" value="5">5</label>
   </div>
 </div>
-<div class="container-group">
+<div class="row-container">
+  <textarea class="twitter-url" [(ngModel)]="twitterUrl"></textarea>
+  <button class="add-url" (click)="btnAddUrlClickHandler()">追加</button>
+</div>
+<div class="pt-1">
+  <label class="label-vertical-center"><input class="mr-1" type="checkbox" [(ngModel)]="isAddTop">上に追加</label>
+</div>
+<div class="container-group back-yellow">
   <div class="row">一括変更</div>
   <div class="row">
     <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="1" (click)="containerCollectiveSelectionHandler('1')">{{settings.container1}}</label>
@@ -48,7 +48,7 @@
     <label><input type="radio" name="opt-container" [(ngModel)]="twitterContainer" value="6" (click)="containerCollectiveSelectionHandler('6')">{{settings.container6}}</label>
   </div>
 </div>
-<div class="w-100 image-group">
+<div class="w-100 image-group back-yellow">
   <div class="row">一括変更</div>
   <div class="row">
     <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="1" (click)="optImageTypeClickHandler('1')">{{settings.pict1}}</label>
@@ -72,23 +72,24 @@
     <label><input type="radio" name="opt-image-type" [(ngModel)]="imageType" value="5" (click)="optImageTypeClickHandler('5')">{{settings.pict5}}</label>
   </div>
 </div>
-<div class="status-total">
-  <input type="text" [(ngModel)]="totalCount" class="w-100" readonly>
-</div>
 <div class="video-group">
   <div style="font-size: 13px;">videoの横幅</div>
   <div><input type="text" name="txt-video-width" [(ngModel)]="videoWidth" class="w-100 px-1"></div>
 </div>
-<div class="pt-1">
-  <label class="label-vertical-center"><input class="mr-1" type="checkbox" [(ngModel)]="notYoutubeText">Youtubeを出力せず</label>
+<div class="status-total">
+  <input type="text" [(ngModel)]="totalCount" class="w-100" readonly>
 </div>
 <div class="pt-1">
-  <label class="label-vertical-center"><input class="mr-1" type="checkbox" [(ngModel)]="notCardImageOutput">Twitterカード画像を出力せず</label>
+  <label class="label-vertical-center"><input class="mr-1" type="checkbox" [(ngModel)]="notYoutubeText">Youtube埋め込みを出力しない</label>
+</div>
+<div class="pt-1">
+  <label class="label-vertical-center"><input class="mr-1" type="checkbox" [(ngModel)]="notCardImageOutput">Twitterカード画像を出力しない</label>
 </div>
 <div class="pt-1">
   <label class="label-vertical-center"><input class="mr-1" type="checkbox" [(ngModel)]="appendLargeName" value='1'>画像にLargeを付与</label>
 </div>
 <div class="container-group">
+  <div class="row pb-1">画像</div>
   <div class="row pb-1"><label><input type="checkbox" [(ngModel)]="isReplaceUrl">画像URL形式変更</label></div>
   <div class="row">a href</div>
   <div class="row pb-1 px-1"><input type="radio" name="opt-change-anchor" [(ngModel)]="replaceAnchorUrlKind" value="1"><input class="txt-replace-url" type="text" [(ngModel)]="replacedAnchorUrl1"></div>
@@ -97,20 +98,17 @@
   <div class="row pb-1 px-1"><input type="radio" name="opt-change-image" [(ngModel)]="replaceImgUrlKind" value="1"><input class="txt-replace-url" type="text" [(ngModel)]="replacedImgUrl1"></div>
   <div class="row pb-1 px-1"><input type="radio" name="opt-change-image" [(ngModel)]="replaceImgUrlKind" value="2"><input class="txt-replace-url" type="text" [(ngModel)]="replacedImgUrl2"></div>
 </div>
+<div class="container-group">
+  <div class="row pb-1">動画（URLにチェック時利用）</div>
+  <div class="row pb-1"><input type="text" class="w-100" [(ngModel)]="dougaUrl"></div>
+</div>
 <div class="row-container">
-  <button id="btn-print-html-tag" class="border-round" (click)="btnPrintHtmlClickHandler()">出力</button>
+  <button id="btn-print-html-tag" class="border-round" (click)="btnPrintHtmlClickHandler('html')">出力</button>
   <button id="btn-copy-tag" class="" [cdkCopyToClipboard]="outputHtml">コピー</button>
   <textarea id="txt-html-tag" [(ngModel)]="outputHtml"></textarea>
 </div>
 <div class="row-container">
   <button class="border-round sakusyo-btn" (click)="btnDeleteAllClickHandler()">全て削除</button>
-</div>
-<div class="row-container mt-1">
-  <textarea class="twitter-url" [(ngModel)]="twitterUrl"></textarea>
-  <button class="add-url" (click)="btnAddUrlClickHandler()">追加</button>
-</div>
-<div class="pt-1">
-  <label class="label-vertical-center"><input class="mr-1" type="checkbox" [(ngModel)]="isAddTop">上に追加</label>
 </div>
 <div class="container-group">
   <div class="row">containter</div>
@@ -130,6 +128,13 @@
     <label><input type="radio" name="opt-def-image2" [(ngModel)]="twitterDefImage" value="4">4</label>
     <label><input type="radio" name="opt-def-image2" [(ngModel)]="twitterDefImage" value="5">5</label>
   </div>
+</div>
+<div class="row-container mt-1">
+  <textarea class="twitter-url" [(ngModel)]="twitterUrl"></textarea>
+  <button class="add-url" (click)="btnAddUrlClickHandler()">追加</button>
+</div>
+<div class="pt-1">
+  <label class="label-vertical-center"><input class="mr-1" type="checkbox" [(ngModel)]="isAddTop">上に追加</label>
 </div>
 <div class="row-container mt-1">
   <div>

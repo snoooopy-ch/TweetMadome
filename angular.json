@@ -27,7 +27,11 @@
               "src/styles.css"
             ],
             "scripts": ["node_modules/freezeframe/dist/freezeframe.min.js", 
-              "node_modules/gasparesganga-jquery-loading-overlay/dist/loadingoverlay.min.js"
+              "node_modules/gasparesganga-jquery-loading-overlay/dist/loadingoverlay.min.js",
+              "src/assets/js/jis-escape/iso88591_map.js",
+              "src/assets/js/jis-escape/punycode.js",
+              "src/assets/js/jis-escape/sjis_map.js",
+              "src/assets/js/jis-escape/strutil.js"
             ]
           },
           "configurations": {

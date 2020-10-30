@@ -227,13 +227,13 @@ app-twit-detail .row-2 .btn-delete {
 
 app-twit-detail .row-2 .btn-delete:hover {
   background-color: #0366d6 !important;
-  border-color: #0366d6;
+  border-color: #0366d6  !important;
   color: #fff;
 }
 
 app-twit-detail div button:hover {
   background-color: #0366d6 !important;
-  border-color: #0366d6;
+  border-color: #0366d6 !important;
   color: #fff;
 }
 
@@ -737,4 +737,8 @@ input[type='radio']:checked:before {
 .tweet-width-value input{
   height: 24px;
   width: 100%;
+}
+
+.back-yellow {
+  background-color: #fff4d4;
 }

@@ -256,6 +256,12 @@ function saveSettings(params) {
       data = data.replace(/(replace_anchor_url2:)[^\r^\n]+(\r\n)/g, `$1${params.replaceAnchorUrl2}$2`);
     }
 
+    if (data.match(/(douga_url:)[^\r^\n]+(\r\n)/g) === null) {
+      data = data.replace(/(douga_url:)+(\r\n)/g, `$1${params.dougaUrl}$2`);
+    } else {
+      data = data.replace(/(douga_url:)[^\r^\n]+(\r\n)/g, `$1${params.dougaUrl}$2`);
+    }
+
     fs.writeFile('Setting.ini', data, (err) => {
       if (err) throw err;
       console.log('The settings file has been saved!');
