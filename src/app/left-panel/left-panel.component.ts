@@ -41,6 +41,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
   hovered: number;
   containerClicked: number;
   subHotKeys = [];
+  isReplaceUrl: boolean;
 
   constructor(private mainService: MainService, private cdRef: ChangeDetectorRef,
               private zone: NgZone, private hotkeysService: HotkeysService) {
@@ -139,6 +140,12 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       this.printHtml(value);
     });
 
+    this.subscribers.imageUrlR2L = this.mainService.imageUrlR2L.subscribe(value => {
+      if (typeof value === 'boolean')
+        this.isReplaceUrl = value
+    });
+
+    this.isReplaceUrl = false;
   }
 
   /**
@@ -902,6 +909,11 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     let lastSeg = cleanUrl.substring(cleanUrl.lastIndexOf('/') + 1)
 
     return dstUrl + '/' + lastSeg;
+  }
+
+  imageUrlLeftChangeClickHandler(value) {
+    this.mainService.setImageUrlL2R(value);
+    this.cdRef.detectChanges();
   }
 
 }

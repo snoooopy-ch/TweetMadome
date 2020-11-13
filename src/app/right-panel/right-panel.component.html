@@ -90,7 +90,7 @@
 </div>
 <div class="container-group">
   <div class="row pb-1">画像</div>
-  <div class="row pb-1"><label><input type="checkbox" [(ngModel)]="isReplaceUrl">画像URL形式変更</label></div>
+  <div class="row pb-1"><label><input type="checkbox" [(ngModel)]="isReplaceUrl" (click)="imageUrlRightChangeClickHandler(!isReplaceUrl)">画像URL形式変更</label></div>
   <div class="row">a href</div>
   <div class="row pb-1 px-1"><input type="radio" name="opt-change-anchor" [(ngModel)]="replaceAnchorUrlKind" value="1"><input class="txt-replace-url" type="text" [(ngModel)]="replacedAnchorUrl1"></div>
   <div class="row pb-1 px-1"><input type="radio" name="opt-change-anchor" [(ngModel)]="replaceAnchorUrlKind" value="2"><input class="txt-replace-url" type="text" [(ngModel)]="replacedAnchorUrl2"></div>

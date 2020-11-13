@@ -34,6 +34,10 @@ export class MainService {
   outputUrls = this.outputUrlSource.asObservable();
   focusImageWidthSource = new BehaviorSubject<any>({});
   focusImageWidth = this.focusImageWidthSource.asObservable();
+  imageUrlL2RSource = new BehaviorSubject<any>({});
+  imageUrlL2R = this.imageUrlL2RSource.asObservable();
+  imageUrlR2LSource = new BehaviorSubject<any>({});
+  imageUrlR2L = this.imageUrlR2LSource.asObservable();
 
   constructor() {
     electron.ipcRenderer.on('getSettings', (event, value) => {
@@ -99,6 +103,14 @@ export class MainService {
 
   setFocusImageWidth(index: number) {
     this.focusImageWidthSource.next(index);
+  }
+
+  setImageUrlR2L(value) {
+    this.imageUrlR2LSource.next(value);
+  }
+
+  setImageUrlL2R(value) {
+    this.imageUrlL2RSource.next(value);
   }
 
 }

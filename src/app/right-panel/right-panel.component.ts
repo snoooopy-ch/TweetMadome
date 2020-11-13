@@ -163,6 +163,11 @@ export class RightPanelComponent implements OnInit, OnDestroy {
         this.addedUrls += '\n';
       }
     });
+
+    this.subscribers.imageUrlL2R = this.mainService.imageUrlL2R.subscribe(value => {
+      if (typeof value === 'boolean')
+        this.isReplaceUrl = value;
+    });
   }
 
   /**
@@ -246,5 +251,10 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       }
       this.twitterUrl = '';
     }
+  }
+
+  imageUrlRightChangeClickHandler(value) {
+    this.mainService.setImageUrlR2L(value);
+    this.cdRef.detectChanges();
   }
 }

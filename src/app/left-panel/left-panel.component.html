@@ -10,6 +10,7 @@
     <button type="button" class="btn-sort" (click)="btnSortAscDateClickHandler()">日付が新しい順</button>
     <button type="button" class="btn-sort" (click)="btnSortReverseClickHandler()">上下逆順</button>
   </div>
+  <div class="d-flex "><label style="margin: 5px 10px 0px; width: 100%;"><input type="checkbox" [(ngModel)]="isReplaceUrl" (click)="imageUrlLeftChangeClickHandler(!isReplaceUrl)">画像URL形式変更</label></div>
 </div>
 <virtual-scroller class="twitter-container" #listContainer [items]="twitList" [bufferAmount]="200"
                   cdkDropList (cdkDropListDropped)="vsTwitDropHandler($event)" [scrollAnimationTime] = 0 [enableUnequalChildrenSizes]="true">
