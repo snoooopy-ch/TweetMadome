@@ -703,19 +703,20 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       line += `<span class="t_bird_icon"><a href="${twit.url}" target="_blank"><img src="${this.settings.url}${tw_bird}"></a></span></div><!-- e-t_header -->\n`
       line += `<div class="t_honbun">\n`;
 
+      let twitText = twit.text;
       if (!this.settings.username_link_br) {
-        twit.text = twit.text.replace(/(\s*<a class="(t_link_username|t_link_tweet)"[^(<)]+<\/a>)(<br>)*/gi,`$1`);
+        twitText = twitText.replace(/(\s*<a class="(t_link_username|t_link_tweet)"[^(<)]+<\/a>)(<br>)*/gi,`$1`);
       }
 
       if (this.settings.t_top_link){
-        twit.text = twit.text.replace(/((^\s*<a class="t_link_username"[^(<)]+<\/a>(<br>)*)(\s*<a class="(t_link_username|t_link_tweet)"[^(<)]+<\/a>(<br>)*)*)/,`<div class="t_top_link">$1</div>\n`);
+        twitText = twitText.replace(/((^\s*<a class="t_link_username"[^(<)]+<\/a>(<br>)*)(\s*<a class="(t_link_username|t_link_tweet)"[^(<)]+<\/a>(<br>)*)*)/,`<div class="t_top_link">$1</div>\n`);
       }
 
       if (this.settings.t_bottom_link){
-        twit.text = twit.text.replace(/((<a class="t_link_tweet"[^(<)]+<\/a>(<br>)*\s*)(<a class="(t_link_tweet|t_link_pic)"[^(<)]+<\/a>(<br>)*\s*)+)|((\<a class="(t_link_pic|t_link_tweet)"[^(<)]+<\/a>(<br>)*)+)$/,`<div class="t_bottom_link">$&</div>`);
+        twitText = twitText.replace(/((<a class="t_link_tweet"[^(<)]+<\/a>(<br>)*\s*)(<a class="(t_link_tweet|t_link_pic)"[^(<)]+<\/a>(<br>)*\s*)+)|((\<a class="(t_link_pic|t_link_tweet)"[^(<)]+<\/a>(<br>)*)+)$/,`<div class="t_bottom_link">$&</div>`);
       }
 
-      line += twit.text + '\n';
+      line += twitText + '\n';
       line += `</div><!-- e-t_honbun -->\n`;
       
       if (value.notYoutubeText === false && !twit.isImageOutput && twit.youtubeText !== '') 
