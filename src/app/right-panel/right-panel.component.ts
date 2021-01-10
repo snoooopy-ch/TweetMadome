@@ -15,12 +15,15 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   private timer;
   public subscribers: any = {};
   private title: any;
-  twitterContainer: any;
+  container: any;
   imageType: any;
   imageWidth: any;
   outputHtml: any;
   settings: any;
-  videoWidth: any;
+  videoWidth1: any;
+  videoWidth2: any;
+  videoWidth3: any;
+  replaceVideoKind: any;
   isReplaceUrl: boolean;
   replaceImgUrlKind: any;
   replacedImgUrl1: any;
@@ -32,6 +35,9 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   addedUrls: any;
   addedImgUrls: any;
   addedVideoUrls: any;
+  addedUrls1: any;
+  addedImgUrls1: any;
+  addedVideoUrls1: any;
   isAddTop: boolean;
   notCardImageOutput: boolean;
   notYoutubeText: boolean;
@@ -39,6 +45,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   twitterDefImage: any;
   appendLargeName: any;
   dougaUrl: any;
+  twitList: any;
   focustesting: boolean = true;
 
   constructor(private mainService: MainService, private cdRef: ChangeDetectorRef, private clipboard: Clipboard) {
@@ -46,9 +53,9 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.twitterContainer = '0';
     this.twitterUrl = '';
     this.isReplaceUrl = false;
+    this.replaceVideoKind = '1';
     this.replaceImgUrlKind = '1';
     this.replacedImgUrl1 = '';
     this.replacedImgUrl2 = '';
@@ -58,10 +65,22 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     this.addedUrls = '';
     this.addedImgUrls = '';
     this.addedVideoUrls = '';
+    this.addedUrls1 = '';
+    this.addedImgUrls1 = '';
+    this.addedVideoUrls1 = '';
     this.isAddTop = false;
     this.appendLargeName = '';
     this.notYoutubeText = false;
     this.dougaUrl = '';
+    this.twitList = [];
+
+    this.mainService.containerCollectiveChange.subscribe((res) => {
+      this.container = res;
+    });
+
+    this.mainService.imageCollectiveChange.subscribe((res) => {
+      this.imageType = res;
+    });
 
     this.subscribers.settings = this.mainService.settings.subscribe((value) => {
       this.settings = value;
@@ -69,7 +88,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
         this.imageWidth = this.settings.image_width;
       }
       if (value.hasOwnProperty('video_width')) {
-        this.videoWidth = this.settings.video_width;
+        this.videoWidth1 = this.settings.video_width;
       }
       if (value.hasOwnProperty('replace_image_url1')) {
         this.replacedImgUrl1 = this.settings.replace_image_url1;
@@ -100,16 +119,35 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     });
 
     this.subscribers.printHtml = this.mainService.printHtml.subscribe(value => {
+      let imagesList, videosList;
+      if (value.images) {
+        imagesList = value.images.split('\n');
+        imagesList.forEach((image) => {
+          if (image != '' && this.addedImgUrls1.indexOf(image) == -1) {
+            this.addedImgUrls1 = this.addedImgUrls1 + image + '\n';
+          }
+        });
+      }
+
+      if (value.videos) {
+        videosList = value.videos.split('\n');
+        videosList.forEach((video) => {
+          if (video != '' && this.addedVideoUrls1.indexOf(video) == -1) {
+            this.addedVideoUrls1 = this.addedVideoUrls1 + video + '\n';
+          }
+        })
+      }
+
       this.outputHtml = value.html;
       this.addedImgUrls = value.images;
       this.addedVideoUrls = value.videos;
-      
+
       switch (value.copyWord) {
         case 'image':
-          this.clipboard.copy(this.addedImgUrls);    
+          this.clipboard.copy(this.addedImgUrls);
           break;
         case 'video':
-          this.clipboard.copy(this.addedVideoUrls);    
+          this.clipboard.copy(this.addedVideoUrls);
           break;
         case 'image-video':
           let contents = '';
@@ -118,7 +156,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
           if (this.addedVideoUrls !== undefined)
             contents += this.addedVideoUrls;
 
-          this.clipboard.copy(contents);   
+          this.clipboard.copy(contents);
           break;
         case 'html':
           this.clipboard.copy(this.outputHtml);
@@ -126,7 +164,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
         default:
           break;
       }
-      
+
 
     });
 
@@ -155,12 +193,21 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     });
 
     this.subscribers.addedUrls = this.mainService.outputUrls.subscribe(value => {
+      this.twitList = value;
       if (Array.isArray(value) && value.length) {
+        let count = 0;
         this.addedUrls = '';
         value.forEach(item => {
           this.addedUrls += (item.url + '\n');
+          if (this.addedUrls1.indexOf(item.url) == -1) {
+            count ++;
+            this.addedUrls1 += (item.url + '\n');
+          }
         });
         this.addedUrls += '\n';
+        if (count != 0) {
+          this.addedUrls1 += '\n';
+        }
       }
     });
 
@@ -185,9 +232,22 @@ export class RightPanelComponent implements OnInit, OnDestroy {
 
   @HostListener('window:beforeunload', [ '$event' ])
   beforeUnloadHandler(event) {
+    let videoWidth;
+    switch (this.replaceVideoKind) {
+      case '1':
+        videoWidth = this.videoWidth1;
+        break;
+      case '2':
+        videoWidth = this.videoWidth2;
+        break;
+      case '3':
+        videoWidth = this.videoWidth3;
+        break;
+    }
+
     this.mainService.saveSettings({
       imageWidth: this.imageWidth,
-      videoWidth: this.videoWidth,
+      videoWidth: videoWidth,
       replaceImgUrl1: this.replacedImgUrl1,
       replaceImgUrl2: this.replacedImgUrl2,
       replaceAnchorUrl1: this.replacedAnchorUrl1,
@@ -200,6 +260,19 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     let pict = '0';
     let replaceImgText = '';
     let replaceAnchorText = '';
+    let videoWidth;
+
+    switch (this.replaceVideoKind) {
+      case '1':
+        videoWidth = this.videoWidth1;
+        break;
+      case '2':
+        videoWidth = this.videoWidth2;
+        break;
+      case '3':
+        videoWidth = this.videoWidth3;
+        break;
+    }
 
     if(this.replaceImgUrlKind === '1'){
       replaceImgText = this.replacedImgUrl1;
@@ -216,7 +289,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     this.mainService.doPrintHtml({
       imageType: Number(pict),
       imageWidth: this.imageWidth === undefined ? '' : this.imageWidth,
-      videoWidth: this.videoWidth === undefined ? '' : this.videoWidth,
+      videoWidth: videoWidth === undefined ? '' : videoWidth,
       isReplaceUrl: this.isReplaceUrl,
       replaceImgText: replaceImgText,
       replaceAnchorText: replaceAnchorText,
@@ -237,10 +310,16 @@ export class RightPanelComponent implements OnInit, OnDestroy {
 
   containerCollectiveSelectionHandler(index: any) {
     this.mainService.doContainerCollectiveChange(index);
+    this.mainService.containerCollectiveChange.subscribe((res) => {
+      this.container = res;
+    });
   }
 
   optImageTypeClickHandler(index: any) {
     this.mainService.doImageCollectiveChange(index);
+    this.mainService.imageCollectiveChange.subscribe((res) => {
+      this.imageType = res;
+    });
   }
 
   btnAddUrlClickHandler() {
