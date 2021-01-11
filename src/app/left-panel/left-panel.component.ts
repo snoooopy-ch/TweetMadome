@@ -398,6 +398,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
           }else{
             newItem.text = apiData.data.text;
           }
+
           newItem.text = newItem.text.replace(/\n/gi,'<br>\n');
           newItem.text = newItem.text.replace(emojiRegex, this.getEmojiCode);
           newItem.text = newItem.text.replace(kanjiRegex, this.escapeKanji);
@@ -462,6 +463,14 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
               newItem.text = newItem.text.replace(re, `<a class="t_link_username" href="https://twitter.com/${user.username}" data-screen-name="${user.username}">@${user.username}</a>`);
             }
           }
+
+          if (apiData.data.referenced_tweets[0].type !== undefined && apiData.data.referenced_tweets[0].type === 'replied_to') {
+            if (apiData.includes.users[1].username !== undefined) {
+              var includeUsername = apiData.includes.users[1].username;
+              newItem.text = newItem.text.replace(/^@?(\w){1,15}/gi, "@" + includeUsername);
+            }
+          }
+
           newItem.photos = [];
           newItem.videos = [];
           if(apiData.includes.media !== undefined) {

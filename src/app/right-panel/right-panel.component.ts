@@ -47,7 +47,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.twitterContainer = '0';
-    this.twitterUrl = '';
+    this.twitterUrl = 'https://twitter.com/ULoseBlawlStars/status/1315105996767813632;https://twitter.com/Amayuri_Sadaija/status/1315105116974850048;https://twitter.com/Pittology/status/1342511380218470400';
     this.isReplaceUrl = false;
     this.replaceImgUrlKind = '1';
     this.replacedImgUrl1 = '';

@@ -19,4 +19,5 @@ export class TwitItem{
   backcolor: string;
   imageDirectWidth: string;
   youtubeText: string;
+  referenced_tweets_type: string;
 }
