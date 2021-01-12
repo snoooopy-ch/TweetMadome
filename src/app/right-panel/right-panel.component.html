@@ -158,24 +158,27 @@
   </div>
   <textarea class="twitter-url" [(ngModel)]="addedVideoUrls"></textarea>
 </div>
-<div class="row-container mt-1">
-  <div>
-    (アプリ終了時まで消去しない)
+<div style="background-color: #e1e1e1;">
+  <div class="row-container mt-1">
+    <div>
+      (アプリ終了時まで消去しない)
+    </div>
+    <div>
+      追加されたツイート
+    </div>
+    <textarea class="twitter-url" [(ngModel)]="addedUrls1"></textarea>
   </div>
-  <div>
-    追加されたツイート
+  <div class="row-container mt-1">
+    <div>
+      出力された画像URL
+    </div>
+    <textarea class="twitter-url" [(ngModel)]="addedImgUrls1"></textarea>
   </div>
-  <textarea class="twitter-url" [(ngModel)]="addedUrls1"></textarea>
+  <div class="row-container mt-1">
+    <div>
+      出力された動画URL
+    </div>
+    <textarea class="twitter-url" [(ngModel)]="addedVideoUrls1"></textarea>
+  </div>
 </div>
-<div class="row-container mt-1">
-  <div>
-    出力された画像URL
-  </div>
-  <textarea class="twitter-url" [(ngModel)]="addedImgUrls1"></textarea>
-</div>
-<div class="row-container mt-1">
-  <div>
-    出力された動画URL
-  </div>
-  <textarea class="twitter-url" [(ngModel)]="addedVideoUrls1"></textarea>
-</div>
+

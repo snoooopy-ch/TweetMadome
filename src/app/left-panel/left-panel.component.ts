@@ -355,8 +355,8 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
 
     for (const twitter of params.twitters) {
       let isExists = false;
-      for (const item of this.twitList){
-        if(item.url === twitter){
+      for (const item of this.twitList) {
+        if(item.url === twitter) {
           isExists = true;
         }
       }
@@ -465,19 +465,22 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
           newItem.name = newItem.name.replace(' &#65038;', "");
           newItem.name = newItem.name.replace(' &#65039;', "");
 
+          if (apiData.data.referenced_tweets !== undefined && apiData.data.referenced_tweets[0].type !== undefined && apiData.data.referenced_tweets[0].type === 'replied_to') {
+            if (apiData.includes.users.length >= 2) {
+              console.log(apiData.includes.users.length);
+              if (apiData.includes.users[1].username !== undefined) {
+                var includeUsername = apiData.includes.users[1].username;
+                newItem.text = newItem.text.replace(/^@?(\w){1,15}/gi, "@" + includeUsername);
+              }
+            }
+          }
+
           for (const user of apiData.includes.users){
             const re = new RegExp(`@${user.username}`,'gi');
             if (this.settings.username_link_br) {
               newItem.text = newItem.text.replace(re, `<a class="t_link_username" href="https://twitter.com/${user.username}" data-screen-name="${user.username}">@${user.username}</a><br>`);
             }else{
               newItem.text = newItem.text.replace(re, `<a class="t_link_username" href="https://twitter.com/${user.username}" data-screen-name="${user.username}">@${user.username}</a>`);
-            }
-          }
-
-          if (apiData.data.referenced_tweets[0].type !== undefined && apiData.data.referenced_tweets[0].type === 'replied_to') {
-            if (apiData.includes.users[1].username !== undefined) {
-              var includeUsername = apiData.includes.users[1].username;
-              newItem.text = newItem.text.replace(/^@?(\w){1,15}/gi, "@" + includeUsername);
             }
           }
 

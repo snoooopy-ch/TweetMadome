@@ -53,7 +53,7 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.twitterUrl = 'https://twitter.com/ULoseBlawlStars/status/1315105996767813632;https://twitter.com/Amayuri_Sadaija/status/1315105116974850048;https://twitter.com/Pittology/status/1342511380218470400';
+    this.twitterUrl = '';
     this.isReplaceUrl = false;
     this.replaceVideoKind = '1';
     this.replaceImgUrlKind = '1';
@@ -89,6 +89,12 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       }
       if (value.hasOwnProperty('video_width')) {
         this.videoWidth1 = this.settings.video_width;
+      }
+      if (value.hasOwnProperty('video_width2')) {
+        this.videoWidth2 = this.settings.video_width2;
+      }
+      if (value.hasOwnProperty('video_width3')) {
+        this.videoWidth3 = this.settings.video_width3;
       }
       if (value.hasOwnProperty('replace_image_url1')) {
         this.replacedImgUrl1 = this.settings.replace_image_url1;
@@ -247,7 +253,9 @@ export class RightPanelComponent implements OnInit, OnDestroy {
 
     this.mainService.saveSettings({
       imageWidth: this.imageWidth,
-      videoWidth: videoWidth,
+      videoWidth: this.videoWidth1,
+      videoWidth2: this.videoWidth2,
+      videoWidth3: this.videoWidth3,
       replaceImgUrl1: this.replacedImgUrl1,
       replaceImgUrl2: this.replacedImgUrl2,
       replaceAnchorUrl1: this.replacedAnchorUrl1,

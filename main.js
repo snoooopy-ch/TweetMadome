@@ -232,6 +232,18 @@ function saveSettings(params) {
       data = data.replace(/(video_width:)[^\r^\n]+(\r\n)/g, `$1${params.videoWidth}$2`);
     }
 
+    if (data.match(/(video_width2:)[^\r^\n]+(\r\n)/g) === null) {
+      data = data.replace(/(video_width2:)+(\r\n)/g, `$1${params.videoWidth2}$2`);
+    } else {
+      data = data.replace(/(video_width2:)[^\r^\n]+(\r\n)/g, `$1${params.videoWidth2}$2`);
+    }
+
+    if (data.match(/(video_width3:)[^\r^\n]+(\r\n)/g) === null) {
+      data = data.replace(/(video_width3:)+(\r\n)/g, `$1${params.videoWidth3}$2`);
+    } else {
+      data = data.replace(/(video_width3:)[^\r^\n]+(\r\n)/g, `$1${params.videoWidth3}$2`);
+    }
+
     if (data.match(/(replace_image_url1:)[^\r^\n]+(\r\n)/g) === null) {
       data = data.replace(/(replace_image_url1:)+(\r\n)/g, `$1${params.replaceImgUrl1}$2`);
     } else {
