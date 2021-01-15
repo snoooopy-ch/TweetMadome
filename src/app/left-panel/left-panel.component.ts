@@ -783,8 +783,8 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
             }
           }
           if (value.isReplaceUrl || (!value.isReplaceUrl && twit.isReplaceUrl)){
-            // photoImgUrl = photoUrl.replace(/https:\/\/pbs.twimg.com\/(media|card_img)/gi,value.replaceImgText);
-            // photoAnchorUrl = photoUrl.replace(/https:\/\/pbs.twimg.com\/(media|card_img)/gi,value.replaceAnchorText);
+            photoImgUrl = photoUrl.replace(/https:\/\/pbs.twimg.com\/(media)/gi,value.replaceImgText);
+            photoAnchorUrl = photoUrl.replace(/https:\/\/pbs.twimg.com\/(media)/gi,value.replaceAnchorText);
             replacedImageList.push(photoUrl);
           }
           mediaLine += '<div>';
