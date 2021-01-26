@@ -784,9 +784,8 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
             }
           }
           if (value.isReplaceUrl || (!value.isReplaceUrl && twit.isReplaceUrl)){
-            photoImgUrl = photoUrl.replace(/https:\/\/pbs.twimg.com\/(media|card_img)/gi,value.replaceImgText);
-            photoAnchorUrl = photoUrl.replace(/https:\/\/pbs.twimg.com\/(media|card_img)/gi,value.replaceAnchorText);
-            replacedImageList.push(photoUrl);
+            photoImgUrl = photoUrl.replace(/https:\/\/pbs.twimg.com\/(media)/gi,value.replaceImgText);
+            photoAnchorUrl = photoUrl.replace(/https:\/\/pbs.twimg.com\/(media)/gi,value.replaceAnchorText);
           }
           mediaLine += '<div>';
           mediaLine += `<a href="${photoAnchorUrl}" class="swipe" rel="${twit.id}" title="${imageTitle}" target="_blank"><img src="${photoImgUrl}" class="no_image"`;
