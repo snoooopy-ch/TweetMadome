@@ -274,6 +274,7 @@ function saveSettings(params) {
       data = data.replace(/(douga_url:)[^\r^\n]+(\r\n)/g, `$1${params.dougaUrl}$2`);
     }
 
+    
     fs.writeFile('Setting.ini', data, (err) => {
       if (err) throw err;
       console.log('The settings file has been saved!');
