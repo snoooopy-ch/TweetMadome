@@ -137,7 +137,7 @@ function createWindow() {
   win.webContents.on('will-navigate', handleRedirect)
   win.webContents.on('new-window', handleRedirect)
   // win.setMenu(menu);
-  win.removeMenu();
+  // win.removeMenu();
 }
 
 // Create window on electron intialization
