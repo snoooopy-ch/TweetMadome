@@ -288,6 +288,18 @@ function saveSettings(params) {
       data = data.replace(/(douga_url:)[^\r^\n]+(\r\n)/g, `$1${params.dougaUrl}$2`);
     }
 
+    if (data.match(/(is_t_top_link:)[^\r^\n]+(\r\n)/g) === null) {
+      data = data.replace(/(is_t_top_link:)+(\r\n)/g, `$1${params.isAddTopLink ? 'on' : 'off'}$2`);
+    } else {
+      data = data.replace(/(is_t_top_link:)[^\r^\n]+(\r\n)/g, `$1${params.isAddTopLink ? 'on' : 'off'}$2`);
+    }
+
+    if (data.match(/(is_t_bottom_link:)[^\r^\n]+(\r\n)/g) === null) {
+      data = data.replace(/(is_t_bottom_link:)+(\r\n)/g, `$1${params.isAddBottomLink ? 'on' : 'off'}$2`);
+    } else {
+      data = data.replace(/(is_t_bottom_link:)[^\r^\n]+(\r\n)/g, `$1${params.isAddBottomLink ? 'on' : 'off'}$2`);
+    }
+
     fs.writeFile('Setting.ini', data, (err) => {
       if (err) throw err;
       console.log('The settings file has been saved!');
