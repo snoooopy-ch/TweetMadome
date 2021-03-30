@@ -38,10 +38,15 @@ export class MainService {
   imageUrlL2R = this.imageUrlL2RSource.asObservable();
   imageUrlR2LSource = new BehaviorSubject<any>({});
   imageUrlR2L = this.imageUrlR2LSource.asObservable();
+  widthList = new BehaviorSubject<any>([]);
 
   constructor() {
     electron.ipcRenderer.on('getSettings', (event, value) => {
       this.settings.next(value);
+    });
+
+    electron.ipcRenderer.on('getWidthList', (event, value) => {
+      this.widthList.next(value);
     });
   }
 

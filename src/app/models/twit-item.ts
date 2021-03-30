@@ -20,4 +20,6 @@ export class TwitItem{
   imageDirectWidth: string;
   youtubeText: string;
   referenced_tweets_type: string;
+  isAddTopLink: boolean;
+  isAddBottomLink: boolean;
 }
