@@ -21,22 +21,35 @@
   </div>
   <div>
     <div class="d-flex justify-content-between" [ngStyle]="{'margin-bottom': '7px'}">
+
       <button class="btn-move btn-left-round btn-right-round" [ngStyle]="{'background-color':btnColorList.most_top_color, 'border-color':btnColorList.most_top_color}"
        (click)="btnMoveTopClickHandler()">▲</button>
       <button class="btn-move-step btn-left-round btn-right-round" [ngStyle]="{'background-color':btnColorList.top_color, 'border-color':btnColorList.top_color}"
        (click)="btnMoveUpClickHandler()">&#8593;</button>
+      <div class="add-t-link">
+        <label>
+          <input type="checkbox" [(ngModel)]="item.isAddTopLink" (click)="chkAddTopLinkClickHandler($event)">上余白
+        </label>
+      </div>
       <div class="tweet-width-container">
         <div class="tweet-width-label">横幅</div>
         <div class="tweet-width-value">
-          <input type="input" [(ngModel)]="item.imageDirectWidth" value="item.imageDirectWidth" #toFocus>
+          <input type="input" [(ngModel)]="item.imageDirectWidth" [dropup]="true"
+                 [typeahead]="widthList" [typeaheadMinLength]="0" #toFocus>
         </div>
       </div>
     </div>
     <div class="d-flex justify-content-between">
+
       <button class="btn-move btn-left-round btn-right-round" [ngStyle]="{'background-color':btnColorList.most_down_color, 'border-color':btnColorList.most_down_color}"
        (click)="btnMoveBottomClickHandler()">▼</button>
       <button class="btn-move-step btn-left-round btn-right-round" [ngStyle]="{'background-color':btnColorList.down_color, 'border-color':btnColorList.down_color}"
        (click)="btnMoveDownClickHandler()">&#8595;</button>
+      <div class="add-t-link">
+        <label>
+          <input type="checkbox" [(ngModel)]="item.isAddBottomLink" (click)="chkAddBottomLinkClickHandler($event)">下余白
+        </label>
+      </div>
       <div class="select-show" [ngStyle]="{'background-color': item.isImageOutput == true? showCheckColor : '#ffffff', 'border-width': '1px', 'border-style': 'solid', 'border-color': item.isImageOutput == true? showCheckColor : 'grey'}">
         <label>
           <input type="checkbox" [(ngModel)]="item.isImageOutput" (click)="noneDisplayClickHandler($event)" (onfocus)="noneDisplayClickHandler($event)">非出力

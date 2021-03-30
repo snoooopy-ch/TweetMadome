@@ -47,6 +47,9 @@ export class RightPanelComponent implements OnInit, OnDestroy {
   dougaUrl: any;
   twitList: any;
   focustesting: boolean = true;
+  public isAddTopLink: boolean;
+  public isAddBottomLink: boolean;
+  public widthList: string[];
 
   constructor(private mainService: MainService, private cdRef: ChangeDetectorRef, private clipboard: Clipboard) {
 
@@ -73,6 +76,8 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     this.notYoutubeText = false;
     this.dougaUrl = '';
     this.twitList = [];
+    this.isAddTopLink = false;
+    this.isAddBottomLink = false;
 
     this.mainService.containerCollectiveChange.subscribe((res) => {
       this.container = res;
@@ -82,11 +87,16 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       this.imageType = res;
     });
 
+    this.subscribers.widthList = this.mainService.widthList.subscribe( (value) => {
+      this.widthList = value;
+      this.imageWidth = this.widthList[0];
+    });
+
     this.subscribers.settings = this.mainService.settings.subscribe((value) => {
       this.settings = value;
-      if (value.hasOwnProperty('image_width')) {
-        this.imageWidth = this.settings.image_width;
-      }
+      // if (value.hasOwnProperty('image_width')) {
+      //   this.imageWidth = this.settings.image_width;
+      // }
       if (value.hasOwnProperty('video_width')) {
         this.videoWidth1 = this.settings.video_width;
       }
@@ -218,8 +228,9 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     });
 
     this.subscribers.imageUrlL2R = this.mainService.imageUrlL2R.subscribe(value => {
-      if (typeof value === 'boolean')
+      if (typeof value === 'boolean') {
         this.isReplaceUrl = value;
+      }
     });
   }
 
@@ -305,7 +316,9 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       appendLargeName: this.appendLargeName,
       notYoutubeText: this.notYoutubeText,
       copyWord: copyWord,
-      dougaUrl: this.dougaUrl
+      dougaUrl: this.dougaUrl,
+      isAddTopLink: this.isAddTopLink,
+      isAddBottomLink: this.isAddBottomLink
     });
   }
 

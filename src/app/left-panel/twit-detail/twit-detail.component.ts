@@ -43,6 +43,7 @@ export class TwitDetailComponent implements OnInit {
   @Input() selectedPict;
   @Input() urlCheckColor;
   @Input() showCheckColor;
+  @Input() public widthList: string[];
 
   @Output() setDraggableEmitter = new EventEmitter();
   @Output() moveTopEmitter = new EventEmitter();
@@ -129,5 +130,12 @@ export class TwitDetailComponent implements OnInit {
     event.target.blur();
     this.item.isImageOutput = !this.item.isImageOutput;
   }
-  
+
+  chkAddTopLinkClickHandler($event: MouseEvent) {
+    this.item.isAddTopLink = !this.item.isAddTopLink;
+  }
+
+  chkAddBottomLinkClickHandler($event: MouseEvent) {
+    this.item.isAddBottomLink = !this.item.isAddBottomLink;
+  }
 }

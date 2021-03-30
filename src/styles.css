@@ -170,11 +170,11 @@ app-twit-detail div .radio-container {
 }
 
 app-twit-detail div .line1 .radio-container {
-  width: 62px;
+  width: 40px;
 }
 
 app-twit-detail div .line2 .radio-container {
-  width: 80px;
+  width: 60px;
 }
 
 app-twit-detail .row-2 {
@@ -183,23 +183,31 @@ app-twit-detail .row-2 {
   justify-content: center;
 }
 
-app-twit-detail .row-2 button {
+app-twit-detail .row-2 .btn-delete {
   border: 1px solid #dc3545;
   margin: 0;
 }
 
+app-twit-detail .row-2 .dropdown-menu {
+  min-width: unset;
+}
+
+app-twit-detail .row-2 .dropdown-item {
+  width: 98%;
+}
+
 app-twit-detail .row-2 .btn-move {
-  width: 32px;
+  width: 28px;
   height: 32px;
-  padding: 6px 10px;
+  padding: 6px 8px;
   background-color: #77cc6d;
   border-color: #77cc6d;
 }
 
 app-twit-detail .row-2 .btn-move-step {
-  width: 32px;
+  width: 28px;
   height: 32px;
-  padding: 6px 10px;
+  padding: 6px 8px;
   background-color: #abeba4;
   border-color: #abeba4;
   margin: 0 5px;
@@ -211,6 +219,7 @@ app-twit-detail .row-2 .btn-move-step:focus {
 }
 
 app-twit-detail .row-2 .select-url,
+app-twit-detail .row-2 .add-t-link,
 app-twit-detail .row-2 .select-show {
   width: 68px;
   height: 32px;
@@ -220,10 +229,15 @@ app-twit-detail .row-2 .select-show {
   border-radius: 5px;
 }
 
+app-twit-detail .row-2 .add-t-link{
+  border: 1px solid grey;
+  background: white;
+}
+
 app-twit-detail .row-2 .btn-delete {
   background-color: #dc3545;
   color: white;
-  width: 68px;
+  width: 55px;
   height: 70px;
   padding: 6px 10px;
 }
@@ -384,6 +398,10 @@ app-twit-detail div .btn-cancel-select-and-catch-id {
   margin: 2px 0;
   padding: 10px 23px 10px;
   border: 1px solid lightgrey;
+}
+
+.main-container app-right-panel .image-group .dropdown-item {
+  width: 98%;
 }
 
 .main-container app-right-panel .video-group {
@@ -657,7 +675,7 @@ input[type='radio']:checked:before {
 .radio-line {
   height: 32px;
   display: flex;
-  width: 407px;
+  width: 350px;
   justify-content: space-evenly;
   /*border: 1px solid #93d6ff;*/
   border-radius: 5px;

@@ -3,6 +3,7 @@ const fs = require('fs');
 
 let win;
 let settingPath = 'Setting.ini';
+let widthFiletPath = 'WidthList.ini';
 
 let curComment = '';
 let yesNoKeys = ['youtube', 'pict1mai_kyousei_tuujou', 'username_link_br', 't_top_link', 'inyo_tweet', 'large'];
@@ -40,103 +41,103 @@ function createWindow() {
   };
   const isMac = process.platform === 'darwin'
 
-  const template = [
-    // { role: 'appMenu' }
-    ...(isMac ? [{
-      label: app.name,
-      submenu: [
-        {role: 'about'},
-        {type: 'separator'},
-        {role: 'services'},
-        {type: 'separator'},
-        {role: 'hide'},
-        {role: 'hideothers'},
-        {role: 'unhide'},
-        {type: 'separator'},
-        {role: 'quit'}
-      ]
-    }] : []),
-    // { role: 'fileMenu' }
-    {
-      label: 'File',
-      submenu: [
-        isMac ? {role: 'close'} : {role: 'quit'}
-      ]
-    },
-    // { role: 'editMenu' }
-    {
-      label: 'Edit',
-      submenu: [
-        {role: 'undo'},
-        {role: 'redo'},
-        {type: 'separator'},
-        {role: 'cut'},
-        {role: 'copy'},
-        {role: 'paste'},
-        ...(isMac ? [
-          {role: 'pasteAndMatchStyle'},
-          {role: 'delete'},
-          {role: 'selectAll'},
-          {type: 'separator'},
-          {
-            label: 'Speech',
-            submenu: [
-              {role: 'startspeaking'},
-              {role: 'stopspeaking'}
-            ]
-          }
-        ] : [
-          {role: 'delete'},
-          {type: 'separator'},
-          {role: 'selectAll'}
-        ])
-      ]
-    },
-    // { role: 'viewMenu' }
-    {
-      label: 'View',
-      submenu: [
-        {role: 'reload'},
-        {role: 'forcereload'},
-        {role: 'toggledevtools'},
-        {type: 'separator'},
-        {role: 'resetzoom'},
-        {role: 'zoomin'},
-        {role: 'zoomout'},
-        {type: 'separator'},
-        {role: 'togglefullscreen'}
-      ]
-    },
-    // { role: 'windowMenu' }
-    {
-      label: 'Window',
-      submenu: [
-        {role: 'minimize'},
-        {role: 'zoom'}
-      ]
-    },
-    {
-      role: 'help',
-      submenu: [
-        {
-          label: 'Learn More',
-          click: async () => {
-            const {shell} = require('electron');
-            await shell.openExternal('https://electronjs.org');
-          }
-        }
-      ]
-    }
-
-  ];
-
-  const temp_menu = Menu.buildFromTemplate(template);
-  Menu.setApplicationMenu(temp_menu);
+  // const template = [
+  //   // { role: 'appMenu' }
+  //   ...(isMac ? [{
+  //     label: app.name,
+  //     submenu: [
+  //       {role: 'about'},
+  //       {type: 'separator'},
+  //       {role: 'services'},
+  //       {type: 'separator'},
+  //       {role: 'hide'},
+  //       {role: 'hideothers'},
+  //       {role: 'unhide'},
+  //       {type: 'separator'},
+  //       {role: 'quit'}
+  //     ]
+  //   }] : []),
+  //   // { role: 'fileMenu' }
+  //   {
+  //     label: 'File',
+  //     submenu: [
+  //       isMac ? {role: 'close'} : {role: 'quit'}
+  //     ]
+  //   },
+  //   // { role: 'editMenu' }
+  //   {
+  //     label: 'Edit',
+  //     submenu: [
+  //       {role: 'undo'},
+  //       {role: 'redo'},
+  //       {type: 'separator'},
+  //       {role: 'cut'},
+  //       {role: 'copy'},
+  //       {role: 'paste'},
+  //       ...(isMac ? [
+  //         {role: 'pasteAndMatchStyle'},
+  //         {role: 'delete'},
+  //         {role: 'selectAll'},
+  //         {type: 'separator'},
+  //         {
+  //           label: 'Speech',
+  //           submenu: [
+  //             {role: 'startspeaking'},
+  //             {role: 'stopspeaking'}
+  //           ]
+  //         }
+  //       ] : [
+  //         {role: 'delete'},
+  //         {type: 'separator'},
+  //         {role: 'selectAll'}
+  //       ])
+  //     ]
+  //   },
+  //   // { role: 'viewMenu' }
+  //   {
+  //     label: 'View',
+  //     submenu: [
+  //       {role: 'reload'},
+  //       {role: 'forcereload'},
+  //       {role: 'toggledevtools'},
+  //       {type: 'separator'},
+  //       {role: 'resetzoom'},
+  //       {role: 'zoomin'},
+  //       {role: 'zoomout'},
+  //       {type: 'separator'},
+  //       {role: 'togglefullscreen'}
+  //     ]
+  //   },
+  //   // { role: 'windowMenu' }
+  //   {
+  //     label: 'Window',
+  //     submenu: [
+  //       {role: 'minimize'},
+  //       {role: 'zoom'}
+  //     ]
+  //   },
+  //   {
+  //     role: 'help',
+  //     submenu: [
+  //       {
+  //         label: 'Learn More',
+  //         click: async () => {
+  //           const {shell} = require('electron');
+  //           await shell.openExternal('https://electronjs.org');
+  //         }
+  //       }
+  //     ]
+  //   }
+  //
+  // ];
+  //
+  // const temp_menu = Menu.buildFromTemplate(template);
+  // Menu.setApplicationMenu(temp_menu);
 
   win.webContents.on('will-navigate', handleRedirect)
   win.webContents.on('new-window', handleRedirect)
   // win.setMenu(menu);
-  // win.removeMenu();
+  win.removeMenu();
 }
 
 // Create window on electron intialization
@@ -211,6 +212,16 @@ function getSettings() {
     win.webContents.send("getSettings", settings);
   });
 
+
+  let widthList = [];
+  if (fs.existsSync(widthFiletPath)) {
+    let data = fs.readFileSync(widthFiletPath);
+    let strTmp = '' + data;
+    if (strTmp.length > 0) {
+      widthList = strTmp.split('\n');
+    }
+  }
+  win.webContents.send("getWidthList", widthList);
 }
 
 ipcMain.on("saveSettings", (event, params) => {
