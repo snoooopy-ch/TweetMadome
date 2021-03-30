@@ -137,7 +137,7 @@ function createWindow() {
   win.webContents.on('will-navigate', handleRedirect)
   win.webContents.on('new-window', handleRedirect)
   // win.setMenu(menu);
-  // win.removeMenu();
+  win.removeMenu();
 }
 
 // Create window on electron intialization
@@ -191,24 +191,15 @@ function getSettings() {
       if (line.length === 0) {
         continue;
       }
-
-      let chunks = line.split(':');
-      let lineArgs = [chunks.shift(), chunks.join(':')];
-
-      if (yesNoKeys.indexOf(lineArgs[0]) !== -1) {
-        settings[lineArgs[0]] = (lineArgs[1] === 'yes' || lineArgs[1] === 'yes;');
-      } else {
-        if (lineArgs.length > 1) {
-          settings[lineArgs[0]] = lineArgs[1].replace(/;/g, '');
-        } else {
-          settings[lineArgs[0]] = '';
-        }
-      }
+      getLineParam(line);
     }
     remaining = remaining.substring(last);
   });
 
   input.on('end', function () {
+    if (remaining.length > 2){
+      getLineParam(remaining);
+    }
     win.webContents.send("getSettings", settings);
   });
 
@@ -225,6 +216,21 @@ function getSettings() {
     }
   }
   win.webContents.send("getWidthList", widthList);
+}
+
+function getLineParam(line){
+  let chunks = line.split(':');
+  let lineArgs = [chunks.shift(), chunks.join(':')];
+
+  if (yesNoKeys.indexOf(lineArgs[0]) !== -1) {
+    settings[lineArgs[0]] = (lineArgs[1] === 'yes' || lineArgs[1] === 'yes;');
+  } else {
+    if (lineArgs.length > 1) {
+      settings[lineArgs[0]] = lineArgs[1].replace(/;/g, '');
+    } else {
+      settings[lineArgs[0]] = '';
+    }
+  }
 }
 
 ipcMain.on("saveSettings", (event, params) => {
@@ -288,7 +294,6 @@ function saveSettings(params) {
       data = data.replace(/(douga_url:)[^\r^\n]+(\r\n)/g, `$1${params.dougaUrl}$2`);
     }
 
-    
     fs.writeFile('Setting.ini', data, (err) => {
       if (err) throw err;
       console.log('The settings file has been saved!');

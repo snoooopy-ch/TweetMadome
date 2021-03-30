@@ -131,6 +131,14 @@ export class RightPanelComponent implements OnInit, OnDestroy {
         this.dougaUrl = this.settings.douga_url;
       }
 
+      if (value.hasOwnProperty('is_t_top_link')){
+        this.isAddTopLink = this.settings.is_t_top_link === 'on';
+      }
+
+      if (value.hasOwnProperty('is_t_bottom_link')){
+        this.isAddBottomLink = this.settings.is_t_bottom_link === 'on';
+      }
+
       this.cdRef.detectChanges();
     });
 
@@ -272,7 +280,9 @@ export class RightPanelComponent implements OnInit, OnDestroy {
       replaceAnchorUrl1: this.replacedAnchorUrl1,
       replaceAnchorUrl2: this.replacedAnchorUrl2,
       dougaUrl: this.dougaUrl,
-    })
+      isAddTopLink: this.isAddTopLink,
+      isAddBottomLink: this.isAddBottomLink
+    });
   }
 
   btnPrintHtmlClickHandler(copyWord: string) {
