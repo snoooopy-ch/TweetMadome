@@ -179,6 +179,7 @@ app-twit-detail div .line2 .radio-container {
 
 app-twit-detail .row-2 {
   display: flex;
+  position: relative;
   padding: 0 0 5px 0;
   justify-content: center;
 }
