@@ -220,6 +220,9 @@ function getSettings() {
     if (strTmp.length > 0) {
       widthList = strTmp.split('\n');
     }
+    for(let i=0; i<widthList.length; i++){
+      widthList[i] = widthList[i].replace(/\r|\n|\r\n/g, '');
+    }
   }
   win.webContents.send("getWidthList", widthList);
 }
