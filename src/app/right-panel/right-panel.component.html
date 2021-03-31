@@ -58,7 +58,8 @@
     <div>
       (画像横幅）
     </div>
-    <input type="text" name="txt-image-width" [(ngModel)]="imageWidth" [typeahead]="widthList" [typeaheadMinLength]="0">
+<!--    <input type="text" name="txt-image-width" [(ngModel)]="imageWidth" [typeahead]="widthList" [typeaheadMinLength]="0">-->
+    <app-input-dropdown name="txt-image-width" [(ngModel)]="imageWidth" [dropdownItems]="widthList" ></app-input-dropdown>
   </div>
   <div class="row">
     <label><input type="radio" name="right-image-type" [checked]="imageType == '2'" (click)="optImageTypeClickHandler('2')">{{settings.pict2}}</label>

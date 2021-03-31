@@ -1,0 +1,6 @@
+<input type="text" [formControl]="inputControl" (click)="inputClickHandler()" (focusout)="isShowDropdown=false">
+<div class="dropdown-menu" *ngIf="isShowDropdown">
+  <ul>
+    <li [value]="item" *ngFor="let item of dropdownItems" (click)="onChangeDropdownHandler(item)">{{item}}</li>
+  </ul>
+</div>

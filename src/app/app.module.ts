@@ -13,6 +13,7 @@ import {ButtonsModule} from 'ngx-bootstrap/buttons';
 import {TwitDetailComponent, SafeHtmlPipe} from './left-panel/twit-detail/twit-detail.component';
 import {HotkeyModule} from 'angular2-hotkeys';
 import {TypeaheadModule} from 'ngx-bootstrap/typeahead';
+import { InputDropdownComponent } from './left-panel/input-dropdown/input-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import {TypeaheadModule} from 'ngx-bootstrap/typeahead';
     LeftPanelComponent,
     RightPanelComponent,
     TwitDetailComponent,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    InputDropdownComponent
   ],
   imports: [
     BrowserModule,
