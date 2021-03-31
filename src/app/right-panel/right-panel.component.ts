@@ -88,8 +88,11 @@ export class RightPanelComponent implements OnInit, OnDestroy {
     });
 
     this.subscribers.widthList = this.mainService.widthList.subscribe( (value) => {
-      this.widthList = value;
-      this.imageWidth = this.widthList[0];
+      if (value.length) {
+        this.widthList = value;
+        this.imageWidth = this.widthList[0];
+        this.cdRef.detectChanges();
+      }
     });
 
     this.subscribers.settings = this.mainService.settings.subscribe((value) => {
