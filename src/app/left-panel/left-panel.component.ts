@@ -24,6 +24,7 @@ export const emoji = require('emoji-node');
 
 export declare function escapeToEscapedBytes(str, number, mode);
 
+
 @Component({
   selector: 'app-left-panel',
   templateUrl: './left-panel.component.html',
@@ -36,9 +37,11 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
   settings: any;
   container: any;
   imageType: any;
+  globalOrder: any;
   twitList: TwitItem[];
   conList: SimpleItem[];
   picList: SimpleItem[];
+  orderList: SimpleItem[];
   btnColorList: BtnColor;
   private selectedTwitIndex: number;
   hovered: number;
@@ -63,6 +66,10 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       this.imageType = res;
     });
 
+    this.mainService.globalOrderChange.subscribe((res) => {
+      this.globalOrder = res;
+    })
+
     this.twitList = [];
 
     this.subscribers.widthList = this.mainService.widthList.subscribe( (value) => {
@@ -75,6 +82,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       this.btnColorList = new BtnColor();
       this.conList = [];
       this.picList = [];
+      this.orderList = [];
       if (value.hasOwnProperty('view_container1')) {
         for (let i = 1; i < 7; i++) {
           const conItem = new SimpleItem();
@@ -94,6 +102,15 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
           this.picList.push(picItem);
         }
       }
+      if (value.hasOwnProperty('shuturyoku1')) {
+        for (let i = 1; i < 11; i++) {
+          const orderItem = new SimpleItem();
+          orderItem.label = i.toString();
+          orderItem.value = i.toString();
+          orderItem.color = this.settings[`shuturyoku${i}_color`];
+          this.orderList.push(orderItem);
+        }
+      }
 
       this.subHotKeys = [];
       if (value.hasOwnProperty('key_container1')) {
@@ -101,7 +118,9 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
           'key_pict1', 'key_pict2', 'key_pict3', 'key_pict4', 'key_pict5',
           'key_top', 'key_top2', 'key_down', 'key_down2', 'key_yokohaba', 'key_url', 'key_del', 'key_hi_shuturyoku',
           'key_most_top', 'key_most_top2', 'key_most_down', 'key_most_down2', 'scroll_most_top', 'scroll_most_top2', 'scroll_most_down', 'scroll_most_down2',
-          'ue_yohaku', 'shita_yohaku'];
+          'ue_yohaku', 'shita_yohaku',
+          'shuturyoku1', 'shuturyoku2', 'shuturyoku3', 'shuturyoku4', 'shuturyoku5', 'shuturyoku6', 'shuturyoku7', 'shuturyoku8', 'shuturyoku9', 'shuturyoku10'
+        ];
         for (const key of arrayKeys) {
           if (this.settings[key]?.toLowerCase() === 'insert') {
             this.subHotKeys[key] = 'ins';
@@ -153,6 +172,11 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       this.imageCollectiveChange(value);
     });
 
+    // collective change of all tweet's order
+    this.subscribers.globalOrderChange = this.mainService.globalOrderChange.subscribe(value => {
+      this.globalOrderChange(value);
+    });
+
     // print html from Twit list
     this.subscribers.printHtml = this.mainService.printHtmlCommand.subscribe(value => {
       this.printHtml(value);
@@ -191,6 +215,13 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     if (this.hovered >= 0) {
       this.twitList[this.hovered].picture = `${index}`;
       this.twitList[this.hovered].pictureColor = this.picList[index - 1].color;
+    }
+  }
+
+  orderHotkeyClicked(index: number) {
+    if (this.hovered >= 0) {
+      this.twitList[this.hovered].order = `${index}`;
+      this.twitList[this.hovered].orderColor = this.orderList[index - 1].color;
     }
   }
 
@@ -359,6 +390,56 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
         }
         return false; // Prevent bubbling
       }));
+
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['shuturyoku1'], (event: KeyboardEvent): boolean => {
+        this.orderHotkeyClicked(1);
+        return false;
+      }));
+
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['shuturyoku2'], (event: KeyboardEvent): boolean => {
+        this.orderHotkeyClicked(2);
+        return false;
+      }));
+
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['shuturyoku3'], (event: KeyboardEvent): boolean => {
+        this.orderHotkeyClicked(3);
+        return false;
+      }));
+
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['shuturyoku4'], (event: KeyboardEvent): boolean => {
+        this.orderHotkeyClicked(4);
+        return false;
+      }));
+
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['shuturyoku5'], (event: KeyboardEvent): boolean => {
+        this.orderHotkeyClicked(5);
+        return false;
+      }));
+
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['shuturyoku6'], (event: KeyboardEvent): boolean => {
+        this.orderHotkeyClicked(6);
+        return false;
+      }));
+
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['shuturyoku7'], (event: KeyboardEvent): boolean => {
+        this.orderHotkeyClicked(7);
+        return false;
+      }));
+
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['shuturyoku8'], (event: KeyboardEvent): boolean => {
+        this.orderHotkeyClicked(8);
+        return false;
+      }));
+
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['shuturyoku9'], (event: KeyboardEvent): boolean => {
+        this.orderHotkeyClicked(9);
+        return false;
+      }));
+
+      this.hotkeysService.add(new Hotkey(this.subHotKeys['shuturyoku10'], (event: KeyboardEvent): boolean => {
+        this.orderHotkeyClicked(10);
+        return false;
+      }));
     }
   }
 
@@ -379,6 +460,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       params.twitters.reverse();
     }
 
+    let tweetLogs = [];
     for (const twitter of params.twitters) {
       let isExists = false;
       for (const item of this.twitList) {
@@ -390,6 +472,8 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
         continue;
       }
 
+      tweetLogs.push(twitter);
+
       const newItem = new TwitItem();
       newItem.backcolor = this.settings[`backcolor${params.con}`];
       newItem.container = params.con;
@@ -397,6 +481,8 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       newItem.isReplaceUrl = false;
       newItem.imageDirectWidth = '';
       newItem.photos = [];
+      newItem.order = "1";
+      newItem.orderColor = this.settings['shuturyoku1_color'];
       const embedResponse = await fetch(`https://publish.twitter.com/oembed?hide_thread=true&align=center&omit_script=true&url=${twitter}`);
       if (embedResponse.ok) {
         const data = await embedResponse.json();
@@ -585,6 +671,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
       }
     }
     this.setTotalCountStatus();
+    this.saveTwitterLog(tweetLogs);
 
     this.mainService.setOutputUrls(this.twitList);
     this.cdRef.detectChanges();
@@ -610,6 +697,13 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     });
   }
 
+  optGlobalOrderClickHandler(index: any) {
+    this.mainService.doGlobalOrderChange(index);
+    this.mainService.globalOrderChange.subscribe((res) => {
+      this.globalOrder = res;
+    });
+  }
+
   /**
    * delete all items from Twit list
    */
@@ -631,6 +725,13 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     this.twitList.forEach(item => {
       item.picture = index;
       item.pictureColor = this.picList[index - 1].color;
+    });
+  }
+
+  globalOrderChange(index: any) {
+    this.twitList.forEach(item => {
+      item.order = index;
+      item.orderColor = this.orderList[index - 1].color;
     });
   }
 
@@ -749,154 +850,197 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     let outputImg = '';
     let outputVideo = '';
     let replacedImageList = [];
-    for (const twit of this.twitList) {
-      let line = '\n\n\n\n\n\n\n';
-      let containerNum = 1;
-      if (twit.container !== '0') {
-        line += `<div class="t_container${twit.container}">`;
-        containerNum = Number(twit.container);
-      } else {
-        line += `<div class="t_container1">`;
-        containerNum = 1;
-      }
-      line += `<div class="t_header"><div class="t_user_icon">\n`;
-      line += `<a href="https://twitter.com/${twit.username}" target="_blank"><img src="${twit.profileImageUrl}" class="no_image_profile"></a></div>\n`;
-      line += `<div class="t_user_wrap">\n`;
-      line += `<span class="t_user_name"><a href="https://twitter.com/${twit.username}" target="_blank">${twit.name}</a></span>\n`;
-      line += `<span class="t_user_id"><a href="https://twitter.com/${twit.username}" target="_blank">@${twit.username}</a></span></div>\n`;
-      const tw_bird = this.settings[`con${containerNum}_tw_bird`];
-      line += `<span class="t_bird_icon"><a href="${twit.url}" target="_blank"><img src="${this.settings.url}${tw_bird}"></a></span></div><!-- e-t_header -->\n`;
-      line += `<div class="t_honbun">\n`;
-      if (value.isAddTopLink || twit.isAddTopLink) {
-        line += `<div class="t_top_link"><!-- --></div>\n`;
-      }
+    console.log(this.twitList);
+    let outList = Array.from(this.twitList);
+    console.log(typeof outList);
+    outList.sort(function (t1, t2) {
+      return parseInt(t1.order) - parseInt(t2.order);
+    });
+    console.log(outList);
 
-      let twitText = twit.text;
-      if (!this.settings.username_link_br) {
-        twitText = twitText.replace(/(\s*<a class="(t_link_username|t_link_tweet)"[^(<)]+<\/a>)(<br>)*/gi, `$1`);
-      }
+    // Accepts the array and key
+    const groupBy = (array, key) => {
+      return array.reduce((result, currentValue) => {
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(
+          currentValue
+        );
+        return result;
+      }, {});
+    };
+    // Group by color as key to the person array
+    const orderedList = groupBy(outList, 'order');
+    console.log(orderedList);
+    
+    for (const order in orderedList) {
+      console.log(order);
+      const group = orderedList[order];
 
-      if (this.settings.t_top_link) {
-        twitText = twitText.replace(/((^\s*<a class="t_link_username"[^(<)]+<\/a>(<br>)*)(\s*<a class="(t_link_username|t_link_tweet)"[^(<)]+<\/a>(<br>)*)*)/, `<div class="t_top_link">$1</div>\n`);
-      }
-
-      if (this.settings.t_bottom_link) {
-        twitText = twitText.replace(/((<a class="t_link_tweet"[^(<)]+<\/a>(<br>)*\s*)(<a class="(t_link_tweet|t_link_pic)"[^(<)]+<\/a>(<br>)*\s*)+)|((\<a class="(t_link_pic|t_link_tweet)"[^(<)]+<\/a>(<br>)*)+)$/, `<div class="t_bottom_link">$&</div>`);
-      }
-
-      line += twitText + '\n';
-      if (value.isAddBottomLink || twit.isAddBottomLink) {
-        line += `<div class="t_bottom_link"><!-- --></div>\n`;
-      }
-      line += `</div><!-- e-t_honbun -->\n`;
-
-      if (value.notYoutubeText === false && !twit.isImageOutput && twit.youtubeText !== '') {
-        line += twit.youtubeText + '\n';
-      }
-
-      let imageTitle = '';
-      if (twit.photos.length === 1) {
-        imageTitle = this.settings.title;
-      } else if (twit.photos.length > 1) {
-        imageTitle = this.settings.title_fukusuu;
-      }
-
-      if (twit.photos.length > 0 && !twit.isImageOutput) {
-
-        let mediaLine = '';
-        for (const photo of twit.photos) {
-          let photoUrl = '';
-          if (value.appendLargeName === true) {
-            photoUrl = photo.url.replace(/.(jpg|png)$/gi, `?format=$1&name=large`);
-          } else {
-            photoUrl = photo.url;
-          }
-          let photoImgUrl = photoUrl;
-          let photoAnchorUrl = photoUrl;
-          if (value.notCardImageOutput) {
-            if (new RegExp(/card_img/g).test(photoUrl)) {
-              continue;
-            }
-          }
-          if (value.isReplaceUrl || (!value.isReplaceUrl && twit.isReplaceUrl)) {
-            photoImgUrl = photoUrl.replace(/https:\/\/pbs.twimg.com\/(media)/gi, value.replaceImgText);
-            photoAnchorUrl = photoUrl.replace(/https:\/\/pbs.twimg.com\/(media)/gi, value.replaceAnchorText);
-          }
-          mediaLine += '<div>';
-          mediaLine += `<a href="${photoAnchorUrl}" class="swipe" rel="${twit.id}" title="${imageTitle}" target="_blank"><img src="${photoImgUrl}" class="no_image"`;
-          if ((this.settings.pict1mai_kyousei_tuujou && twit.photos.length === 1) || (twit.picture === '1')) {
-            if (twit.imageDirectWidth === '') {
-              mediaLine += ` width="${value.imageWidth.replace(/\r|\n|\r\n/g, '')}"`;
-            } else {
-              mediaLine += ` width="${twit.imageDirectWidth.replace(/\r|\n|\r\n/g, '')}"`;
-            }
-          }
-          mediaLine += `></a>`;
-          mediaLine += '</div>';
-          mediaLine += '\n';
-
-          outputImg += photoUrl;
-          outputImg += '\n';
-        }
-
-        if (mediaLine.length > 0) {
-          if (this.settings.pict1mai_kyousei_tuujou && twit.photos.length === 1) {
-            line += `<div class="t_media1"><!-- s-img -->\n`;
-          } else {
-            if (Number(twit.picture) > 0) {
-              line += `<div class="t_media${twit.picture}"><!-- s-img -->\n`;
-            } else {
-              line += `<div class="t_media1"><!-- s-img -->\n`;
-            }
-          }
-          line += `${mediaLine}<!-- e-img --></div><!-- e-t_media -->\n`;
-        }
-      }
-
-      if (twit.videos.length > 0) {
-        outputVideo += twit.previewImageUrl;
-        outputVideo += '\n';
-
-        for (const video of twit.videos) {
-          var videoRegex = /(https:\/\/[^?"]*)/gi;
-          let matches = videoRegex.exec(video.url);
-          outputVideo += matches[1];
-          outputVideo += '\n';
-        }
-
-        let previewImageUrl = this.concatReplaceUrlToLastSegment(twit.previewImageUrl, value.dougaUrl, twit.isReplaceUrl);
-
-        line += `<div class="t_media_video">\n`;
-        if (twit.imageDirectWidth === '') {
-          line += `<video width="${value.videoWidth}" class="twitter_video" controls="controls" poster="${previewImageUrl}" class="mtpro-media-video">`;
+      for (const twit of group) {
+        let line = '';
+        if (parseInt(order) === 1) {
+          line = '\n\n\n\n\n\n\n';
         } else {
-          line += `<video width="${twit.imageDirectWidth.replace(/\r|\n|\r\n/g, '')}" class="twitter_video" controls="controls" poster="${previewImageUrl}" class="mtpro-media-video">`;
+          if (group.indexOf(twit) !== 0) {
+            line = '\n\n\n\n\n\n\n';
+          } else {
+            line = `\n\n\n\n\n\n\n\n\n\n\n<div id="shuturyoku${order}">出力${order}</div>\n\n\n\n\n\n\n\n\n\n\n\n`;
+          }
         }
-
-        for (const videoItem of twit.videos) {
-          let videoUrl = this.concatReplaceUrlToLastSegment(videoItem.url, value.dougaUrl, twit.isReplaceUrl);
-          line += `<source src="${videoUrl}" type="${videoItem.contentType}">`;
+          
+        let containerNum = 1;
+        if (twit.container !== '0') {
+          line += `<div class="t_container${twit.container}">`;
+          containerNum = Number(twit.container);
+        } else {
+          line += `<div class="t_container1">`;
+          containerNum = 1;
         }
+        line += `<div class="t_header"><div class="t_user_icon">\n`;
+        line += `<a href="https://twitter.com/${twit.username}" target="_blank"><img src="${twit.profileImageUrl}" class="no_image_profile"></a></div>\n`;
+        line += `<div class="t_user_wrap">\n`;
+        line += `<span class="t_user_name"><a href="https://twitter.com/${twit.username}" target="_blank">${twit.name}</a></span>\n`;
+        line += `<span class="t_user_id"><a href="https://twitter.com/${twit.username}" target="_blank">@${twit.username}</a></span></div>\n`;
+        const tw_bird = this.settings[`con${containerNum}_tw_bird`];
+        line += `<span class="t_bird_icon"><a href="${twit.url}" target="_blank"><img src="${this.settings.url}${tw_bird}"></a></span></div><!-- e-t_header -->\n`;
+        line += `<div class="t_honbun">\n`;
+        if (value.isAddTopLink || twit.isAddTopLink) {
+          line += `<div class="t_top_link"><!-- --></div>\n`;
+        }
+  
+        let twitText = twit.text;
+        if (!this.settings.username_link_br) {
+          twitText = twitText.replace(/(\s*<a class="(t_link_username|t_link_tweet)"[^(<)]+<\/a>)(<br>)*/gi, `$1`);
+        }
+  
+        if (this.settings.t_top_link) {
+          twitText = twitText.replace(/((^\s*<a class="t_link_username"[^(<)]+<\/a>(<br>)*)(\s*<a class="(t_link_username|t_link_tweet)"[^(<)]+<\/a>(<br>)*)*)/, `<div class="t_top_link">$1</div>\n`);
+        }
+  
+        if (this.settings.t_bottom_link) {
+          twitText = twitText.replace(/((<a class="t_link_tweet"[^(<)]+<\/a>(<br>)*\s*)(<a class="(t_link_tweet|t_link_pic)"[^(<)]+<\/a>(<br>)*\s*)+)|((\<a class="(t_link_pic|t_link_tweet)"[^(<)]+<\/a>(<br>)*)+)$/, `<div class="t_bottom_link">$&</div>`);
+        }
+  
+        line += twitText + '\n';
+        if (value.isAddBottomLink || twit.isAddBottomLink) {
+          line += `<div class="t_bottom_link"><!-- --></div>\n`;
+        }
+        line += `</div><!-- e-t_honbun -->\n`;
+  
+        if (value.notYoutubeText === false && !twit.isImageOutput && twit.youtubeText !== '') {
+          line += twit.youtubeText + '\n';
+        }
+  
+        let imageTitle = '';
+        if (twit.photos.length === 1) {
+          imageTitle = this.settings.title;
+        } else if (twit.photos.length > 1) {
+          imageTitle = this.settings.title_fukusuu;
+        }
+  
+        if (twit.photos.length > 0 && !twit.isImageOutput) {
+  
+          let mediaLine = '';
+          for (const photo of twit.photos) {
+            let photoUrl = '';
+            if (value.appendLargeName === true) {
+              photoUrl = photo.url.replace(/.(jpg|png)$/gi, `?format=$1&name=large`);
+            } else {
+              photoUrl = photo.url;
+            }
+            let photoImgUrl = photoUrl;
+            let photoAnchorUrl = photoUrl;
+            if (value.notCardImageOutput) {
+              if (new RegExp(/card_img/g).test(photoUrl)) {
+                continue;
+              }
+            }
+            if (value.isReplaceUrl || (!value.isReplaceUrl && twit.isReplaceUrl)) {
+              photoImgUrl = photoUrl.replace(/https:\/\/pbs.twimg.com\/(media)/gi, value.replaceImgText);
+              photoAnchorUrl = photoUrl.replace(/https:\/\/pbs.twimg.com\/(media)/gi, value.replaceAnchorText);
+            }
+            mediaLine += '<div>';
+            mediaLine += `<a href="${photoAnchorUrl}" class="swipe" rel="${twit.id}" title="${imageTitle}" target="_blank"><img src="${photoImgUrl}" class="no_image"`;
+            if ((this.settings.pict1mai_kyousei_tuujou && twit.photos.length === 1) || (twit.picture === '1')) {
+              if (twit.imageDirectWidth === '') {
+                mediaLine += ` width="${value.imageWidth.replace(/\r|\n|\r\n/g, '')}"`;
+              } else {
+                mediaLine += ` width="${twit.imageDirectWidth.replace(/\r|\n|\r\n/g, '')}"`;
+              }
+            }
+            mediaLine += `></a>`;
+            mediaLine += '</div>';
+            mediaLine += '\n';
+  
+            outputImg += photoUrl;
+            outputImg += '\n';
+          }
+  
+          if (mediaLine.length > 0) {
+            if (this.settings.pict1mai_kyousei_tuujou && twit.photos.length === 1) {
+              line += `<div class="t_media1"><!-- s-img -->\n`;
+            } else {
+              if (Number(twit.picture) > 0) {
+                line += `<div class="t_media${twit.picture}"><!-- s-img -->\n`;
+              } else {
+                line += `<div class="t_media1"><!-- s-img -->\n`;
+              }
+            }
+            line += `${mediaLine}<!-- e-img --></div><!-- e-t_media -->\n`;
+          }
+        }
+  
+        if (twit.videos.length > 0) {
+          outputVideo += twit.previewImageUrl;
+          outputVideo += '\n';
+  
+          for (const video of twit.videos) {
+            var videoRegex = /(https:\/\/[^?"]*)/gi;
+            let matches = videoRegex.exec(video.url);
+            outputVideo += matches[1];
+            outputVideo += '\n';
+          }
+  
+          let previewImageUrl = this.concatReplaceUrlToLastSegment(twit.previewImageUrl, value.dougaUrl, twit.isReplaceUrl);
+  
+          line += `<div class="t_media_video">\n`;
+          if (twit.imageDirectWidth === '') {
+            line += `<video width="${value.videoWidth}" class="twitter_video" controls="controls" poster="${previewImageUrl}" class="mtpro-media-video">`;
+          } else {
+            line += `<video width="${twit.imageDirectWidth.replace(/\r|\n|\r\n/g, '')}" class="twitter_video" controls="controls" poster="${previewImageUrl}" class="mtpro-media-video">`;
+          }
+  
+          for (const videoItem of twit.videos) {
+            let videoUrl = this.concatReplaceUrlToLastSegment(videoItem.url, value.dougaUrl, twit.isReplaceUrl);
+            line += `<source src="${videoUrl}" type="${videoItem.contentType}">`;
+          }
+  
+          line += `<p>動画を再生するには、videoタグをサポートしたブラウザが必要です。</p></video>\n`;
+          line += `</div><!-- e-t_media_video -->\n`;
+        }
+  
+        line += `<div class="t_footer"><div class="t_buttons">\n`;
+        const tw_icon1 = this.settings[`con${containerNum}_tw_icon1`];
+        const tw_icon2 = this.settings[`con${containerNum}_tw_icon2`];
+        const tw_icon3 = this.settings[`con${containerNum}_tw_icon3`];
+        line += `<a class="t_reply_button" href="https://twitter.com/intent/tweet?in_reply_to=${twit.id}"><img src="${this.settings.url}${tw_icon1}"></a>\n`;
+        line += `<a class="t_retweet_button" href="https://twitter.com/intent/retweet?tweet_id=${twit.id}"><img src="${this.settings.url}${tw_icon2}"></a>\n`;
+        line += `<a class="t_fav_button" href="https://twitter.com/intent/favorite?tweet_id=${twit.id}"><img src="${this.settings.url}${tw_icon3}"></a>\n`;
+        line += `</div><!-- e-t_buttons -->\n`;
+        let createdDate = new Date(twit.createdAt);
+        let formattedDate = `${createdDate.getFullYear()}-${('0' + (createdDate.getMonth() + 1)).slice(-2)}-${('0' + (createdDate.getDate())).slice(-2)} ${('0' + (createdDate.getHours())).slice(-2)}:${('0' + (createdDate.getMinutes())).slice(-2)}`;
+        line += `<div class="t_date"><a href="${twit.url}" target="_blank">${formattedDate}</a></div>\n`;
 
-        line += `<p>動画を再生するには、videoタグをサポートしたブラウザが必要です。</p></video>\n`;
-        line += `</div><!-- e-t_media_video -->\n`;
+        if (group.indexOf(twit) === group.length - 1) {
+          line += `</div><!-- e-t_footer --></div><!-- e-t_container -->\n`;
+        } else {
+            line += `</div><!-- e-t_footer --></div><!-- e-t_container -->\n\n\n\n\n\n\n\n`;
+        }
+        
+        output += line;
       }
-
-      line += `<div class="t_footer"><div class="t_buttons">\n`;
-      const tw_icon1 = this.settings[`con${containerNum}_tw_icon1`];
-      const tw_icon2 = this.settings[`con${containerNum}_tw_icon2`];
-      const tw_icon3 = this.settings[`con${containerNum}_tw_icon3`];
-      line += `<a class="t_reply_button" href="https://twitter.com/intent/tweet?in_reply_to=${twit.id}"><img src="${this.settings.url}${tw_icon1}"></a>\n`;
-      line += `<a class="t_retweet_button" href="https://twitter.com/intent/retweet?tweet_id=${twit.id}"><img src="${this.settings.url}${tw_icon2}"></a>\n`;
-      line += `<a class="t_fav_button" href="https://twitter.com/intent/favorite?tweet_id=${twit.id}"><img src="${this.settings.url}${tw_icon3}"></a>\n`;
-      line += `</div><!-- e-t_buttons -->\n`;
-      let createdDate = new Date(twit.createdAt);
-      let formattedDate = `${createdDate.getFullYear()}-${('0' + (createdDate.getMonth() + 1)).slice(-2)}-${('0' + (createdDate.getDate())).slice(-2)} ${('0' + (createdDate.getHours())).slice(-2)}:${('0' + (createdDate.getMinutes())).slice(-2)}`;
-      line += `<div class="t_date"><a href="${twit.url}" target="_blank">${formattedDate}</a></div>\n`;
-      line += `</div><!-- e-t_footer --></div><!-- e-t_container -->\n\n\n\n\n\n\n\n`;
-      output += line;
     }
-    output = `\n\n\n\n${output}\n\n\n\n`;
+    
+    output = `\n\n\n\n${output}\n\n\n\n\n\n\n\n\n\n\n`;
     output = output.replace(/〜/gi, '&sim;');
 
     this.mainService.setPrintHtml({
@@ -989,6 +1133,10 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
   imageUrlLeftChangeClickHandler(value) {
     this.mainService.setImageUrlL2R(value);
     this.cdRef.detectChanges();
+  }
+
+  saveTwitterLog(newTweet) {
+    this.mainService.saveTweitterLog(newTweet);
   }
 
 }

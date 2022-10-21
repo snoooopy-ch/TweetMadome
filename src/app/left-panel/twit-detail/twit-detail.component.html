@@ -1,6 +1,10 @@
-<div class="row-1" [innerHTML]="item.content | safeHtml" #tweetContent>
+<div class="row-1">
+  <div class="row-order" [ngStyle]="{'background-color': item.orderColor}"><h4>{{ item.order }}</h4></div>
+  <div class="row-1" [innerHTML]="item.content | safeHtml" #tweetContent>
 
+  </div>
 </div>
+
 <div class="row-2">
   <div class="btn-delete-container">
     <button class="btn-left-round btn-right-round btn-delete" (click)="btnDeleteClickHandler()">削除</button>
@@ -16,6 +20,12 @@
       <label class="radio-container" *ngFor="let picItem of picList">
         <input type="radio" name="twit-pic-{{twitIndex}}" [(ngModel)]="item.picture"
                value="{{picItem.value}}"  (click)="optPictureClickHandler($event, picItem)">{{picItem.label}}
+      </label>
+    </div>
+    <div class="radio-line line3" [ngStyle]="{'background-color': item.orderColor}">
+      <label class="radio-container" *ngFor="let orderItem of orderList">
+        <input type="radio" name="twit-order-{{twitIndex}}" [(ngModel)]="item.order"
+               value="{{orderItem.value}}"  (click)="optOrderClickHandler($event, orderItem)">{{orderItem.label}}
       </label>
     </div>
   </div>

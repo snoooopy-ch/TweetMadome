@@ -6,6 +6,7 @@ export class TwitItem{
   url: string;
   container: string;
   picture: string;
+  order: string;
   text: string;
   username: string;
   profileImageUrl: string;
@@ -14,6 +15,7 @@ export class TwitItem{
   previewImageUrl: string;
   isReplaceUrl: boolean;
   pictureColor: string;
+  orderColor: string;
   containerColor: string;
   isImageOutput: boolean;
   backcolor: string;

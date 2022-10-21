@@ -1,5 +1,6 @@
 const {app, BrowserWindow, ipcMain, dialog, Menu, MenuItem} = require('electron');
 const fs = require('fs');
+var moment = require('moment');
 
 let win;
 let settingPath = 'Setting.ini';
@@ -128,9 +129,8 @@ function createWindow() {
   //       }
   //     ]
   //   }
-  //
+  
   // ];
-  //
   // const temp_menu = Menu.buildFromTemplate(template);
   // Menu.setApplicationMenu(temp_menu);
 
@@ -237,6 +237,10 @@ ipcMain.on("saveSettings", (event, params) => {
   saveSettings(params);
 });
 
+ipcMain.on("log", (event, value) => {
+  saveLog(value);
+});
+
 function saveSettings(params) {
   fs.readFile('Setting.ini', 'utf8', function (err, data) {
 
@@ -294,6 +298,22 @@ function saveSettings(params) {
       data = data.replace(/(douga_url:)[^\r^\n]+(\r\n)/g, `$1${params.dougaUrl}$2`);
     }
 
+    if (data.match(/(is_t_top_link:)[^\r^\n]+(\r\n)/g) === null) {
+      data = data.replace(/(is_t_top_link:)+(\r\n)/g, `$1${params.isAddTopLink ? 'on' : 'off'}$2`);
+    } else {
+      data = data.replace(/(is_t_top_link:)[^\r^\n]+(\r\n)/g, `$1${params.isAddTopLink ? 'on' : 'off'}$2`);
+    }
+
+    if (data.match(/(is_t_bottom_link:)[^\r^\n]+((\r\n)|$)/g) === null) {
+      data = data.replace(/(is_t_bottom_link:)+((\r\n)|$)/g, `$1${params.isAddBottomLink ? 'on' : 'off'}$2`);
+    } else {
+      data = data.replace(/(is_t_bottom_link:)[^\r^\n]+((\r\n)|$)/g, `$1${params.isAddBottomLink ? 'on' : 'off'}$2`);
+    }
+
+    if (!data.endsWith('\r\n')){
+      data +='\r\n';
+    }
+
     fs.writeFile('Setting.ini', data, (err) => {
       if (err) throw err;
       console.log('The settings file has been saved!');
@@ -301,3 +321,21 @@ function saveSettings(params) {
   });
 }
 
+function saveLog(value) {
+  console.log(settings);
+  if (value.length != 0) {
+    let lines = moment().format('YYYY/MM/DD HH:mm:ss');
+    lines += '\r\n';
+    for (const v of value) {
+      lines += v;
+      lines += '\r\n';
+    }
+    lines += '\r\n';
+
+    fs.appendFile(settings['tweet_tuika_pass'], lines, err => {
+      if (err) {
+      } else {
+      }
+    });
+  }
+}

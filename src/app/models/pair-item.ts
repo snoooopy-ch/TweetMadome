@@ -3,4 +3,5 @@ export class SimpleItem{
   label: string;
   color: string;
   backcolor: string;
+  order: string;
 }

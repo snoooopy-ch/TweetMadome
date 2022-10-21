@@ -38,6 +38,7 @@ export class TwitDetailComponent implements OnInit {
   @Input() twitIndex: number;
   @Input() conList: SimpleItem[];
   @Input() picList: SimpleItem[];
+  @Input() orderList: SimpleItem[];
   @Input() btnColorList: BtnColor;
   @Input() selectedCon;
   @Input() selectedPict;
@@ -113,6 +114,13 @@ export class TwitDetailComponent implements OnInit {
 
   optPictureClickHandler(event, picItem: SimpleItem) {
     this.item.pictureColor = picItem.color;
+    event.target.blur();
+  }
+
+  optOrderClickHandler(event, orderItem: SimpleItem) {
+    console.log(orderItem);
+    this.item.orderColor = orderItem.color;
+    this.item.order = orderItem.value;
     event.target.blur();
   }
 

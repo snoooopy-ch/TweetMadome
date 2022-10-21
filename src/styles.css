@@ -137,6 +137,8 @@ app-twit-detail div.row-1 {
   display: flex;
   align-content: center;
   align-items: center;
+  width: 100%;
+  position: relative;
 }
 
 app-twit-detail div.row-1 .btn-cancel-all{
@@ -145,6 +147,17 @@ app-twit-detail div.row-1 .btn-cancel-all{
   height: 20px;
   background-color: #0366d6;
   border: 1px solid #0366d6;
+}
+
+app-twit-detail div.row-1 .row-order {
+  top: 0px;
+  bottom: 5px; 
+  left: 0px; 
+  padding-left: 15px; 
+  width: 72px; 
+  padding-top: 10px;
+  border-right: 3px solid #646464;
+  position: absolute;
 }
 
 app-twit-detail div .label-res-id-num {
@@ -239,7 +252,7 @@ app-twit-detail .row-2 .btn-delete {
   background-color: #dc3545;
   color: white;
   width: 55px;
-  height: 70px;
+  height: 103px;
   padding: 6px 10px;
 }
 

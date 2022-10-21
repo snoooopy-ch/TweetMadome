@@ -22,6 +22,8 @@ export class MainService {
   containerCollectiveChange = this.containerCollectiveChangeSource.asObservable();
   imageCollectiveChangeSource = new BehaviorSubject<any>({});
   imageCollectiveChange = this.imageCollectiveChangeSource.asObservable();
+  globalOrderChangeSource = new BehaviorSubject<any>({});
+  globalOrderChange = this.globalOrderChangeSource.asObservable();
   printHtmlCommandSource = new BehaviorSubject<any>({});
   printHtmlCommand = this.printHtmlCommandSource.asObservable();
   printHtmlSource = new BehaviorSubject<any>({tabIndex: 0, html: ''});
@@ -82,6 +84,10 @@ export class MainService {
     this.imageCollectiveChangeSource.next(index);
   }
 
+  doGlobalOrderChange(index: any) {
+    this.globalOrderChangeSource.next(index);
+  }
+
   excutePrintHtml(value) {
     this.excutePrintSource.next(value);
   }
@@ -118,4 +124,7 @@ export class MainService {
     this.imageUrlL2RSource.next(value);
   }
 
+  saveTweitterLog(value: any) {
+    electron.ipcRenderer.send('log', value);
+  }
 }
