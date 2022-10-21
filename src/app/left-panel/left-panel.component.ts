@@ -1043,6 +1043,18 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
     output = `\n\n\n\n${output}\n\n\n\n\n\n\n\n\n\n\n`;
     output = output.replace(/〜/gi, '&sim;');
 
+    for (let i = 0; i < 6; i++) {
+      let search = this.settings[`tikan_mae${i}`];
+      if (search === undefined || search.length < 1) {
+        continue;
+      }
+      search = search.replace(/\(/gi, '\\(');
+      search = search.replace(/\)/gi, '\\)');
+      const re = new RegExp(search, 'gi');
+      let replacement = this.settings[`tikan_ato${i}`];
+      output = output.replace(re, replacement);
+    }
+
     this.mainService.setPrintHtml({
       html: output,
       images: outputImg,
