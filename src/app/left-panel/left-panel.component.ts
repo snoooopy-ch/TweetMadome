@@ -499,7 +499,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
         const apiResponse = await fetch(apiUrl, {
           method: 'GET',
           headers: {
-            'Authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAADM%2BGwEAAAAA1zXPkODFT0l6gK3VrRtnDgqUk20%3DFf2YdxsJ6l1LQsSdsL0IzXKRJLi5DYynLKudEZ0tk8E62h2h5F',
+            'Authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAAA%2B%2FmwEAAAAA9cUPYPcRnbjviHXhjwiJgOvS6W8%3DNkL6BBDxmheW6WhWpgpsAN0dtfYGPy2Ebiudge1zYQ3kpV7iVR',
             'Content-Type': 'application/json'
           }
         });
@@ -609,7 +609,7 @@ export class LeftPanelComponent implements OnInit, OnDestroy {
                 const response = await fetch(`https://api.twitter.com/1.1/statuses/lookup.json?id=${id}`, {
                   method: 'GET',
                   headers: {
-                    'Authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAADM%2BGwEAAAAA1zXPkODFT0l6gK3VrRtnDgqUk20%3DFf2YdxsJ6l1LQsSdsL0IzXKRJLi5DYynLKudEZ0tk8E62h2h5F',
+                    'Authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAAA%2B%2FmwEAAAAA9cUPYPcRnbjviHXhjwiJgOvS6W8%3DNkL6BBDxmheW6WhWpgpsAN0dtfYGPy2Ebiudge1zYQ3kpV7iVR',
                     'Content-Type': 'application/json'
                   }
                 });
